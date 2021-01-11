@@ -17,12 +17,18 @@
       position: relative
     }
 
-    .fullpage__center {
+    .fullpage__center, .fullpage__center--fill {
       position: absolute;
       top: 50vh;
       left: 50vw;
       max-width: clamp(50%, 600px, 100%);
+      padding: 1em;
       transform: translate(-50%, -50%);
+    }
+
+    .fullpage__center--fill {
+      color: #fff;
+      background-color: rgba(0,0,0,0.55);
     }
 
     #occupations-typewriter, #occupations-noscript {
@@ -39,10 +45,33 @@
       from { opacity: 1; }
       to { opacity: 0; }
     }
+
+    /* Code editing */
+    #code-editor, .code-result {
+      width: 50%;
+      height: 100vh;
+      position: absolute;
+      top: 0;
+      margin: 0;
+    }
+
+    #code-editor {
+      left: 0;
+      word-wrap: break-word;
+      overflow: auto;
+      text-align: left;
+      padding: 0.5em;
+    }
+
+    .code-result {
+      right: 0;
+      border: none;
+    }
   </style>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
 </head>
 <body>
-  <div class="fullpage">
+  <div class="fullpage" id="panel-1">
     <div class="fullpage__center">
       <h1>I'm Benjamin Hollon.</h1>
       <noscript id="occupations-noscript">
@@ -51,9 +80,13 @@
       <p id="occupations-typewriter" data-occupations="Human Being|Avid Reader|Writer|Trombonist|Composer|Actor|Christian|Part-Time Polymath"></p>
     </div>
   </div>
-  <div class="fullpage">
-    <div class="fullpage__center">
-      <h1>Mua haha</h1>
+  <div class="fullpage" id="panel-2">
+    <pre id="code-editor"></pre>
+    <iframe class="code-result" src="data:text/html,<body></body>" onload="this.style.display = 'block';document.getElementsByClassName('code-result')[1].style.display='none'"></iframe>
+    <iframe class="code-result" src="data:text/html,<body></body>" onload="this.style.display = 'block';document.getElementsByClassName('code-result')[0].style.display='none'"></iframe>
+    <div class="fullpage__center--fill">
+      <h2>I code things that make me smile.</h2>
+      <a class="github-button" href="https://github.com/benjaminbhollon" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-size="large" data-show-count="true" aria-label="Follow @benjaminbhollon on GitHub">Follow @benjaminbhollon</a>
     </div>
   </div>
   <script>
@@ -93,7 +126,36 @@
       occupationNo++
       setTimeout(changeOccupation, occupationLength);
     }
-    changeOccupation()
+    changeOccupation();
+
+    //Code editor
+    var html = '<div id="container"> <div id="peel"> <div id="bulge-peel"></div> <div id="bulge"> <div id="eyes"> <div id="eye-1"></div> <div id="eye-2"></div> </div> <div id="mouth"></div> </div> <div id="body"> <div id="pit"> <div id="inner-pit-1"> <div id="inner-pit-2"></div> </div> </div> </div> </div> </div>'
+    var css = `body {\n  background-color: DeepSkyBlue;\n}\n\n#peel {\n  background-color: #440;\n  width: 200px;\n  height:200px;\n  padding: 7px;\n  border-radius: 100%;\n}\n\n#container {\n  padding-top: 90px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n#body {\n  background-color: #a5f0a2;\n  width: 140px;\n  height: 140px;\n  padding: 30px;\n  border-radius: 100%;\n}\n\n#pit {\n  position: absolute;\n  background-color: #740;\n  width: 140px;\n  height: 140px;\n  border-radius: 100%;\n  z-index: 2;\n}\n\n#inner-pit-1, #inner-pit-2 {\n  border-radius: 100%;\n}\n\n#inner-pit-1 {\n  position: absolute;\n  left: 6px;\n  top: 6px;\n  background-color: #960;\n  width: 120px;\n  height: 120px;\n}\n\n#inner-pit-2 {\n  left: 6px;\n  top: 6px;\n  position: absolute;\n  background-color: #a80;\n  width: 100px;\n  height: 100px;\n}\n\n#bulge {\n  position: absolute;\n  background-color: #a5f0a2;\n  margin-top: 30px;\n  left: 50%;\n  height: 200px;\n  width: 150px;\n  border-radius: 50%;\n  -ms-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n  z-index: 1;\n}\n\n#bulge-peel {\n  position: absolute;\n  background-color: #440;\n  left: 50%;\n  margin-top: 30px;\n  height: 214px;\n  width: 164px;\n  border-radius: 50%;\n  -ms-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n  z-index: -1;\n}\n\n#eyes {\n  position: absolute;\n  top: 20%;\n  left: 50%;\n  height: 30px;\n  width: 60px;\n  -ms-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n}\n\n#eye-1, #eye-2 {\n  background-color: #fff;\n  width: 22px;\n  height: 30px;\n  border-radius: 40px;\n}\n\n#eye-1::after, #eye-2::after {\n  content: '';\n  position: absolute;\n  margin-left: 3px;\n  margin-top: 3px;\n  width: 10px;\n  height: 10px;\n  background-color: #000;\n  border-radius: 100%;\n  z-index: 5;\n  animation: eyes 10s infinite;\n}\n\n#eye-1 {\n  float: left;\n}\n\n#eye-2 {\n  float: right;\n}\n\n#mouth {\n  border-bottom: 5px solid #000;\n  height: 25px;\n  width: 100px;\n  position: absolute;\n  top: 33%;\n  left: 50%;\n  border-radius: 50%;\n  -ms-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n}\n\n/* Animations */\n@keyframes eyes {\n  0% {\n    margin-left: 3px;\n    margin-top: 3px;\n  }\n\n  25% {\n    margin-left: 3px;\n    margin-top: 17px;\n  }\n\n  50% {\n    margin-left: 9px;\n    margin-top: 17px;\n  }\n\n  75% {\n    margin-left: 9px;\n    margin-top: 3px;\n  }\n\n}\n\n\n\n/* * * * * * * * * * * * * * * * * * *\n * You can edit this CSS! Try it! <3 *\n * * * * * * * * * * * * * * * * * * */\n\n\n\n`;
+    var typedCSS = '';
+    var done = false;
+
+    setInterval(function () {
+      if (!done && document.hasFocus()) {
+        typedCSS += css[typedCSS.length];
+        var dataURI = "data:text/html," + encodeURIComponent(html + "<style>" + typedCSS + "</style>");
+        document.getElementById("code-editor").innerText = typedCSS;
+        document.getElementById("code-editor").scrollTop = document.getElementById("code-editor").scrollHeight;
+        if (typedCSS.length % 5 == 0 || typedCSS.length === css.length) {
+          document.getElementsByClassName("code-result")[typedCSS.length % 2].src = dataURI;
+          document.getElementsByClassName("code-result")[typedCSS.length % 2].style.display = "none";
+        }
+        if (typedCSS.length === css.length) {
+          done = true;
+          document.getElementById("code-editor").setAttribute("contenteditable", "true");
+          document.getElementById("code-editor").addEventListener("input", function() {
+            typedCSS = document.getElementById("code-editor").innerText;
+            var dataURI = "data:text/html," + encodeURIComponent(html + "<style>" + typedCSS + "</style>");
+            document.getElementsByClassName("code-result")[typedCSS.length % 2].src = dataURI;
+            document.getElementsByClassName("code-result")[typedCSS.length % 2].style.display = "none";
+          });
+        }
+      }
+    }, 40);
   </script>
 </body>
 </html>
