@@ -11,10 +11,89 @@
   <meta property="og:description" content='"And now here is my secret, a very simple secret: It is only with the heart that one can see rightly; what is essential is invisible to the eye." - Antoine de Saint-Exupéry, The Little Prince'>
   <meta property="og:image" content="https://seewitheyesclosed.com/lib/images/homepage/2.jpg">
   <title>Benjamin Hollon: See With Eyes Closed</title>
+  <style>
+    .fullpage {
+      height: 100vh;
+      position: relative
+    }
+
+    .fullpage__center {
+      position: absolute;
+      top: 50vh;
+      left: 50vw;
+      max-width: clamp(50%, 600px, 100%);
+      transform: translate(-50%, -50%);
+    }
+
+    #occupations-typewriter, #occupations-noscript {
+      font-family: courier
+    }
+
+    #occupations-typewriter::after {
+      content: "_";
+      padding-left:0px;
+      animation: cursor-blink 800ms infinite
+    }
+
+    @keyframes cursor-blink {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+  </style>
 </head>
 <body>
-  <h1>Hello world! Welcome to See With Eyes Closed!</h1>
-  <h2>About this page</h2>
-  <p>This page is a placeholder. This folder (<code>/static/</code>) will contain the website in the production environment.</p>
+  <div class="fullpage">
+    <div class="fullpage__center">
+      <h1>I'm Benjamin Hollon.</h1>
+      <noscript id="occupations-noscript">
+        <p>Human Being, Avid Reader, Writer, Trombonist, Composer, Actor, Christian, and Part-Time Polymath</p>
+      </noscript>
+      <p id="occupations-typewriter" data-occupations="Human Being|Avid Reader|Writer|Trombonist|Composer|Actor|Christian|Part-Time Polymath"></p>
+    </div>
+  </div>
+  <div class="fullpage">
+    <div class="fullpage__center">
+      <h1>Mua haha</h1>
+    </div>
+  </div>
+  <script>
+    //Typewriter
+    var occupations = document.getElementById("occupations-typewriter").getAttribute("data-occupations").split("|");
+    var occupationLength = 5000;
+    var typingLength = 1500;
+    var occupationNo = 0;
+
+    //Change occupation
+    function changeOccupation() {
+      function updateText() {
+        document.getElementById("occupations-typewriter").innerText = this.text;
+      }
+
+      var currentOccupation = occupations[occupationNo % occupations.length];
+      var typedSoFar = "";
+      var waited = 0;
+
+      //For each letter set a timeout
+      for (var l in currentOccupation) {
+        typedSoFar = typedSoFar + currentOccupation[typedSoFar.length];
+        waited += typingLength / currentOccupation.length;
+        setTimeout(updateText.bind({"text": typedSoFar}), waited);
+      }
+
+      //Wait once typed
+      waited += occupationLength - (2 * typingLength);
+
+      //Delete each letter
+      for (var l in currentOccupation) {
+        typedSoFar = typedSoFar.slice(0, -1);
+        waited += typingLength / currentOccupation.length;
+        setTimeout(updateText.bind({"text": typedSoFar}), waited);
+      }
+
+      occupationNo++
+      setTimeout(changeOccupation, occupationLength);
+    }
+    changeOccupation()
+  </script>
 </body>
 </html>

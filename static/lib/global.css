@@ -1,0 +1,19 @@
+/* CSS Debugger
+body * {outline:0.25rem solid #777;}*/
+
+/* Main styles */
+
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  text-align: center;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Trebuchet MS', Calibri, sans-serif;
+  margin: 0;
+  font-size: 1.3em;
+}
