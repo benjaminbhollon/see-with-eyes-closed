@@ -82,8 +82,8 @@
   </div>
   <div class="fullpage" id="panel-2">
     <pre id="code-editor"></pre>
-    <iframe class="code-result" src="data:text/html,<body></body>" onload="this.style.display = 'block';document.getElementsByClassName('code-result')[1].style.display='none'"></iframe>
-    <iframe class="code-result" src="data:text/html,<body></body>" onload="this.style.display = 'block';document.getElementsByClassName('code-result')[0].style.display='none'"></iframe>
+    <iframe class="code-result" src="data:text/html,<body></body>" onload="this.style.display = 'block';document.getElementsByClassName('code-result')[1].style.display='none'" sandbox></iframe>
+    <iframe class="code-result" src="data:text/html,<body></body>" onload="this.style.display = 'block';document.getElementsByClassName('code-result')[0].style.display='none'" sandbox></iframe>
     <div class="fullpage__center--fill">
       <h2>I code things that make me smile.</h2>
       <a class="github-button" href="https://github.com/benjaminbhollon" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-size="large" data-show-count="true" aria-label="Follow @benjaminbhollon on GitHub">Follow @benjaminbhollon</a>
@@ -134,8 +134,17 @@
     var typedCSS = '';
     var done = false;
 
+    function isScrolledIntoView(el) {
+      var rect = el.getBoundingClientRect();
+      var elemTop = rect.top;
+      var elemBottom = rect.bottom;
+
+      var isVisible = elemTop < window.innerHeight && elemBottom >= 0;
+      return isVisible;
+    }
+
     setInterval(function () {
-      if (!done && document.hasFocus()) {
+      if (!done && document.hasFocus() && isScrolledIntoView(document.getElementById("code-editor"))) {
         typedCSS += css[typedCSS.length];
         var dataURI = "data:text/html," + encodeURIComponent(html + "<style>" + typedCSS + "</style>");
         document.getElementById("code-editor").innerText = typedCSS;
