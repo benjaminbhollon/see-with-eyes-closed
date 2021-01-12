@@ -299,6 +299,8 @@
         book.innerHTML = "<span>" + recentlyRead[b].title + "</span>";
         book.href = recentlyRead[b].link;
         book.className = "book";
+        book.rel = "nofollow noopener";
+        book.target = "_blank";
         var color = (Math.random()*2**24<<0);
         while (color.toString(16).length < 6) {
           color = (Math.random()*2**24<<0);
