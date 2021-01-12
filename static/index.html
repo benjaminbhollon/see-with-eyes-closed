@@ -33,7 +33,6 @@
     }
 
     /*Specific Styles */
-
     #occupations-typewriter, #occupations-noscript {
       font-family: courier
     }
@@ -51,6 +50,57 @@
 
     #panel-3 {
       background-color: midnightblue;
+    }
+
+    #bookshelf {
+      position: absolute;
+      left: 50vw;
+      bottom: 3vmin;
+      width: 90vmin;
+      height: 90vmin;
+      grid-gap:0.5em;
+      border: 0.25em solid #000;
+      transform: translateX(-50%);
+    }
+
+    .shelf {
+      height: 30vmin;
+      border: 0.25em solid #000;
+      position: relative;
+    }
+
+    .book {
+      position: absolute;
+      bottom: 0;
+      left: calc(var(--no) * 5vmin);
+      transform-origin: 2.5vmin 50%;
+      transform: rotate(-90deg);
+      text-decoration: none;
+      transition: transform 0.4s ease, filter 0.4s ease;
+    }
+
+    .book span {
+      background-color: var(--background-color);
+      color: var(--color);
+      display: block;
+      width: var(--height);
+      height: 5vmin;
+      line-height: 5vmin;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 0.5em;
+      transform: rotate(180deg);
+    }
+
+    .book:hover {
+      transform: scale(1.05) rotate(-90deg);
+      filter: hue-rotate(20deg);
+      z-index: 2;
+    }
+
+    #gr_custom_widget_1610423899 {
+      display: none;
     }
 
     #panel-4 {
@@ -85,9 +135,10 @@
       border: none;
     }
   </style>
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js" async></script>
+  <script src="https://www.goodreads.com/review/custom_widget/80839667.Recently%20read%20books?cover_position=left&cover_size=small&num_books=50&order=d&shelf=read&show_author=0&show_cover=0&show_rating=0&show_review=0&show_tags=0&show_title=1&sort=date_read&widget_bg_color=FFFFFF&widget_bg_transparent=true&widget_border_width=1&widget_id=1610423899&widget_text_color=000000&widget_title_size=medium&widget_width=medium" async></script>
 </head>
-<body>
+<body onload="load()">
   <div class="fullpage" id="panel-1">
     <div class="fullpage__center">
       <h1>I'm Benjamin Hollon.</h1>
@@ -107,10 +158,16 @@
     </div>
   </div>
   <div class="fullpage" id="panel-3">
+    <div id="bookshelf">
+      <div class="shelf"></div>
+      <div class="shelf"></div>
+      <div class="shelf"></div>
+    </div>
     <div class="fullpage__center--fill">
       <h2>I read books that expand my horizons.</h2>
       <a href="https://www.goodreads.com/user/show/80839667-benjamin-hollon" title="Benjamin Hollon's book recommendations, liked quotes, book clubs, book trivia, book lists" target="_blank" rel="nofollow"><img alt="Benjamin Hollon's book recommendations, liked quotes, book clubs, book trivia, book lists" src="https://www.goodreads.com/images/badge/badge1.jpg" style="border-radius: 5px;"></a>
     </div>
+    <div id="gr_custom_widget_1610423899"></div>
   </div>
   <div class="fullpage" id="panel-4">
     <div class="fullpage__center">
@@ -204,6 +261,52 @@
         }
       }
     }, 40);
+
+    //bookshelf
+    function invertColor(hex) {
+      if (hex.indexOf('#') === 0) {
+        hex = hex.slice(1);
+      }
+      // convert 3-digit hex to 6-digits.
+      if (hex.length === 3) {
+        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+      }
+      if (hex.length !== 6) {
+        throw new Error('Invalid HEX color.');
+      }
+      // invert color components
+      var r = (255 - parseInt(hex.slice(0, 2), 16)).toString(16),
+        g = (255 - parseInt(hex.slice(2, 4), 16)).toString(16),
+        b = (255 - parseInt(hex.slice(4, 6), 16)).toString(16);
+      // pad each with zeros and return
+      return '#' + padZero(r) + padZero(g) + padZero(b);
+    }
+
+    function padZero(str, len) {
+      len = len || 2;
+      var zeros = new Array(len).join('0');
+      return (zeros + str).slice(-len);
+    }
+
+    function load() {
+      var recentlyRead = [];
+      document.querySelectorAll('.gr_custom_title_1610423899').forEach(function(book) {
+        recentlyRead.push({"title": book.children[0].innerText, "link": book.children[0].href});
+      });
+
+      for (var b in recentlyRead) {
+        var book = document.createElement("A");
+        book.innerHTML = "<span>" + recentlyRead[b].title + "</span>";
+        book.href = recentlyRead[b].link;
+        book.className = "book";
+        var color = (Math.random()*2**24<<0);
+        while (color.toString(16).length < 6) {
+          color = (Math.random()*2**24<<0);
+        }
+        book.style = "--background-color: #" + color.toString(16) + ";--color: " + (color > 8388608 ? "#000" : "bisque") + ";--height:" + (Math.random() * 5 + 23) + "vmin;--no:" + Math.floor(b / 3);
+        document.getElementsByClassName("shelf")[b % 3].appendChild(book);
+      }
+    }
   </script>
 </body>
 </html>
