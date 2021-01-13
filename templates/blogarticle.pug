@@ -1,7 +1,7 @@
 extends layout.pug
 
 block variables
-  - metaDescription = summary.replace( /(<([^>]+)>)/ig, '')
+  - metaDescription = md.render(summary).replace( /(<([^>]+)>)/ig, '')
   
 block content
   article.article
@@ -12,5 +12,5 @@ block content
       p.article__details
         | #{date} by #{author}
         br
-        em #{readingTime} minute read
-    .article__content !{content}
+        em #{Math.ceil(content.split(" ").length / 250)} minute read
+    .article__content!= md.render(content)

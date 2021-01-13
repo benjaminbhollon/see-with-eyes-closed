@@ -2,7 +2,8 @@ const express = require("express"); //Import Express
 const MongoClient = require('mongodb').MongoClient; //Import MongoDB
 const nodemailer = require('nodemailer'); //Import nodemailer
 const bcrypt = require("bcryptjs"); //Import bcrypt
-const session = require("express-session"); //Import express-session
+const session = require("express-session"); //Import express-sessionvar
+MarkdownIt = require('markdown-it'), md = new MarkdownIt({"html": true}); //Import markdown jstransformer
 const config = require('./config.json'); //Import config settings
 
 var app = express();
@@ -23,7 +24,7 @@ const finishedTemplates = [{"path": "/", "template": 'homepage'}];
  * * * * * * * * * */
 
 //Create document
-async function insertDocument(collection, value){
+async function insertDocument(collection, value) {
   const uri = config.mongodbURI;
 
   const client = new MongoClient(uri, {useUnifiedTopology: true});
@@ -162,36 +163,13 @@ app.get("/blog/", async function (request,  response) {
     return new Date(b.date) - new Date(a.date);
   });
 
-  var recentHTML = "";
-  for (var a in articles) {
-    if (new Date(articles[a].date) <= Date.now()) recentHTML += `
-      <article class="recent__article">
-        ` + (articles[a].image ? "<img class='article__banner' src='" + articles[a].image + "' alt='Banner Image'>" : "") + `
-        <h1 class="article__title"><a href="./article/` + articles[a].id + `/">` + articles[a].title + `</a></h1>
-        <p class="article__details">` + articles[a].date + " by " + articles[a].author + `<br><em>` + Math.ceil(articles[a].content.split(" ").length / 250) + ` minute read</em></p>
-        ` + articles[a].summary + `
-        <a href="./article/` + articles[a].id + `/">Read the full article</a>
-        <p>` + articles[a].tags.split(",").map(tag => '<a class="tag" rel="nofollow" href="./tag/' + tag + '/">' + tag + '</a>').join(", ") + `</p>
-      </article>
-    `;
-  }
+  var recentHTML = JSON.parse(JSON.stringify(articles));
 
   articles.sort(function(a,b){
     return b.hits - a.hits;
   });
 
-  var popularHTML = "";
-  articles.slice(0, 5).forEach((article) => {
-    popularHTML += `
-    <p>
-      <a class="popular__article" href="./article/"` + article.id + `/">
-        <strong>` + article.title + `</strong><br>by ` + article.author + `<br>
-        <em>Published on ` + article.date + `</em>
-      </a>
-    </p>
-    `
-  });
-
+  var popularHTML = JSON.parse(JSON.stringify(articles.slice(0, 5)));
 
   response.render('blogmain', {"recent": recentHTML, "popular": popularHTML});
 });
@@ -209,8 +187,6 @@ app.get("/blog/article/:articleId/", async function (request, response) {
     updateDocument("articles", {"id": new RegExp("^" + request.params.articleId + "$", "i")}, {"hits": article.hits});
     request.session.viewed = true;
   }
-
-  article.readingTime = Math.ceil(article.content.split(" ").length / 250);
 
   response.render('blogarticle', article);
 });

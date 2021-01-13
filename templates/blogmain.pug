@@ -11,8 +11,26 @@ block content
     h2 A Blog
   #split
     .recent 
-      .recent__center !{recent}
+      .recent__center
+        each post in recent
+          article.recent__article
+            if (post.image !== "")
+              img.article__banner(src=post.image,alt="Banner Image")
+            h1.article__title
+              a(href="./article/" + post.id + "/") #{post.title}
+            p.article__details #{post.date} by #{post.author}
+              br
+              | #{Math.ceil(post.content.split(" ").length / 250)} minute read
+            != md.render(post.summary)
+            p
+              a(href="./article/" + post.id + "/") Read the full article
+            p
+              != post.tags.split(",").map(tag => "<a href='./tag/" + tag + "/' class='tag'>" + tag + "</a>").join(", ")
     .popular
       .popular__sticky
         h3 Popular Articles
-        | !{popular}
+        each post in popular
+          a.popular__article(href="./article/" + post.id + "/") 
+            strong #{post.title}
+            br
+            | #{post.date} by #{post.author}
