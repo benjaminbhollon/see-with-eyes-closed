@@ -1,0 +1,32 @@
+extends layout.pug
+
+block variables
+  - title = "Projects"
+  - metaDescription = "All my super-awesome, totally-random coding projects. Enjoy."
+  
+block content
+  .projects
+    each project in projects
+      .project
+        .project__card(style="--image:url('" + project.image + "')")
+          if project.image
+            .project__banner(style="--height:15vmin;--image:none")
+          h3 #{project.name}
+          != md.render(project.summary)
+          a.project__button--red(href="javascript:more('" + project.id + "')") More
+        .project__modal(data-id=project.id)
+          a.project__hide(href="javascript:close('" + project.id + "')") ✕
+          if project.image
+            .project__banner(style="--height:35vw;--image:url('" + project.image + "')")
+          h1 #{project.name}
+          != md.render(project.summary)
+          a.project__button--blue(href=project.link) Open Project
+          a.project__button--black(href=project.code) View Code
+        .project__mask
+  script.
+    function more(id) {
+      document.querySelector(".project__modal[data-id='" + id + "']").setAttribute("data-visible", true);
+    }
+    function close(id) {
+      document.querySelector(".project__modal[data-id='" + id + "']").setAttribute("data-visible", false);
+    }

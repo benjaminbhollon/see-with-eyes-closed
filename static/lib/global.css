@@ -137,7 +137,7 @@ footer {
   display: block;
 }
 
-.article__banner {
+.article__banner, .project__banner {
   width: 100%;
 }
 
@@ -207,6 +207,108 @@ body[data-scrolled="up"] .popular__sticky {
   text-decoration: none;
 }
 
+/* Projects */
+.projects {
+  display: grid;
+}
+
+.project__card {
+  border-radius: 1em;
+  box-shadow: 0 0 1em #888;
+  width: 90%;
+  display: inline-block;
+  padding: 0.5em;
+  background-image: var(--image);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 0 -13vmin;
+}
+
+.project__modal {
+  background-color: #fff;
+  border-radius: 1em;
+  position: fixed;
+  width: 90%;
+  height: 90%;
+  top: 5%;
+  left: 5%;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.project__modal[data-visible="true"] {
+  visibility: visible;
+  z-index: 11;
+  overflow: auto;
+  opacity: 1;
+}
+
+.project__mask {
+  visibility: hidden;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  display: block;
+  background-color: #5557;
+  z-index: 10;
+  visibility: hidden;
+  transition: opacity 1s;
+}
+
+.project__banner {
+  height: var(--height);
+  background-image: var(--image);
+  background-size: cover;
+  background-position: bottom;
+}
+
+.project__modal[data-visible="true"] ~ .project__mask {
+  visibility: visible;
+  opacity: 1;
+}
+
+.project__hide {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 100%;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.project__button, .project__button--red, .project__button--blue, .project__button--black {
+  text-decoration: none;
+  padding: 0.5em;
+  display: block;
+  transition: box-shadow 0.5s, filter 0.5s;
+  margin: 0.5em;
+  background-color: #000;
+  color: #fff;
+}
+
+.project__button:hover, .project__button--red:hover, .project__button--blue:hover, .project__button--black:hover {
+  box-shadow: 0 0 1em #888;
+  filter: hue-rotate(30deg);
+}
+
+.project__button--red {
+  background-image: linear-gradient(to top right, red, maroon);
+}
+
+.project__button--blue {
+  background-image: linear-gradient(to bottom right, aqua, #1565C0);
+}
+
 
 /* Media Queries */
 @media (min-width: 750px) {
@@ -241,5 +343,9 @@ body[data-scrolled="up"] .popular__sticky {
 
   .popular {
     display: block;
+  }
+
+  .projects {
+    grid-template-columns: 33% 33% 33%
   }
 }
