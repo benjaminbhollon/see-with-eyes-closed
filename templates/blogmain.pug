@@ -1,25 +1,17 @@
-doctype html
-html(lang='en')
-  head
-    meta(charset="UTF-8")
-    link(rel="stylesheet", href="/lib/global.css")
-    script(src="/lib/global.js")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    meta(name="description", content="Here is where I reflect every week or so on the world as I see it. Hopefully you'll be interested in some of the stuff I do. I'll release information about events going on in my life, analyze quotes, reflect on music and/or books, and generally have a fun time. I think about all of these things on my own, but the blog is a fun way for me to invite you to step into my mind and take a look around. It's a big place!")
-    meta(property="og:title", content="See With Eyes Closed: A Blog")
-    meta(property="og:type", content="website")
-    meta(property="og:description", content="Here is where I reflect every week or so on the world as I see it. Hopefully you'll be interested in some of the stuff I do. I'll release information about events going on in my life, analyze quotes, reflect on music and/or books, and generally have a fun time. I think about all of these things on my own, but the blog is a fun way for me to invite you to step into my mind and take a look around. It's a big place!")
-    title See With Eyes Closed: A Blog
-  body
-    include navbar.pug
-    header
-      h1 See With Eyes Closed
-      h2 A Blog
-    #split
-      .recent 
-        .recent__center !{recent}
-      .popular
-        .popular__sticky
-          h3 Popular Articles
-          | !{popular}
-    include footer.pug
+extends layout.pug
+
+//- Define variables
+block variables
+  - description = "Here is where I reflect every week or so on the world as I see it. Hopefully you'll be interested in some of the stuff I do. I'll release information about events going on in my life, analyze quotes, reflect on music and/or books, and generally have a fun time. I think about all of these things on my own, but the blog is a fun way for me to invite you to step into my mind and take a look around. It's a big place!"
+  
+block content
+  header
+    h1 See With Eyes Closed
+    h2 A Blog
+  #split
+    .recent 
+      .recent__center !{recent}
+    .popular
+      .popular__sticky
+        h3 Popular Articles
+        | !{popular}

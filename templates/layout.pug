@@ -1,0 +1,40 @@
+doctype html
+html(lang='en')
+  head
+    block variables
+    block resources
+      link(rel="stylesheet", href="/lib/global.css")
+      script(src="/lib/global.js")
+    block meta
+      meta(charset="UTF-8")
+      meta(name="viewport", content="width=device-width, initial-scale=1.0")
+      meta(name="description", content=description)
+      meta(property="og:title", content=title + "| See With Eyes Closed")
+      meta(property="og:type", content="website")
+      meta(property="og:description", content=description)
+    block title
+      title #{title} | See With Eyes Closed
+  body
+    block navbar
+      nav.main-nav
+        a.main-nav__title(href="/") See With Eyes Closed
+        label.main-nav__collapse(for="nav-collapse") &#9776;
+        input#nav-collapse(type="checkbox")
+        .main-nav__collapsible
+          a(href="/") Home
+          a(href="/blog/") Blog
+          a(href="/projects/") Projects
+          a(href="/writing/") Writing
+          a(href="/music/") Music
+    block content
+    block footer
+      footer
+        p © #{(new Date()).getFullYear()} Benjamin Hollon. All rights reserved.
+        p
+          a(href="/contact/") Contact Me
+          |  | 
+          a(href="/policies/privacy/") Privacy Policy
+          |  | 
+          a(href="/policies/cookies/") Cookie Policy
+          |  | 
+          a(href="policies/terms/") Terms of Use

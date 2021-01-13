@@ -1,25 +1,16 @@
-doctype html
-html(lang='en')
-  head
-    meta(charset="UTF-8")
-    link(rel="stylesheet", href="/lib/global.css")
-    script(src="/lib/global.js")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    meta(name="description", content=summary.replace( /(<([^>]+)>)/ig, ''))
-    meta(property="og:title", content=title + "| See With Eyes Closed")
-    meta(property="og:type", content="website")
-    meta(property="og:description", content=summary.replace( /(<([^>]+)>)/ig, ''))
-    title #{title} | See With Eyes Closed
-  body
-    include navbar.pug
-    article.article
-      header
-        if image !== ""
-          img.article__banner(src=image,alt="Banner Image")
-        h1.article__title #{title}
-        p.article__details
-          | #{date} by #{author}
-          br
-          em #{readingTime} minute read
-      .article__content !{content}
-    include footer.pug
+extends layout.pug
+
+block variables
+  - description = summary.replace( /(<([^>]+)>)/ig, '')
+  
+block content
+  article.article
+    header
+      if image !== ""
+        img.article__banner(src=image,alt="Banner Image")
+      h1.article__title #{title}
+      p.article__details
+        | #{date} by #{author}
+        br
+        em #{readingTime} minute read
+    .article__content !{content}
