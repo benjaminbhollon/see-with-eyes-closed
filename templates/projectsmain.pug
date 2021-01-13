@@ -8,20 +8,20 @@ block content
   .projects
     each project in projects
       .project
-        .project__card(style="--image:url('" + project.image + "')")
+        .project__card
           if project.image
-            .project__banner(style="--height:15vmin;--image:none")
+            img.project__banner(src=project.image,alt="Banner Image")
           h3 #{project.name}
-          != md.render(project.summary)
+          != md.render(project.summary.split("\n\n")[0])
           a.project__button--red(href="javascript:more('" + project.id + "')") More
         .project__modal(data-id=project.id)
           a.project__hide(href="javascript:close('" + project.id + "')") ✕
           if project.image
-            .project__banner(style="--height:35vw;--image:url('" + project.image + "')")
+            img.project__banner(src=project.image,alt="Banner Image")
           h1 #{project.name}
           != md.render(project.summary)
-          a.project__button--blue(href=project.link) Open Project
-          a.project__button--black(href=project.code) View Code
+          a.project__button--blue(href=project.link,target="_blank") Open Project
+          a.project__button--black(href=project.code,target="_blank") View Code
         .project__mask
   script.
     function more(id) {

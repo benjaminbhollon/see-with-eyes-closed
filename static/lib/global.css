@@ -217,11 +217,15 @@ body[data-scrolled="up"] .popular__sticky {
   box-shadow: 0 0 1em #888;
   width: 90%;
   display: inline-block;
-  padding: 0.5em;
-  background-image: var(--image);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: 0 -13vmin;
+  overflow: hidden;
+}
+
+.project__card > *, .project__modal > * {
+  margin: 0.5em;
+}
+
+.project__banner {
+  margin: 0;
 }
 
 .project__modal {
@@ -230,11 +234,13 @@ body[data-scrolled="up"] .popular__sticky {
   position: fixed;
   width: 90%;
   height: 90%;
+  max-width: 750px;
   top: 5%;
-  left: 5%;
+  left: 50%;
   visibility: hidden;
   opacity: 0;
   transition: opacity 1s;
+  transform: translateX(-50%);
 }
 
 .project__modal[data-visible="true"] {
@@ -257,13 +263,6 @@ body[data-scrolled="up"] .popular__sticky {
   z-index: 10;
   visibility: hidden;
   transition: opacity 1s;
-}
-
-.project__banner {
-  height: var(--height);
-  background-image: var(--image);
-  background-size: cover;
-  background-position: bottom;
 }
 
 .project__modal[data-visible="true"] ~ .project__mask {
@@ -297,7 +296,7 @@ body[data-scrolled="up"] .popular__sticky {
 }
 
 .project__button:hover, .project__button--red:hover, .project__button--blue:hover, .project__button--black:hover {
-  box-shadow: 0 0 1em #888;
+  box-shadow: 0 0 0.5em #888;
   filter: hue-rotate(30deg);
 }
 

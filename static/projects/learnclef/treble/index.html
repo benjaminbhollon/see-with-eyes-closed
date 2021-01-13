@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>Learn the Treble Clef</title>
+    <link rel="stylesheet" href="/lib/global.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <img id="img" src="start.jpg">
+    <br>
+    <button onclick="init();this.style.display='none'">Start</button><br>
+    <progress id="progress" value="0" max="34" style="display:none;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;height:1.5em;width:500px;max-width:100%;"></progress>
+    <p id="time"></p>
+    <p id="success" style="color:green"></p>
+    <p id="error" style="color:red"></p>
+    <button onclick="checkAnswer(97)">A</button>
+    <button onclick="checkAnswer(98)">B</button>
+    <button onclick="checkAnswer(99)">C</button>
+    <button onclick="checkAnswer(100)">D</button>
+    <button onclick="checkAnswer(101)">E</button>
+    <button onclick="checkAnswer(102)">F</button>
+    <button onclick="checkAnswer(103)">G</button>
+    <div id="preload" style="display: none">
+      <img src="0.jpg">
+      <img src="1.jpg">
+      <img src="2.jpg">
+      <img src="3.jpg">
+      <img src="4.jpg">
+      <img src="5.jpg">
+      <img src="6.jpg">
+      <img src="7.jpg">
+      <img src="8.jpg">
+      <img src="9.jpg">
+      <img src="10.jpg">
+      <img src="11.jpg">
+      <img src="12.jpg">
+      <img src="13.jpg">
+      <img src="14.jpg">
+      <img src="15.jpg">
+      <img src="16.jpg">
+    </div>
+    <script>
+      var arr=[[0, 97],[1, 98],[2, 99],[3, 100],[4, 101],[5, 102],[6, 103],[7, 97],[8, 98],[9, 99],[10, 100],[11, 101],[12, 102],[13, 103],[14, 97],[15, 98],[16, 99],[0, 97],[1, 98],[2, 99],[3, 100],[4, 101],[5, 102],[6, 103],[7, 97],[8, 98],[9, 99],[10, 100],[11, 101],[12, 102],[13, 103],[14, 97],[15, 98],[16, 99]];
+      var place;
+      var time;
+      var timer;
+      var success = document.getElementById("success");
+      var error = document.getElementById("error");
+      var errors;
+      function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          let j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+      function init() {
+        place = -1;
+        time = 0.00;
+        errors = 0
+        document.getElementById("progress").style.display = "inline";
+        timer = setInterval(function (){time+=0.01;document.getElementById("time").innerHTML=time.toFixed(2)+" seconds spent.";}, 10);
+        success.innerText = "Go!";
+        error.innerText = "";
+        next();
+        document.getElementsByTagName("HTML")[0].setAttribute("onkeypress", "checkAnswer(event)");
+      }
+      function checkAnswer(event) {
+        var x = event.which || event.keyCode || parseInt(event);
+        if (x == arr[place][1]) {
+          document.getElementById("progress").value = place+1;
+          next();
+          success.innerText = "Great!";
+          error.innerText = "";
+        } else {
+          console.log(x + ";" + arr[place][1]);
+          success.innerText = "";
+          error.innerText = "Try again!";
+          errors++;
+        }
+      }
+      function next() {
+        if (arr[place+1]){
+          (document.getElementById("img").src = arr[place + 1][0] + ".jpg") && place++;
+        } else{
+          clearInterval(timer);
+          setTimeout(function () {success.innerText = "You scored " + (arr.length - errors) + "/" + arr.length;}, 5);
+          error.innerText = "";
+          document.getElementsByTagName("BUTTON")[0].style.display = "inline";
+        }
+      }
+      shuffle(arr);
+    </script>
+  </body>
+</html>
