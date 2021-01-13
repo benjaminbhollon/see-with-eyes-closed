@@ -94,7 +94,7 @@ body[data-scrolled="down"] .main-nav {
 
 .main-nav__collapsible a {
   display: inline-block;
-  padding: 0 0.25em;
+  padding: 0 0.35em;
 }
 
 .main-nav__collapsible a:hover::after {
