@@ -15,6 +15,9 @@ app.use(express.json());
 app.set('view engine', 'pug');
 app.set('views', './templates');
 
+//Define templates with no extra processing
+const finishedTemplates = [{"path": '/', "template": 'homepage'}];
+
 /* * * * * * * * * *
  * CRUD Functions  *
  * * * * * * * * * */
@@ -138,6 +141,15 @@ async function deleteDocument(collection, filter) {
       await client.close();
   }
 }
+
+//All requests in finishedTemplates
+app.get('*', function (request, response, next) {
+  if (finishedTemplates.find(template => template.path === request.path || template.path === request.path + "/") !== undefined) {
+    response.render(finishedTemplates.find(template => template.path === request.path || template.path === request.path + "/").template, {});
+  }
+  if (next) next();
+  else response.status(404).end();
+});
 
 //Blog homepage
 app.get("/blog/", async function (request,  response) {

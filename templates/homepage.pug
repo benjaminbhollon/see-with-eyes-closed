@@ -1,0 +1,174 @@
+extends layout.pug
+
+block variables
+  - title = "Benjamin Hollon"
+  - metaDescription = '"And now here is my secret, a very simple secret: It is only with the heart that one can see rightly; what is essential is invisible to the eye." - Antoine de Saint-Exupéry, The Little Prince'
+
+block append head
+  style.
+    /* Generic Styles */
+    body {
+      padding-top: 0;
+    }
+
+    .fullpage {
+      height: 100vh;
+      position: relative
+    }
+
+    .fullpage__center, .fullpage__center--fill {
+      position: absolute;
+      top: 50vh;
+      left: 50vw;
+      max-width: clamp(50%, 600px, 100%);
+      padding: 1em;
+      transform: translate(-50%, -50%);
+    }
+
+    .fullpage__center--fill {
+      color: #fff;
+      background-color: rgba(0,0,0,0.55);
+    }
+
+    /*Specific Styles */
+    #occupations-typewriter, #occupations-noscript {
+      font-family: courier
+    }
+
+    #occupations-typewriter::after {
+      content: "_";
+      padding-left:0px;
+      animation: cursor-blink 800ms infinite
+    }
+
+    @keyframes cursor-blink {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    #panel-3 {
+      background-color: midnightblue;
+    }
+
+    #bookshelf {
+      position: absolute;
+      left: 50vw;
+      bottom: 3vmin;
+      width: 90vmin;
+      height: 90vmin;
+      grid-gap:0.5em;
+      border: 0.35em solid #000;
+      transform: translateX(-50%);
+    }
+
+    .shelf {
+      height: 30vmin;
+      border: 0.35em solid #000;
+      position: relative;
+    }
+
+    .book {
+      position: absolute;
+      bottom: 0;
+      left: calc(var(--no) * 5vmin);
+      transform-origin: 2.5vmin 50%;
+      transform: rotate(-90deg);
+      text-decoration: none;
+      transition: transform 0.4s ease, filter 0.4s ease;
+    }
+
+    .book span {
+      background-color: var(--background-color);
+      color: var(--color);
+      display: block;
+      width: var(--height);
+      height: 5vmin;
+      line-height: 5vmin;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 0.5em;
+      transform: rotate(180deg);
+    }
+
+    .book:hover {
+      transform: scale(1.05) rotate(-90deg);
+      filter: hue-rotate(20deg);
+      z-index: 2;
+    }
+
+    #gr_custom_widget_1610423899 {
+      display: none;
+    }
+
+    #panel-4 {
+      background-color: bisque;
+    }
+
+    #panel-5 {
+      background-color: maroon;
+    }
+
+    /* Code editing */
+    #code-editor, .code-result {
+      width: 50%;
+      height: 100vh;
+      position: absolute;
+      top: 0;
+      margin: 0;
+    }
+
+    #code-editor {
+      left: 0;
+      word-wrap: break-word;
+      overflow: auto;
+      text-align: left;
+      padding: 0.5em;
+      background-color: #555;
+      color: #fff;
+    }
+
+    .code-result {
+      right: 0;
+      border: none;
+    }
+  script(async,src="https://buttons.github.io/buttons.js")
+  script(async,src="https://www.goodreads.com/review/custom_widget/80839667.Recently%20read%20books?cover_position=left&cover_size=small&num_books=50&order=d&shelf=read&show_author=0&show_cover=0&show_rating=0&show_review=0&show_tags=0&show_title=1&sort=date_read&widget_bg_color=FFFFFF&widget_bg_transparent=true&widget_border_width=1&widget_id=1610423899&widget_text_color=000000&widget_title_size=medium&widget_width=medium")
+  script(async,src="/lib/homepage.js")
+
+block content
+  .fullpage#panel-1
+    .fullpage__center
+      h1 I'm Benjamin Hollon.
+      noscript#occupations-noscript
+        p Human Being, Avid Reader, Writer, Trombonist, Composer, Actor, Christian, and Part-Time Polymath
+      p#occupations-typewriter(data-occupations="Human Being|Avid Reader|Writer|Trombonist|Composer|Actor|Christian|Part-Time Polymath")
+  .fullpage#panel-2
+    pre#code-editor
+    iframe.code-result(src="data:text/html,<body></body>",onload="this.style.display = 'block';document.getElementsByClassName('code-result')[1].style.display='none'",sandbox)
+    iframe.code-result(src="data:text/html,<body></body>",onload="this.style.display = 'block';document.getElementsByClassName('code-result')[0].style.display='none'",sandbox)
+    .fullpage__center--fill
+      h2 I code things that make me smile.
+      a.github-button(href="https://github.com/benjaminbhollon",data-color-scheme="no-preference: dark; light: dark; dark: dark;",data-size="large",data-show-count="true",aria-label="Follow @benjaminbhollon on GitHub") Follow @benjaminbhollon
+  .fullpage#panel-3
+    #bookshelf
+      .shelf
+      .shelf
+      .shelf
+    .fullpage__center--fill
+      h2 I read books that expand my horizons.
+      a(href="https://www.goodreads.com/user/show/80839667-benjamin-hollon",title="Benjamin Hollon's book recommendations, liked quotes, book clubs, book trivia, book lists",target="_blank",rel="nofollow")
+        img(alt="Benjamin Hollon's book recommendations, liked quotes, book clubs, book trivia, book lists",src="https://www.goodreads.com/images/badge/badge1.jpg",style="border-radius: 5px")
+    #gr_custom_widget_1610423899
+  .fullpage#panel-4
+    .fullpage__center
+      h2 I write stories that ask thought-provoking questions.
+  .fullpage#panel-5
+    .fullpage__center--fill
+      h2 I make music to bring joy.
+  .fullpage#panel-5
+    .fullpage__center
+      h2 More from me
+      p On this site is my blog,
+        a(href="./blog/") See With Eyes Closed
+        | . Here is where I reflect every week or so on the world as I see it. Hopefully you'll be interested in some of the stuff I do. I'll release information about events going on in my life, analyze quotes, reflect on music and/or books, and generally have a fun time. I think about all of these things on my own, but the blog is a fun way for me to invite you to step into my mind and take a look around. It's a big place!
