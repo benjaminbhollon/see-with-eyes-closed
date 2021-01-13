@@ -15,6 +15,11 @@ body {
   font-family: 'Trebuchet MS', Calibri, sans-serif;
   margin: 0;
   font-size: 1.3em;
+  padding-top: 65px;
+}
+
+a {
+  color: inherit;
 }
 
 
@@ -82,7 +87,32 @@ body[data-scrolled="down"] .main-nav {
   font-size: 10vmin;
 }
 
+/* Footer */
+footer {
+  background-color: #000;
+  color: #fff;
+  margin: 0;
+  text-align: center;
+  padding: 0.5em;
+  margin-top: 2em;
+}
 
+/* Blog article list */
+#split {
+  display: grid;
+  grid-template-columns: 70% 30%;
+}
+
+.recent, .popular {
+  border: 1px solid #ccc;
+}
+
+.recent__article img {
+  width: 100%;
+}
+
+
+/* Media Queries */
 @media (min-width: 700px) {
   .main-nav__collapse {
     display: none;
@@ -97,5 +127,12 @@ body[data-scrolled="down"] .main-nav {
     display: block;
     background: #000;
     transition: 150ms;
+  }
+
+  .recent__center {
+    margin: 1.75em;
+    display: inline-block;
+    border: 2px solid #000;
+    max-width: 700px;
   }
 }
