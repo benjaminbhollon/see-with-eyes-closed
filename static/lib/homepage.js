@@ -121,3 +121,5 @@ function load() {
     document.getElementsByClassName("shelf")[b % 3].appendChild(book);
   }
 }
+
+document.body.onload = load;
