@@ -2,13 +2,15 @@ const express = require("express"); //Import Express
 const MongoClient = require('mongodb').MongoClient; //Import MongoDB
 const nodemailer = require('nodemailer'); //Import nodemailer
 const bcrypt = require("bcryptjs"); //Import bcrypt
+const session = require("express-session"); //Import express-session
 const config = require('./config.json'); //Import config settings
 
 var app = express();
 var transporter = nodemailer.createTransport(config.nodemailTransport);
 
-//Set up static responses and getting json request bodies
+//Set up middleware
 app.use(express.static('static'));
+app.use(session({"secret": "4OneFIshTwoFIshRedFIshBlueFIsh2", "resave": false, "saveUninitialized": false}));
 app.use(express.json());
 app.set('view engine', 'pug');
 app.set('views', './templates');
@@ -137,7 +139,8 @@ async function deleteDocument(collection, filter) {
   }
 }
 
-app.get('/blog/', async function (request,  response) {
+//Blog homepage
+app.get("/blog/", async function (request,  response) {
   var articles = [];
   await findMultipleDocuments("articles", {}).then(result => {
     articles = result;
@@ -151,12 +154,12 @@ app.get('/blog/', async function (request,  response) {
   for (var a in articles) {
     if (new Date(articles[a].date) <= Date.now()) recentHTML += `
       <article class="recent__article">
-        ` + (articles[a].image ? "<img src='" + articles[a].image + "' alt='banner'>" : "") + `
-        <h1><a href="./article/` + articles[a].id + `">` + articles[a].title + `</a></h1>
-        <p class="details">` + articles[a].date + " by " + articles[a].author + `<br><em>` + Math.ceil(articles[a].content.split(" ").length / 250) + ` minute read</em></p>
+        ` + (articles[a].image ? "<img class='article__banner' src='" + articles[a].image + "' alt='Banner Image'>" : "") + `
+        <h1 class="article__title"><a href="./article/` + articles[a].id + `/">` + articles[a].title + `</a></h1>
+        <p class="article__details">` + articles[a].date + " by " + articles[a].author + `<br><em>` + Math.ceil(articles[a].content.split(" ").length / 250) + ` minute read</em></p>
         ` + articles[a].summary + `
-        <a href="./article/` + articles[a].id + `">Read the full article</a>
-        <p>` + articles[a].tags.split(",").map(tag => '<a class="tag" rel="nofollow" href="./tag/' + tag + '">' + tag + '</a>').join(", ") + `</p>
+        <a href="./article/` + articles[a].id + `/">Read the full article</a>
+        <p>` + articles[a].tags.split(",").map(tag => '<a class="tag" rel="nofollow" href="./tag/' + tag + '/">' + tag + '</a>').join(", ") + `</p>
       </article>
     `;
   }
@@ -169,7 +172,7 @@ app.get('/blog/', async function (request,  response) {
   articles.slice(0, 5).forEach((article) => {
     popularHTML += `
     <p>
-      <a class="popular__article" href="./article/"` + article.id + `">
+      <a class="popular__article" href="./article/"` + article.id + `/">
         <strong>` + article.title + `</strong><br>by ` + article.author + `<br>
         <em>Published on ` + article.date + `</em>
       </a>
@@ -179,6 +182,25 @@ app.get('/blog/', async function (request,  response) {
 
 
   response.render('blogmain', {"recent": recentHTML, "popular": popularHTML});
+});
+
+//Blog articles
+app.get("/blog/article/:articleId/", async function (request, response) {
+  var article;
+  await findDocument("articles", {"id": new RegExp("^" + request.params.articleId + "$", "i")}).then(result => {
+    article = result;
+  });
+  if (article === null) response.status(404).end();
+
+  if (!request.session.viewed) {
+    article.hits++;
+    updateDocument("articles", {"id": new RegExp("^" + request.params.articleId + "$", "i")}, {"hits": article.hits});
+    request.session.viewed = true;
+  }
+
+  article.readingTime = Math.ceil(article.content.split(" ").length / 250);
+
+  response.render('blogarticle', article);
 });
 
 //Listen on port from config.json or process.env.PORT (for the heroku test)
