@@ -166,7 +166,7 @@ app.get('/blog/', async function (request,  response) {
   });
 
   var popularHTML = "";
-  articles.slice(0, 4).forEach((article) => {
+  articles.slice(0, 5).forEach((article) => {
     popularHTML += `
     <p>
       <a class="popular__article" href="./article/"` + article.id + `">
