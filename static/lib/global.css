@@ -216,8 +216,17 @@ body[data-scrolled="up"] .popular__sticky {
   border-radius: 1em;
   box-shadow: 0 0 1em #888;
   width: 90%;
+  min-height: 100%;
   display: inline-block;
   overflow: hidden;
+  position: relative;
+  padding-bottom: 50px;
+}
+
+.project__card .project__button--red {
+  position: absolute;
+  width: calc(100% - 1em);
+  bottom: 0;
 }
 
 .project__card > *, .project__modal > * {
