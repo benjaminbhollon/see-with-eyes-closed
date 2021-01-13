@@ -200,6 +200,11 @@ app.get("/projects/", async function (request, response) {
   response.render("projectsmain", {"projects": projects});
 });
 
+//Redirects
+app.get("/projects/learnclef/", function (request, response) {
+  response.redirect(301, "/projects/learn-clef/")
+});
+
 //Listen on port from config.json or process.env.PORT (for the heroku test)
 app.listen(process.env.PORT || config.port, () => {
  console.log("Server running on port " + (process.env.port || config.port));
