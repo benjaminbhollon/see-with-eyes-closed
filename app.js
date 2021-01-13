@@ -16,7 +16,7 @@ app.set('view engine', 'pug');
 app.set('views', './templates');
 
 //Define templates with no extra processing
-const finishedTemplates = [{"path": '/', "template": 'homepage'}];
+const finishedTemplates = [{"path": "/", "template": 'homepage'}];
 
 /* * * * * * * * * *
  * CRUD Functions  *

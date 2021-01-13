@@ -16,6 +16,9 @@ body {
   margin: 0;
   font-size: 1.3em;
   padding-top: 75px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 a {
@@ -40,6 +43,10 @@ blockquote:before {
   position: absolute;
   top: 0;
   bottom: 0;
+}
+
+#content {
+  flex: 1 0 auto;
 }
 
 
