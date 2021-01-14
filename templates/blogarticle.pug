@@ -1,7 +1,8 @@
 extends layout.pug
 
 block variables
-  - metaDescription = md.render(summary).replace( /(<([^>]+)>)/ig, '')
+  - metaDescription = md.render(article.summary).replace( /(<([^>]+)>)/ig, '')
+  - title = article.title
   
 block append resources
   link(rel="stylesheet",href="/lib/article.css")
@@ -9,11 +10,23 @@ block append resources
 block content
   article.article
     header
-      if image !== ""
-        img.article__banner(src=image,alt="Banner Image")
-      h1.article__title #{title}
+      if article.image !== ""
+        img.article__banner(src=article.image,alt="Banner Image")
+      h1.article__title #{article.title}
       p.article__details
-        | #{date} by #{author}
+        | #{article.date} by #{article.author}
         br
-        em #{Math.ceil(content.split(" ").length / 250)} minute read
-    .article__content!= md.render(content)
+        em #{Math.ceil(article.content.split(" ").length / 250)} minute read
+    .article__content!= md.render(article.content)
+  br
+  .related
+    h2 Related Articles
+    each listing in related
+      a.related__article(href="../" + listing.id + "/")
+        strong #{listing.title}
+        br
+        em #{listing.date} by #{listing.author}
+  br
+  .tags
+    h2 Tags
+    != article.tags.split(",").map(tag => "<a href='../../tag/" + tag + "/' class='tag'>" + tag + "</a>").join(", ")

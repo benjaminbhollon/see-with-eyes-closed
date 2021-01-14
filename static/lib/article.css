@@ -1,12 +1,13 @@
-.article {
+.article, .related, .tags {
   max-width: 700px;
   display: inline-block;
   text-align: left;
+  padding-bottom: 1em;
+  border-bottom: 1px solid #ccc;
 }
 
-.article::after {
-  content: '';
-  display: block;
+.related, .tags {
+  text-align: center;
 }
 
 .article__banner {
@@ -73,7 +74,7 @@ body[data-scrolled="up"] .popular__sticky {
   top: 95px;
 }
 
-.popular__article {
+.popular__article, .related__article {
   display: block;
   padding: 0.5em;
   text-decoration: none;

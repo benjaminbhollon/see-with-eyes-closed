@@ -177,10 +177,12 @@ app.get("/blog/", async function (request,  response) {
 //Blog articles
 app.get("/blog/article/:articleId/", async function (request, response) {
   var article;
-  await findDocument("articles", {"id": new RegExp("^" + request.params.articleId + "$", "i")}).then(result => {
-    article = result;
+  var articles;
+  await findMultipleDocuments("articles", {}).then(result => {
+    article = result.find(article => article.id.toUpperCase() === request.params.articleId.toUpperCase());
+    articles = result;
   });
-  if (article === null) response.status(404).end();
+  if (article === undefined) return response.status(404).end();
 
   if (!request.session.viewed) {
     article.hits++;
@@ -188,7 +190,25 @@ app.get("/blog/article/:articleId/", async function (request, response) {
     request.session.viewed = true;
   }
 
-  response.render('blogarticle', article);
+  //Similar Articles
+  var tags = article.tags.split(",");
+  var related = [];
+  var matches;
+  for (var a in articles) {
+    if (articles[a].id === article.id) continue;
+    matches = 0;
+    for (var t in tags) {
+      if (articles[a].tags.split(",").indexOf(tags[t]) !== -1) matches++;
+    }
+    articles[a].matches = matches;
+    related.push(articles[a]);
+  }
+  related.sort(function (a,b) {
+    return b.matches - a.matches;
+  });
+  related = related.slice(0, 5);
+
+  response.render('blogarticle', {"article": article, "related": related});
 });
 
 //Projects homepage
