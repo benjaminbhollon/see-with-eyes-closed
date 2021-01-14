@@ -231,14 +231,13 @@ app.get("/blog/article/:articleId/", async function (request, response) {
   }
 
   //Similar Articles
-  var tags = article.tags.split(",");
   var related = [];
   var matches;
   for (var a in articles) {
     if (articles[a].id === article.id) continue;
     matches = 0;
-    for (var t in tags) {
-      if (articles[a].tags.split(",").indexOf(tags[t]) !== -1) matches++;
+    for (var t in article.tags) {
+      if (articles[a].tags.indexOf(article.tags[t]) !== -1) matches++;
     }
     articles[a].matches = matches;
     related.push(articles[a]);

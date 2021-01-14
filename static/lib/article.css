@@ -96,6 +96,11 @@
 
 .tag {
   color: #004c9b;
+  background-color: #e6f2ff;
+  padding: 0.2em 0.75em;
+  line-height: 2em;
+  border-radius: 1em;
+  white-space: nowrap;
   text-decoration: none;
 }
 

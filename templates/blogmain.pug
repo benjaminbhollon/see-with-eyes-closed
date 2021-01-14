@@ -31,7 +31,7 @@ block content
             p
               a(href="./article/" + post.id + "/") Read the full article
             p
-              != post.tags.split(",").map(tag => "<a href='./tag/" + tag + "/' class='tag'>" + tag + "</a>").join(", ")
+              != post.tags.map(tag => "<a href='./tag/" + tag + "/' class='tag'>" + tag + "</a>").join(" ")
     .popular
       .popular__sticky
         h3 Popular Articles
