@@ -1,0 +1,14 @@
+extends layout.pug
+
+block append resources
+  link(rel="stylesheet",href="/lib/article.css")
+
+block content
+  article.article
+    != md.render(markdown)
+    hr
+    p Related pages:
+    ul
+      each page in related
+        li
+          a(href=page.link) #{page.name}
