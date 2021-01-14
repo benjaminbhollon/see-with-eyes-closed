@@ -35,7 +35,7 @@ block content
   br
   .tags
     h2 Tags
-    != article.tags.map(tag => "<a href='../../tag/" + tag + "/' class='tag'>" + tag + "</a>").join(" ")
+    != article.tags.map(tag => "<a href='../../?tag=" + tag + "' class='tag'>" + tag + "</a>").join(" ")
   br
   .comments
     h2(style="text-align:left") #{article.comments.length} comments
