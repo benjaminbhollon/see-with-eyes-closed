@@ -1,0 +1,98 @@
+.article {
+  max-width: 700px;
+  display: inline-block;
+  text-align: left;
+}
+
+.article::after {
+  content: '';
+  display: block;
+}
+
+.article__banner {
+  width: 100%;
+}
+
+.recent, .popular {
+  border: 1px solid #ccc;
+}
+
+.recent__article, .popular__article {
+  border-bottom: 1px solid #ccc;
+}
+
+.recent__article {
+  text-align: left;
+}
+
+.recent__article h1 a {
+  text-decoration: none;
+  transition: color 1s;
+}
+
+.recent__article h1 a:hover {
+  color: blue;
+}
+
+.recent__article > * {
+  margin: 0.75em;
+}
+
+.article__title {
+  margin-bottom: 0.25em;
+}
+
+.article__details {
+  text-align: center;
+  margin: 0;
+  margin-bottom: 0.5em;
+  color: #777
+}
+
+.article__banner, .recent__article .tag {
+  margin: 0;
+}
+
+.tag {
+  color: #004c9b;
+  text-decoration: none;
+}
+
+.popular {
+  display: none;
+}
+
+.popular__sticky {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 20px;
+  transition: top 0.5s ease-in-out;
+}
+
+body[data-scrolled="up"] .popular__sticky {
+  top: 95px;
+}
+
+.popular__article {
+  display: block;
+  padding: 0.5em;
+  text-decoration: none;
+}
+
+@media (min-width: 750px) {
+  #split {
+    display: grid;
+    grid-template-columns: 70% 30%;
+  }
+
+  .recent__center {
+    margin: 1.75em;
+    display: inline-block;
+    border: 2px solid #000;
+    max-width: 700px;
+  }
+
+  .popular {
+    display: block;
+  }
+}
