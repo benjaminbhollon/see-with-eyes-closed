@@ -5,6 +5,8 @@ block variables
   - metaDescription = "Need my input on something? Drop me a quick message and I'll be back to you ASAP."
   
 block content
+  if parameters.success === "true"
+    .success Your message is on its way! I'll get back to you ASAP.
   h1 Contact Me
   span.accessibility Subject:
   form(method="POST",action="/contact/send/")
@@ -16,4 +18,4 @@ block content
     span.accessibility Your message:
     textarea(name="message",placeholder="Your message goes here...",required)
     br
-    input(type="button" value="Send")
+    input(type="submit" value="Send")

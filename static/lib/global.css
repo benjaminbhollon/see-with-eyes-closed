@@ -126,6 +126,12 @@ body[data-scrolled="down"] .main-nav {
   font-size: 10vmin;
 }
 
+.success {
+  background-color:green;
+  padding:1em;
+  color:white;
+}
+
 /* Footer */
 footer {
   background-color: #000;

@@ -154,7 +154,7 @@ async function deleteDocument(collection, filter) {
 //All requests in finishedTemplates
 app.get('*', function (request, response, next) {
   if (finishedTemplates.find(template => template.path === request.path || template.path === request.path + "/") !== undefined) {
-    response.render(finishedTemplates.find(template => template.path === request.path || template.path === request.path + "/").template, {});
+    return response.render(finishedTemplates.find(template => template.path === request.path || template.path === request.path + "/").template, {"parameters": request.query});
   }
   if (next) next();
   else response.status(404).end();
@@ -280,6 +280,23 @@ app.get("/projects/", async function (request, response) {
     projects = result;
   });
   response.render("projectsmain", {"projects": projects});
+});
+
+//Contact me
+app.post("/contact/send/", async function (request, response) {
+  var message = {
+    from: 'noreply@seewitheyesclosed.com',
+    to: config.email,
+    subject: request.body.subject.toString(),
+    text: "Message from " + request.body.email.toString() + ":" + request.body.message.toString()
+  };
+  await transporter.sendMail(message, function(err) {
+    if (err) {
+      console.log(err)
+    }
+  });
+
+  response.redirect(302, "/contact/?success=true");
 });
 
 //Policies
