@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs"); //Import bcrypt
 const session = require("express-session"); //Import express-sessionvar
 MarkdownIt = require('markdown-it'), md = new MarkdownIt({"html": true}); //Import markdown jstransformer
 const fetch = require('isomorphic-fetch'), bodyParser = require('body-parser'); //Fetch
+const compression = require('compression'); //Import compression
 const config = require('./config.json'); //Import config settings
 
 var app = express();
@@ -15,6 +16,7 @@ app.use(express.static('static'));
 app.use(session({"secret": "4OneFIshTwoFIshRedFIshBlueFIsh2", "resave": false, "saveUninitialized": false}));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.use(compression());
 app.set('view engine', 'pug');
 app.set('views', './templates');
 var bcryptSalt;
