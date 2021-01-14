@@ -16,7 +16,7 @@ block content
     .recent 
       .recent__center
         span.accessibility Search Articles:
-        input.searchbar#searchbar(type="search",oninput="searchArticles()",autocomplete="false",placeholder="Search articles...")
+        input.searchbar#searchbar(type="search",oninput="searchArticles()",autocomplete="false",placeholder="Search articles...",value=(parameters.tag !== undefined ? "tag:" + parameters.tag : ""))
         #typoWarning(style="display:none;padding:0.5em") Hmm... I don't see that article. Try looking around for something else. Make sure to check for typos! I hope to see you in the article you're looking for.
         each post in recent
           article.recent__article
@@ -31,7 +31,7 @@ block content
             p
               a(href="./article/" + post.id + "/") Read the full article
             p
-              != post.tags.map(tag => "<a href='./tag/" + tag + "/' class='tag'>" + tag + "</a>").join(" ")
+              != post.tags.map(tag => "<a href='./?tag=" + tag + "#top' class='tag' data-id='" + tag + "'>" + tag + "</a>").join(" ")
     .popular
       .popular__sticky
         h3 Popular Articles
@@ -47,13 +47,39 @@ block content
         filter = input.value.toUpperCase().trim();
         container = document.querySelector(".recent");
         articles = container.getElementsByTagName('article');
-        count = 0;
+        var count = 0;
+        
+        if (filter.slice(0,4) === "TAG:") {
+          var match = document.querySelectorAll(".tag[data-id='" + filter.slice(4).toLowerCase() + "']");
+          
+          for (var a in articles) {
+            var shouldContinue = false;
+            for (var m in match) {
+              if (match[m].parentNode !== undefined && match[m].parentNode.parentNode == articles[a]) {
+                shouldContinue = true;
+                continue;
+              }
+            }
+            if (shouldContinue) {
+              articles[a].style.display = "";
+              count++;
+              continue;
+            }
+            if (articles[a].style !== undefined) articles[a].style.display = "none";
+          }
+          if (count == 0) {
+            document.getElementById("typoWarning").style.display = "block";
+          } else {
+            document.getElementById("typoWarning").style.display = "none";
+          }
+          return;
+        }
 
         // Loop through all list items, and hide those who don't match the search query
         for (i = 0; i < articles.length; i++) {
           if (articles[i].innerText.toUpperCase().indexOf(filter) > -1) {
-            articles[i].style.display = "";
             count++;
+            articles[i].style.display = "";
           } else {
             articles[i].style.display = "none";
           }
@@ -64,3 +90,4 @@ block content
           document.getElementById("typoWarning").style.display = "none";
         }
       }
+      document.onload = searchArticles();

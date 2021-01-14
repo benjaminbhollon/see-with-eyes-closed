@@ -179,7 +179,7 @@ app.get("/blog/", async function (request,  response) {
 
   var popularHTML = JSON.parse(JSON.stringify(articles.slice(0, 5)));
 
-  response.render('blogmain', {"recent": recentHTML, "popular": popularHTML});
+  response.render('blogmain', {"recent": recentHTML, "popular": popularHTML, "parameters": request.query});
 });
 
 //Blog articles
