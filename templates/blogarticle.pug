@@ -40,6 +40,8 @@ block content
   .comments
     h2(style="text-align:left") #{article.comments.length} comments
     div
+      if article.comments.length === 0
+        p There aren't any comments yet. Be the first!
       each comment in article.comments
         .comment
           p

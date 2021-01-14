@@ -25,7 +25,7 @@ bcrypt.genSalt(3, function (err, salt) {
 });
 
 //Define templates with no extra processing
-const finishedTemplates = [{"path": "/", "template": 'homepage'}];
+const finishedTemplates = [{"path": "/", "template": "homepage"}, {"path": "/contact/", "template": "contact"}];
 
 /* * * * * * * * * *
  * CRUD Functions  *

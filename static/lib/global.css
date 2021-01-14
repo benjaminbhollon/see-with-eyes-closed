@@ -53,6 +53,14 @@ blockquote:before {
   font-size: 0;
 }
 
+input, textarea {
+  width: 100%;
+  max-width: 500px;
+  display: inline-block;
+  margin: 0.5em;
+  padding: 1em;
+}
+
 
 /* Main navbar */
 .main-nav {

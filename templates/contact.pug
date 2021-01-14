@@ -1,0 +1,19 @@
+extends layout.pug
+
+block variables
+  - title = "Contact Me"
+  - metaDescription = "Need my input on something? Drop me a quick message and I'll be back to you ASAP."
+  
+block content
+  h1 Contact Me
+  span.accessibility Subject:
+  form(method="POST",action="/contact/send/")
+    input(type="text","name"="subject",placeholder="Subject...",required,autofocus)
+    br
+    span.accessibility Your email:
+    input(type="email","name"="email",placeholder="Your email...",required)
+    br
+    span.accessibility Your message:
+    textarea(name="message",placeholder="Your message goes here...",required)
+    br
+    input(type="button" value="Send")
