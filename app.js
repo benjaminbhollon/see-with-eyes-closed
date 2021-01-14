@@ -282,6 +282,15 @@ app.get("/projects/", async function (request, response) {
   response.render("projectsmain", {"projects": projects});
 });
 
+//Writing homepage
+app.get("/writing/", async function (request, response) {
+  var writing = [];
+  await findMultipleDocuments("writing", {}).then(result => {
+    writing = result;
+  });
+  response.render("writingmain", {"writing": writing});
+});
+
 //Contact me
 app.post("/contact/send/", async function (request, response) {
   var message = {

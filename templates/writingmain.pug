@@ -1,0 +1,39 @@
+extends layout.pug
+
+block variables
+  - title = "Writing"
+  - metaDescription = "A repository of all my literary works, published or not."
+
+block append resources
+  link(rel="stylesheet",href="/lib/listings.css")
+  script(src="/lib/listings.js",async)
+    
+block content
+  .listings
+    each work in writing
+      .listing
+        .listing__card(class=(work.published === false ? "listing__unpublished" : ""))
+          if work.image
+            img.listing__banner(src=work.image,alt="Banner Image")
+          h3 #{work.title}
+          p.listing__author
+            cite by #{work.author}
+          != md.render(work.synopsis.split("\n\n")[0])
+          a.listing__button--red(href="javascript:more('" + work.id + "')") More
+        .listing__modal(data-id=work.id)
+          a.listing__hide(href="javascript:close('" + work.id + "')") ✕
+          if work.image
+            img.listing__banner(src=work.image,alt="Banner Image")
+          h1 #{work.title}
+          p.listing__author
+            cite by #{work.author}
+          != md.render(work.synopsis)
+          if work.excerpt !== false
+            details.listing__excerpt
+              summary Read Exerpt
+              != md.render(work.excerpt)
+          if work.published !== false
+            a.listing__button--blue(href=work.published.link, target="_blank") Read
+          else if work.published === false
+            p: em Not yet published. Status: #{work.status}.
+        .listing__mask

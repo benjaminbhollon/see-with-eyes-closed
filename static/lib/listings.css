@@ -1,8 +1,8 @@
-.projects {
+.listings {
   display: grid;
 }
 
-.project__card {
+.listing__card {
   border-radius: 1em;
   box-shadow: 0 0 1em #888;
   width: 90%;
@@ -13,22 +13,31 @@
   padding-bottom: 50px;
 }
 
-.project__card .project__button--red {
+.listing__card.listing__unpublished {
+  opacity: 0.5;
+  transition: opacity 0.5s;
+}
+
+.listing__card.listing__unpublished:hover {
+  opacity: 1;
+}
+
+.listing__card .listing__button--red {
   position: absolute;
   width: calc(100% - 1em);
   bottom: 0;
 }
 
-.project__card > *, .project__modal > * {
+.listing__card > *, .listing__modal > * {
   margin: 0.5em;
 }
 
-.project__banner {
+.listing__banner {
   margin: 0;
   width: 100%;
 }
 
-.project__modal {
+.listing__modal {
   background-color: #fff;
   border-radius: 1em;
   position: fixed;
@@ -43,14 +52,14 @@
   transform: translateX(-50%);
 }
 
-.project__modal[data-visible="true"] {
+.listing__modal[data-visible="true"] {
   visibility: visible;
   z-index: 11;
   overflow: auto;
   opacity: 1;
 }
 
-.project__mask {
+.listing__mask {
   visibility: hidden;
   width: 100%;
   height: 100%;
@@ -65,12 +74,12 @@
   transition: opacity 1s;
 }
 
-.project__modal[data-visible="true"] ~ .project__mask {
+.listing__modal[data-visible="true"] ~ .listing__mask {
   visibility: visible;
   opacity: 1;
 }
 
-.project__hide {
+.listing__hide {
   position: absolute;
   top: 1em;
   right: 1em;
@@ -85,7 +94,7 @@
   text-decoration: none;
 }
 
-.project__button, .project__button--red, .project__button--blue, .project__button--black {
+.listing__button, .listing__button--red, .listing__button--blue, .listing__button--black {
   text-decoration: none;
   padding: 0.5em;
   display: block;
@@ -95,21 +104,30 @@
   color: #fff;
 }
 
-.project__button:hover, .project__button--red:hover, .project__button--blue:hover, .project__button--black:hover {
+.listing__button:hover, .listing__button--red:hover, .listing__button--blue:hover, .listing__button--black:hover {
   box-shadow: 0 0 0.5em #888;
   filter: hue-rotate(30deg);
 }
 
-.project__button--red {
+.listing__button--red {
   background-image: linear-gradient(to top right, red, maroon);
 }
 
-.project__button--blue {
+.listing__button--blue {
   background-image: linear-gradient(to bottom right, aqua, #1565C0);
 }
 
+.listing__excerpt {
+  text-align: left;
+  padding: 0 2em;
+}
+
+.listing__excerpt summary {
+  text-align: center;
+}
+
 @media (min-width: 750px) {
-  .projects {
+  .listings {
     grid-template-columns: 33% 33% 33%
   }
 }
