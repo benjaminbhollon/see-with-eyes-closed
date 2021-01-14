@@ -49,6 +49,10 @@ blockquote:before {
   flex: 1 0 auto;
 }
 
+.accessibility {
+  font-size: 0;
+}
+
 
 /* Main navbar */
 .main-nav {
