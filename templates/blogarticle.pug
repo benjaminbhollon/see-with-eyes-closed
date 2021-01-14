@@ -6,8 +6,14 @@ block variables
   
 block append resources
   link(rel="stylesheet",href="/lib/article.css")
+  script(src="https://www.google.com/recaptcha/api.js",defer,async)
   
 block content
+  if parameters.err
+    if parameters.err == 401
+      p.error Please fill out the recaptcha.
+    else if parameters.err == 400
+      p.error Please fill out all the fields.
   article.article
     header
       if article.image !== ""
@@ -30,3 +36,38 @@ block content
   .tags
     h2 Tags
     != article.tags.split(",").map(tag => "<a href='../../tag/" + tag + "/' class='tag'>" + tag + "</a>").join(", ")
+  br
+  .comments
+    h2(style="text-align:left") #{article.comments.length} comments
+    div
+      each comment in article.comments
+        .comment
+          p
+            img(src="https://api.hello-avatar.com/adorables/30/" + encodeURIComponent(comment.identifier),alt="Avatar")
+            strong #{comment.author}&nbsp;&nbsp;
+            span #{comment.time}
+          div #{comment.message}
+    form#comment-form(method="post",action="/blog/article/" + article.id + "/comment")
+      h3 Post a Comment
+      input(name="name",type="text",placeholder="Your name here...", value=parameters.name,maxlength="128",required)
+      textarea(name="comment",placeholder="Write your comment here...",maxlength="512",required) #{parameters.comment}
+      .g-recaptcha(data-sitekey=siteKey)
+      input(type="submit" value="Go!")
+  style.
+    #g-recaptcha-response {
+      display: block !important;
+      position: absolute;
+      margin: -78px 0 0 0 !important;
+      width: 302px !important;
+      height: 76px !important;
+      z-index: -999999;
+      opacity: 0;
+    }
+  script.
+    window.onload = function() {
+      var $recaptcha = document.querySelector('#g-recaptcha-response');
+  
+      if($recaptcha) {
+        $recaptcha.setAttribute("required", "required");
+      }
+    };

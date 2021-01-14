@@ -4,9 +4,12 @@
   "description": "The code for the See With Eyes Closed blog.",
   "main": "app.js",
   "dependencies": {
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "isomorphic-fetch": "^3.0.0",
     "markdown-it": "^12.0.4",
     "mongodb": "^3.6.3",
     "nodemailer": "^6.4.17",

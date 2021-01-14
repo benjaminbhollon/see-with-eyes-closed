@@ -4,6 +4,7 @@ const nodemailer = require('nodemailer'); //Import nodemailer
 const bcrypt = require("bcryptjs"); //Import bcrypt
 const session = require("express-session"); //Import express-sessionvar
 MarkdownIt = require('markdown-it'), md = new MarkdownIt({"html": true}); //Import markdown jstransformer
+const fetch = require('isomorphic-fetch'), bodyParser = require('body-parser'); //Fetch
 const config = require('./config.json'); //Import config settings
 
 var app = express();
@@ -12,9 +13,14 @@ var transporter = nodemailer.createTransport(config.nodemailTransport);
 //Set up middleware
 app.use(express.static('static'));
 app.use(session({"secret": "4OneFIshTwoFIshRedFIshBlueFIsh2", "resave": false, "saveUninitialized": false}));
+app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.set('view engine', 'pug');
 app.set('views', './templates');
+var bcryptSalt;
+bcrypt.genSalt(3, function (err, salt) {
+  bcryptSalt = salt;
+});
 
 //Define templates with no extra processing
 const finishedTemplates = [{"path": "/", "template": 'homepage'}];
@@ -190,6 +196,38 @@ app.get("/blog/article/:articleId/", async function (request, response) {
     request.session.viewed = true;
   }
 
+  function timeSince(date) {
+    var seconds = Math.floor((new Date() - date) / 1000);
+
+    var interval = seconds / 31536000;
+
+    if (interval > 1) {
+      return Math.floor(interval) + " years";
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+      return Math.floor(interval) + " months";
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+      return Math.floor(interval) + " days";
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+      return Math.floor(interval) + " hours";
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+      return Math.floor(interval) + " minutes";
+    }
+    return Math.floor(seconds) + " seconds";
+  }
+
+  //Comment time ago
+  for (var c in article.comments) {
+    article.comments[c].time = timeSince(article.comments[c].time * 1000) + " ago";
+  }
+
   //Similar Articles
   var tags = article.tags.split(",");
   var related = [];
@@ -208,7 +246,29 @@ app.get("/blog/article/:articleId/", async function (request, response) {
   });
   related = related.slice(0, 5);
 
-  response.render('blogarticle', {"article": article, "related": related});
+  response.render('blogarticle', {"article": article, "related": related, "siteKey": config.reCAPTCHApublic, "parameters": request.query});
+});
+
+//Add comment
+app.post("/blog/article/:articleId/comment", async function (request, response) {
+  if (!request.body.name || !request.body.comment || (request.body.comment && request.body.comment.length > 512) || (request.body.name && request.body.name.length > 128)) return response.redirect(302, "/blog/article/" + request.params.articleId + "/#comment-form?err=" + 400 + "&name=" + encodeURIComponent(request.body.name) + "&comment=" + encodeURIComponent(request.body.comment));
+  var reCAPTCHAvalid = false;
+  await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${config.reCAPTCHAprivate}&response=${request.body["g-recaptcha-response"]}`, {
+    method: 'post'
+  }).then(result => result.json()).then(google_response => reCAPTCHAvalid = google_response);
+  if (!reCAPTCHAvalid) return response.redirect(302, "/blog/article/" + request.params.articleId + "/#comment-form?err=" + 401 + request.params.articleId + "&name=" + encodeURIComponent(request.body.name) + "&comment=" + encodeURIComponent(request.body.comment));
+
+  var article;
+  await findDocument("articles", {"id": request.params.articleId}).then(result => {
+    article = result;
+  });
+  if (article === null) response.status(404).end();
+
+  if (request.session.identifier == undefined) request.session.identifier = Math.floor(Math.random() * 8999999) + 1000000;
+  article.comments.push({"identifier": await bcrypt.hash(request.session.identifier.toString(), bcryptSalt), "author": request.body.name, "message": request.body.comment, "time": Math.floor(Date.now() / 1000)});
+  updateDocument("articles", {"id": request.params.articleId.toString()}, {"comments": article.comments});
+
+  response.redirect(302, "/blog/article/" + request.params.articleId + "/#comment-form");
 });
 
 //Projects homepage
