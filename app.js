@@ -287,6 +287,14 @@ app.get("/writing/", async function (request, response) {
   await findMultipleDocuments("writing", {}).then(result => {
     writing = result;
   });
+
+  //Sort by published
+  writing.sort(function (a,b) {
+    if (a.published === b.published || (a.published !== false && b.published !== false)) return 0;
+    else if (a.published === false) return 1
+    return -1;
+  });
+
   response.render("writingmain", {"writing": writing});
 });
 
