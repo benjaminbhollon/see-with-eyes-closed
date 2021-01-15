@@ -1,0 +1,17 @@
+extends layout.pug
+
+block append resources
+  link(rel="stylesheet",href="/lib/article.css")
+  link(rel="stylesheet",href="/lib/listings.css")
+
+block content
+  article.article
+    header
+      if (work.image)
+        img.article__banner(src=work.image,alt="Banner Image")
+      h1.article__title #{work.title}
+      p.article__details by #{work.author}
+    .article__content
+      != md.render(work.content)
+  br
+  a.listing__button(style="max-width:750px;width:100%;display:inline-block",href="/writing/") All Literary Works

@@ -298,6 +298,17 @@ app.get("/writing/", async function (request, response) {
   response.render("writingmain", {"writing": writing});
 });
 
+//Literary work display page
+app.get("/writing/:workId/", async function (request, response) {
+  var work = {};
+  await findDocument("writing", {"id": request.params.workId}).then(result => {
+    work = result;
+  });
+  if (work === null || work.published === false || work.published.website !== true) return response.status(404).end();
+
+  response.render("writingwork", {"work": work, "title": work.title, "metaDescription": md.render(work.synopsis.split("\n\n")[0]).replace( /(<([^>]+)>)/ig, '')});
+});
+
 //Contact me
 app.post("/contact/send/", async function (request, response) {
   var message = {

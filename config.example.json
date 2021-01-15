@@ -11,5 +11,9 @@
   "mongodbURI": "mongodb://localhost:27017",
   "reCAPTCHApublic": "",
   "reCAPTCHAprivate": "",
-  "email": ""
+  "email": "",
+  "admin": {
+    "login": "admin",
+    "password": "letmein"
+  }
 }
