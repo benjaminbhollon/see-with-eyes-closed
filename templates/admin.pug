@@ -1,0 +1,21 @@
+extends layout.pug
+
+block variables
+  - title = "Admin Dashboard"
+  
+block navbar
+  nav.main-nav
+    a.main-nav__title(href="/") Admin Dashboard
+    label.main-nav__collapse(for="nav-collapse") &#9776;
+    input#nav-collapse(type="checkbox")
+    .main-nav__collapsible
+      a(href="/admin/") Dashboard
+      a(href="/manage/comments/") Manage Comments
+      a(href="/post/articles/") Post Article
+
+block content
+  article
+    p Greetings, admin! You can do the following:
+    ul
+      li: a(href="/post/articles/") Post a new article
+      li: a(href="/manage/comments/") Manage comments on current articles

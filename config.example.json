@@ -12,8 +12,7 @@
   "reCAPTCHApublic": "",
   "reCAPTCHAprivate": "",
   "email": "",
-  "admin": {
-    "login": "admin",
-    "password": "letmein"
+  "admins": {
+    "admin": "letmein"
   }
 }

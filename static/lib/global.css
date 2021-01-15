@@ -29,6 +29,12 @@ h1 {
   text-align: center;
 }
 
+ul {
+  max-width: 750px;
+  display: inline-block;
+  text-align: left;
+}
+
 blockquote {
   margin-left: 0;
   padding-left: 40px;
