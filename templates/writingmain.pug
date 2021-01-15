@@ -6,6 +6,7 @@ block variables
 
 block append resources
   link(rel="stylesheet",href="/lib/listings.css")
+  link(rel="stylesheet",href="/lib/article.css")
   script(src="/lib/listings.js",async)
     
 block content
@@ -19,6 +20,12 @@ block content
           p.listing__author
             cite by #{work.author}
           != md.render(work.synopsis.split("\n\n")[0])
+          p
+            each tag in [work.type, work.genre, work.event]
+              if tag !== false
+                span.tag() #{tag}
+                |
+                |
           a.listing__button--red(href="javascript:more('" + work.id + "')") More
         .listing__modal(data-id=work.id)
           a.listing__hide(href="javascript:close('" + work.id + "')") ✕
