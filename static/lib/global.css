@@ -66,6 +66,7 @@ article {
 
 form {
   display: inline-block;
+  width: 100%;
   max-width: 500px;
 }
 
@@ -79,6 +80,16 @@ input, textarea, label {
 input[type="checkbox"] {
   display: inline;
   width: auto;
+}
+
+.success, .failure {
+  background-color:green;
+  padding:1em;
+  color:white;
+}
+
+.failure {
+  background-color:red;
 }
 
 
@@ -148,12 +159,6 @@ body[data-scrolled="down"] .main-nav {
   display: block;
   line-height: 25vh;
   font-size: 10vmin;
-}
-
-.success {
-  background-color:green;
-  padding:1em;
-  color:white;
 }
 
 /* Footer */

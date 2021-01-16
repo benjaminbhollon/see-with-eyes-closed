@@ -11,11 +11,6 @@ block content
   span.accessibility Subject:
   form(method="POST",action="/contact/send/")
     input(type="text","name"="subject",placeholder="Subject...",required,autofocus)
-    br
-    span.accessibility Your email:
     input(type="email","name"="email",placeholder="Your email...",required)
-    br
-    span.accessibility Your message:
     textarea(name="message",placeholder="Your message goes here...",required)
-    br
     input(type="submit" value="Send")

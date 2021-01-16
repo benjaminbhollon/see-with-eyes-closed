@@ -153,6 +153,12 @@ async function deleteDocument(collection, filter) {
   }
 }
 
+//Validate Email
+function validEmail(email) {
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
+
 //All requests in finishedTemplates
 app.get('*', function (request, response, next) {
   if (finishedTemplates.find(template => template.path === request.path || template.path === request.path + "/") !== undefined) {
@@ -272,6 +278,44 @@ app.post("/blog/article/:articleId/comment", async function (request, response) 
   updateDocument("articles", {"id": request.params.articleId.toString()}, {"comments": article.comments});
 
   response.redirect(302, "/blog/article/" + request.params.articleId + "/#comment-form");
+});
+
+//Subscribe
+app.post("/blog/subscribe/", async function (request, response) {
+  if (!validEmail(request.body.email)) return response.render("subscribe", {"success": false, "message": "You must provide a valid email address."});
+
+  var check;
+  await findDocument("subscribers", {"email": request.body.email.toLowerCase()}).then(result => {
+    check = result;
+  });
+  if (check !== null) return response.render("subscribe", {"success": false, "message": "You're already subscribed. If you haven't been receiving updates, <a href='/contact/'>contact me</a> and we'll figure it out."});
+
+  var subscribeObject = {
+    "name": request.body.name.toString(),
+    "email": request.body.email.toLowerCase(),
+    "subscribedTo": {
+      "blog": true
+    }
+  }
+
+  await insertDocument("subscribers", subscribeObject);
+
+  var message = {
+    from: 'Benjamin Hollon <benjamin@seewitheyesclosed.com>',
+    to: subscribeObject.email,
+    subject: "You've been subscribed!",
+    html: `<h1>Success! You have been subscribed!</h1>
+    <p>You are now receiving email updates from the See With Eyes Closed Blog. I'm so glad to have you! I try to release a blog post every week or so, though I often forget and occasionally have even more to say.
+
+    <p>If you didn't ask to be subscribed or you've reconsidered, you can easily <a href='https://seewitheyesclosed.com/blog/unsubscribe/?email=` + subscribeObject.email +`&token=` + (await bcrypt.hash(subscribeObject.email, 1)) + `'>unsubscribe</a>.</p>`
+  };
+  await transporter.sendMail(message, function(err) {
+    if (err) {
+      console.log(err)
+    }
+  });
+
+  response.redirect(302, "/blog/?justSubscribed=true");
 });
 
 //Projects homepage

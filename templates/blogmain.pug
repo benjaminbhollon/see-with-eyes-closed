@@ -9,6 +9,8 @@ block append resources
   link(rel="stylesheet",href="/lib/article.css")
     
 block content
+  if (parameters.justSubscribed === "true")
+    .success Success! You will now receive updates from my blog! You should receive an email in a minute confirming that you were subscribed.
   header
     h1 See With Eyes Closed
     h2 A Blog
@@ -16,7 +18,7 @@ block content
     .recent 
       .recent__center
         span.accessibility Search Articles:
-        input.searchbar#searchbar(type="search",oninput="searchArticles()",autocomplete="false",placeholder="Search articles...",value=(parameters.tag !== undefined ? "tag:" + parameters.tag : ""))
+        input.searchbar#searchbar(type="search",oninput="searchArticles()",autocomplete="false",placeholder="Search articles...",value=(parameters.tag !== undefined ? "tag:" + parameters.tag : ""),style="display:inline-block")
         #typoWarning(style="display:none;padding:0.5em") Hmm... I don't see that article. Try looking around for something else. Make sure to check for typos! I hope to see you in the article you're looking for.
         each post in recent
           article.recent__article
