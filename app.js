@@ -27,7 +27,7 @@ bcrypt.genSalt(3, function (err, salt) {
 });
 
 //Define templates with no extra processing
-const finishedTemplates = [{"path": "/", "template": "homepage"}, {"path": "/contact/", "template": "contact"}, {"path": "/admin/", "template": "admin"}, {"path": "/blog/subscribe/", "template": "subscribe"}];
+const finishedTemplates = [{"path": "/", "template": "homepage"}, {"path": "/contact/", "template": "contact"}, {"path": "/admin/", "template": "admin"}, {"path": "/admin/post/article/", "template": "postarticle"}, {"path": "/blog/subscribe/", "template": "subscribe"}];
 
 /* * * * * * * * * *
  * CRUD Functions  *
@@ -162,7 +162,7 @@ function validEmail(email) {
 //All requests in finishedTemplates
 app.get('*', function (request, response, next) {
   if (finishedTemplates.find(template => template.path === request.path || template.path === request.path + "/") !== undefined) {
-    return response.render(finishedTemplates.find(template => template.path === request.path || template.path === request.path + "/").template, {"parameters": request.query});
+    return response.render(finishedTemplates.find(template => template.path === request.path || template.path === request.path + "/").template, {"parameters": request.query, "config": config});
   }
   if (next) next();
   else response.status(404).end();

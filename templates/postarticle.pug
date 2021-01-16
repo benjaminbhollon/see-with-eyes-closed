@@ -1,0 +1,25 @@
+extends admin
+
+block variables
+  - title = "New Post"
+
+block content
+  article
+    h1 New Post
+    form(method="POST")
+      input(type="text" name="title" placeholder="Article title..." required)
+      input(type="text" name="id" placeholder="Article URL name (unique)..." required)
+      input(type="text" name="author" placeholder="Author name..." value=config.mainAuthor required)
+      input(type="text" name="image" placeholder="Banner URL (optional)...")
+      h3 Summary:
+      textarea(name="summary" placeholder="Markdown, HTML, or a mix of both" required)
+      h3 Content:
+      textarea(name="content" placeholder="Markdown, HTML, or a mix of both" required)
+      input(type="text" name="tags" placeholder="Article tags (comma-separated)..." required)
+      label
+        input(type="checkbox" name="comments" checked)
+        | Enable comments
+      label
+        input(type="checkbox" name="notify" checked)
+        | Email subscribers
+      input(type="submit" name="post")

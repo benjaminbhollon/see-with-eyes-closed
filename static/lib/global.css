@@ -61,6 +61,7 @@ blockquote:before {
 
 article {
   display: inline-block;
+  width: 100%;
   max-width: 700px;
 }
 
@@ -75,6 +76,10 @@ input, textarea, label {
   display: block;
   margin: 0.5em;
   padding: 1em;
+}
+
+label {
+  padding: initial
 }
 
 input[type="checkbox"] {

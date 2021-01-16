@@ -10,12 +10,12 @@ block navbar
     input#nav-collapse(type="checkbox")
     .main-nav__collapsible
       a(href="/admin/") Dashboard
-      a(href="/manage/comments/") Manage Comments
-      a(href="/post/articles/") Post Article
+      a(href="/admin/manage/comments/") Manage Comments
+      a(href="/admin/post/article/") Post Article
 
 block content
   article
     p Greetings, admin! You can do the following:
     ul
-      li: a(href="/post/articles/") Post a new article
-      li: a(href="/manage/comments/") Manage comments on current articles
+      li: a(href="/admin/post/article/") Post a new article
+      li: a(href="/admin/manage/comments/") Manage comments on current articles
