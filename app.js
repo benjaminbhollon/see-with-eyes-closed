@@ -318,6 +318,25 @@ app.post("/blog/subscribe/", async function (request, response) {
   response.redirect(302, "/blog/?justSubscribed=true");
 });
 
+//Unsubscribe
+app.get("/blog/unsubscribe/", async function (request, response) {
+  var title = "Unsubscribe";
+  var message = "<a href='https://xkcd.com/2257/'><img alt='xkcd Unsubscribe Message' src='https://imgs.xkcd.com/comics/unsubscribe_message.png' title=\"A mix of the two is even worse: 'Thanks for unsubscribing and helping us pare this list down to reliable supporters.'\"></a><p><cite>- Randall Munroe, xkcd ([CC BY-NC 2.5](https://creativecommons.org/licenses/by-nc/2.5/))</cite></p><p>Or was that a mistake? You can [resubscribe](/blog/subscribe/)!</p>";
+  var isValid = false;
+  await bcrypt.compare(request.query.email, request.query.token).then(result => {
+    isValid = result;
+  });
+
+  if (!isValid) {
+    title = "418 Error: I'm a teapot";
+    message = "<article>\n\n# 418 Error: I'm a teapot\n\n_The resulting entity body may be short and stout_\n\nWe're honestly not sure what went wrong, but evidence suggests that you tried to brew coffee in a teapot. Make sure you got here by clicking \"Unsubscribe\" in one of my emails. If that doesn't work, [contact me](/contact/) and I'll try to work it out.</article>"
+  } else {
+    await deleteDocument("subscribers", {"email": request.query.email.toLowerCase()});
+  }
+
+  response.render("layout", {title: title, content: message});
+});
+
 //Projects homepage
 app.get("/projects/", async function (request, response) {
   var projects = [];
