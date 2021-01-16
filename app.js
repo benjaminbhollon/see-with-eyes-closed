@@ -27,7 +27,7 @@ bcrypt.genSalt(3, function (err, salt) {
 });
 
 //Define templates with no extra processing
-const finishedTemplates = [{"path": "/", "template": "homepage"}, {"path": "/contact/", "template": "contact"}, {"path": "/admin/", "template": "admin"}];
+const finishedTemplates = [{"path": "/", "template": "homepage"}, {"path": "/contact/", "template": "contact"}, {"path": "/admin/", "template": "admin"}, {"path": "/blog/subscribe/", "template": "subscribe"}];
 
 /* * * * * * * * * *
  * CRUD Functions  *
@@ -337,7 +337,7 @@ app.get("/policies/:policy/", function (request, response) {
       "markdown": `# Privacy Policy
 I care about your privacy. I promise that no matter what you do on this website, I will be doing the most I possibly can to ensure your safety.
 
-I only collect information you give me with the understanding that I will store it. I don't use any creepy trackers or analytics programs to gather information about you. The only information I gather is how many people visit each article. I don't even keep track of who it is that visits them.
+I only collect information you give me with the understanding that I will store it and only use it for the reason you give it to me. I don't use any creepy trackers or analytics programs to gather information about you. The only information I gather is how many people visit each article. I don't even keep track of who it is that visits them.
 
 Part of this is because I'm too lazy to collect more info than I do, but most of it is because I don't like it when websites collect my data, so I won't collect yours.
 

@@ -59,12 +59,26 @@ blockquote:before {
   font-size: 0;
 }
 
-input, textarea {
-  width: 100%;
-  max-width: 500px;
+article {
   display: inline-block;
+  max-width: 700px;
+}
+
+form {
+  display: inline-block;
+  max-width: 500px;
+}
+
+input, textarea, label {
+  width: 100%;
+  display: block;
   margin: 0.5em;
   padding: 1em;
+}
+
+input[type="checkbox"] {
+  display: inline;
+  width: auto;
 }
 
 
@@ -122,7 +136,11 @@ body[data-scrolled="down"] .main-nav {
   padding: 0 0.35em;
 }
 
-.main-nav__collapsible a:hover::after {
+.main-nav__collapsible a:focus {
+  outline: none
+}
+
+.main-nav__collapsible a:hover::after, .main-nav__collapsible a:focus::after {
   width: 100%;
 }
 

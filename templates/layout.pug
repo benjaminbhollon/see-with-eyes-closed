@@ -31,6 +31,8 @@ html(lang='en')
           a(href="/music/") Music
     #content
       block content
+        if (content)
+          != md.render(content)
     block footer
       footer
         p © #{(new Date()).getFullYear()} Benjamin Hollon. All rights reserved.

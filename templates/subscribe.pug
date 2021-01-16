@@ -1,0 +1,19 @@
+extends layout.pug
+
+block variables
+  - title = "Subscribe for Updates"
+  - metaDescription = "Like my content? Subscribe to get updates whenever I release new stuff!"
+
+block content
+  article
+    h1 Subscribe for Updates
+    p Like my content? Subscribe to get updates whenever I release new stuff! I promise I won't spam you or give away your email address or anything like that. For more information, see my 
+      a(href="/policies/privacy/",target="_blank") Privacy Policy
+      | .
+    form(method="POST")
+      input(type="text","name"="name","placeholder"="Your first name (optional)...",autofocus)
+      input(type="email",name="name","placeholder"="Your email address...",required)
+      label
+        input(type="checkbox", name="agree",required)
+        | I agree to receive updates from See With Eyes Closed to the email address I specified.
+      input(type="submit",value="Sign me up!")
