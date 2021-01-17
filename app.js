@@ -387,7 +387,8 @@ app.post("/admin/post/article/", async function (request, response) {
     summary: request.body.summary,
     content: request.body.content,
     tags: request.body.tags.split(",").map(tag => tag.trim()),
-    comments: (request.body.comments ? [] : false)
+    comments: (request.body.comments ? [] : false),
+    hits: 0
   };
 
   await insertDocument("articles", article);

@@ -38,23 +38,26 @@ block content
     != article.tags.map(tag => "<a href='../../?tag=" + tag + "' class='tag'>" + tag + "</a>").join(" ")
   br
   .comments
-    h2(style="text-align:left") #{article.comments.length} comments
-    div
-      if article.comments.length === 0
-        p There aren't any comments yet. Be the first!
-      each comment in article.comments
-        .comment
-          p
-            img(src="https://api.hello-avatar.com/adorables/30/" + encodeURIComponent(comment.identifier),alt="Avatar")
-            strong #{comment.author}&nbsp;&nbsp;
-            span #{comment.time}
-          div #{comment.message}
-    form#comment-form(method="post",action="/blog/article/" + article.id + "/comment")
-      h3 Post a Comment
-      input(name="name",type="text",placeholder="Your name here...", value=parameters.name,maxlength="128",required)
-      textarea(name="comment",placeholder="Write your comment here...",maxlength="512",required) #{parameters.comment}
-      .g-recaptcha(data-sitekey=siteKey)
-      input(type="submit" value="Go!")
+    if article.comments !== false
+      h2(style="text-align:left") #{article.comments.length} comments
+      div
+        if article.comments.length === 0
+          p There aren't any comments yet. Be the first!
+        each comment in article.comments
+          .comment
+            p
+              img(src="https://api.hello-avatar.com/adorables/30/" + encodeURIComponent(comment.identifier),alt="Avatar")
+              strong #{comment.author}&nbsp;&nbsp;
+              span #{comment.time}
+            div #{comment.message}
+      form#comment-form(method="post",action="/blog/article/" + article.id + "/comment")
+        h3 Post a Comment
+        input(name="name",type="text",placeholder="Your name here...", value=parameters.name,maxlength="128",required)
+        textarea(name="comment",placeholder="Write your comment here...",maxlength="512",required) #{parameters.comment}
+        .g-recaptcha(data-sitekey=siteKey)
+        input(type="submit" value="Go!")
+    else if article.comments === false
+      p Comments have been disabled on this article.
   style.
     #g-recaptcha-response {
       display: block !important;
