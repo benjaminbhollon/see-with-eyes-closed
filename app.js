@@ -374,6 +374,27 @@ app.get("/writing/:workId/", async function (request, response) {
   response.render("writingwork", {"work": work, "title": work.title, "metaDescription": md.render(work.synopsis.split("\n\n")[0]).replace( /(<([^>]+)>)/ig, '')});
 });
 
+//Post article
+app.post("/admin/post/article/", async function (request, response) {
+  var today = new Date();
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var article = {
+    id: request.body.id,
+    title: request.body.title,
+    author: request.body.author,
+    date: months[today.getMonth()] + " " + today.getDate() + ", " + today.getFullYear(),
+    image: request.body.image.toString(),
+    summary: request.body.summary,
+    content: request.body.content,
+    tags: request.body.tags.split(",").map(tag => tag.trim()),
+    comments: (request.body.comments ? [] : false)
+  };
+
+  await insertDocument("articles", article);
+
+  response.redirect(302, "/blog/article/" + request.body.id + "/");
+});
+
 //Contact me
 app.post("/contact/send/", async function (request, response) {
   var message = {

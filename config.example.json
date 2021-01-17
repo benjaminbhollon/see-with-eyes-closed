@@ -14,5 +14,6 @@
   "email": "",
   "admins": {
     "admin": "letmein"
-  }
+  },
+  "defaultAuthor": ""
 }
