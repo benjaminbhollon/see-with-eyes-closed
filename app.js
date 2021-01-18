@@ -18,7 +18,7 @@ app.use(session({"secret": "4OneFIshTwoFIshRedFIshBlueFIsh2", "resave": false, "
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(compression());
-app.use("/admin/", basicAuth({"users": config.admins, "challenge": true}))
+app.use("/admin/", basicAuth({"users": config.admins, "challenge": true}));
 app.set('view engine', 'pug');
 app.set('views', './templates');
 var bcryptSalt;
@@ -541,6 +541,7 @@ These terms and conditions effective as of 26 March 2020.`,
 app.get("/projects/learnclef/", function (request, response) {
   response.redirect(301, "/projects/learn-clef/")
 });
+
 
 //Listen on port from config.json or process.env.PORT (for the heroku test)
 app.listen(process.env.PORT || config.port, () => {
