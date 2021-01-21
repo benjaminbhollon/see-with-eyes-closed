@@ -1,0 +1,3 @@
+[submodule "static/projects/learn-clef"]
+	path = static/projects/learn-clef
+	url = https://github.com/benjaminbhollon/learn-clef
