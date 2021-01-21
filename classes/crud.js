@@ -5,8 +5,9 @@ const MongoClient = require('mongodb').MongoClient;
  * * * * * * * * * */
 
 class Crud {
-  constructor(collection) {
+  constructor(collection, filter) {
     this.collection = collection;
+    this.filter = filter;
     this.client = new MongoClient(config.mongodbURI, {useUnifiedTopology: true});
 
     // Connect to the MongoDB cluster
@@ -27,10 +28,10 @@ class Crud {
   }
   
   //Read document
-  async findDocument(filter) {
+  async findDocument() {
     try {
       //Find document
-      return await this.client.db("swec-core").collection(this.collection).findOne(filter);
+      return await this.client.db("swec-core").collection(this.collection).findOne(this.filter);
   
     } catch (e) {
       console.error(e);
@@ -40,10 +41,10 @@ class Crud {
   }
   
   //Read multiple documents
-  async findMultipleDocuments(filter) {  
+  async findMultipleDocuments() {  
     try {
       //Find documents
-      return await this.client.db("swec-core").collection(this.collection).find(filter).toArray();
+      return await this.client.db("swec-core").collection(this.collection).find(this.filter).toArray();
   
     } catch (e) {
       console.error(e);
@@ -53,10 +54,10 @@ class Crud {
   }
   
   //Update document
-  async updateDocument(filter, set) {  
+  async updateDocument(set) {  
     try {
       //Update document
-      return await this.client.db("swec-core").collection(this.collection).updateOne(filter, {$set: set});
+      return await this.client.db("swec-core").collection(this.collection).updateOne(this.filter, {$set: set});
   
     } catch (e) {
       console.error(e);
@@ -66,10 +67,10 @@ class Crud {
   }
   
   //Update multiple documents
-  async updateMultipleDocuments(filter, set) {
+  async updateMultipleDocuments(set) {
     try {
         //Update document
-        return await this.client.db("swec-core").collection(this.collection).updateMany(filter, {$set: set});
+        return await this.client.db("swec-core").collection(this.collection).updateMany(this.filter, {$set: set});
   
     } catch (e) {
       console.error(e);
@@ -79,10 +80,10 @@ class Crud {
   }
   
   //Delete document
-  async deleteDocument(filter) {
+  async deleteDocument() {
     try {
       //Delete document
-      return await this.client.db("swec-core").collection(this.collection).deleteOne(filter);
+      return await this.client.db("swec-core").collection(this.collection).deleteOne(this.filter);
     } catch (e) {
       console.error(e);
     } finally {
