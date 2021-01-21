@@ -15,5 +15,6 @@
   "admins": {
     "admin": "letmein"
   },
-  "defaultAuthor": ""
+  "defaultAuthor": "",
+  "sessionSecret": "some_random_string_here"
 }

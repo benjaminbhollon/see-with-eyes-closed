@@ -1,20 +1,23 @@
-const express = require("express"); //Import Express
-const MongoClient = require('mongodb').MongoClient; //Import MongoDB
-const nodemailer = require('nodemailer'); //Import nodemailer
-const bcrypt = require("bcryptjs"); //Import bcrypt
-const session = require("express-session"); //Import express-sessionvar
-MarkdownIt = require('markdown-it'), md = new MarkdownIt({"html": true}); //Import markdown jstransformer
-const fetch = require('isomorphic-fetch'), bodyParser = require('body-parser'); //Fetch
-const compression = require('compression'); //Import compression
-const basicAuth = require('express-basic-auth'); //Import basicAuth
-const config = require('./config.json'); //Import config settings
+//Import modules
+const express = require("express");
+const MongoClient = require('mongodb').MongoClient;
+const nodemailer = require('nodemailer');
+const bcrypt = require("bcryptjs");
+const session = require("express-session");
+MarkdownIt = require('markdown-it'), md = new MarkdownIt({"html": true});
+const fetch = require('isomorphic-fetch'), bodyParser = require('body-parser');
+const compression = require('compression');
+const basicAuth = require('express-basic-auth');
+
+//Import config
+const config = require('./config.json');
 
 var app = express();
 var transporter = nodemailer.createTransport(config.nodemailTransport);
 
 //Set up middleware
 app.use(express.static('static'));
-app.use(session({"secret": "4OneFIshTwoFIshRedFIshBlueFIsh2", "resave": false, "saveUninitialized": false}));
+app.use(session({"secret": config.sessionSecret, "resave": false, "saveUninitialized": false}));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(compression());

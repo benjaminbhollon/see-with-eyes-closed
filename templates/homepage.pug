@@ -12,7 +12,7 @@ block append head
     }
 
     .fullpage {
-      height: 100vh;
+      min-height: 100vh;
       position: relative
     }
 
@@ -20,7 +20,8 @@ block append head
       position: absolute;
       top: 50vh;
       left: 50vw;
-      max-width: clamp(50%, 600px, 100%);
+      width: 100%;
+      max-width: 600px;
       padding: 1em;
       transform: translate(-50%, -50%);
     }
@@ -103,10 +104,16 @@ block append head
 
     #panel-4 {
       background-color: bisque;
+      background-image: url("/lib/images/homepage/6.jpg");
+      background-size: cover;
+      background-position: top;
     }
 
     #panel-5 {
       background-color: maroon;
+      background-image: url("/lib/images/homepage/8.jpg");
+      background-size: cover;
+      background-position: center;
     }
     
     #panel-6 {
@@ -165,7 +172,7 @@ block content
         img(alt="Benjamin Hollon's book recommendations, liked quotes, book clubs, book trivia, book lists",src="https://www.goodreads.com/images/badge/badge1.jpg",style="border-radius: 5px")
     #gr_custom_widget_1610423899
   .fullpage#panel-4
-    .fullpage__center
+    .fullpage__center--fill
       h2 I write stories that ask thought-provoking questions.
   .fullpage#panel-5
     .fullpage__center--fill
