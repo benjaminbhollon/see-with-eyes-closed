@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/benjaminbhollon/see-with-eyes-closed/issues"
   },
-  "homepage": "https://github.com/benjaminbhollon/see-with-eyes-closed#readme"
+  "homepage": "https://github.com/benjaminbhollon/see-with-eyes-closed#readme",
+  "devDependencies": {
+    "eslint": "^7.18.0"
+  }
 }

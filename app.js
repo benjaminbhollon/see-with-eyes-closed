@@ -59,7 +59,6 @@ post_listener.subscribe();
 post_listener.create_article();
 post_listener.contact();
 post_listener.policies();
-post_listener.();
 
 //Listen on port from config.json or process.env.PORT (for the heroku test)
 app.listen(process.env.PORT || config.port, () => {
