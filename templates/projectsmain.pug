@@ -25,5 +25,6 @@ block content
           h1 #{project.name}
           != md.render(project.summary)
           a.listing__button--blue(href=project.link,target="_blank") Open Project
-          a.listing__button--black(href=project.code,target="_blank") View Code
+          if project.code !== false
+            a.listing__button--black(href=project.code,target="_blank") View Code
         .listing__mask
