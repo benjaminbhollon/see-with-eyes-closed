@@ -32,9 +32,34 @@ bcrypt.genSalt(3, function (err, salt) {
   bcryptSalt = salt;
 });
 
-// Run GET and POST listeners
-const get_listener = new get(request, response)
-const post_listener = new post(request, response)
+// Run CRUD functions
+const crud_funcs = new crud(collection, filter);
+crud_funcs.insertDocument(value);
+crud_funcs.findDocument();
+crud_funcs.findMultipleDocuments();
+crud_funcs.updateDocument(set);
+crud_funcs.updateMultipleDocuments(set);
+crud_funcs.deleteDocument();
+
+// Run GET functions
+const get_listener = new get(request, response);
+get_listener.all();
+get_listener.blog();
+get_listener.articles();
+get_listener.unsubscribe();
+get_listener.projects();
+get_listener.writing();
+get_listener.literary();
+get_listener.redirects();
+
+// Run POST functions
+const post_listener = new post(request, response);
+post_listener.add_comment();
+post_listener.subscribe();
+post_listener.create_article();
+post_listener.contact();
+post_listener.policies();
+post_listener.();
 
 //Listen on port from config.json or process.env.PORT (for the heroku test)
 app.listen(process.env.PORT || config.port, () => {
