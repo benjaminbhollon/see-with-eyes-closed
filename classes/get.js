@@ -13,7 +13,7 @@ class Get {
   }
 
   //All requests in finishedTemplates
-  static all() {
+  all() {
     app.get('*', function (next) {
       if (this.finishedTemplates.find(template => template.path === thisrequest.path || template.path === this.request.path + "/") !== undefined) {
         return this.response.render(this.finishedTemplates.find(template => template.path === this.request.path || template.path === this.request.path + "/").template, {"parameters": this.request.query, "config": config});
@@ -24,7 +24,7 @@ class Get {
   }
 
   //Blog homepage
-  static blog() {
+  blog() {
     app.get("/blog/", async function () {
       var articles = [];
       await findMultipleDocuments("articles", {}).then(result => {
@@ -47,7 +47,7 @@ class Get {
     });
   }
 
-  static articles() {
+  articles() {
     //Blog articles
     app.get("/blog/article/:articleId/", async function () {
       var article;
@@ -117,7 +117,7 @@ class Get {
     });
   }
 
-  static unsubscribe() {
+  unsubscribe() {
     //Unsubscribe
     app.get("/blog/unsubscribe/", async function () {
       var title = "Unsubscribe";
@@ -138,7 +138,7 @@ class Get {
     });
   }
 
-  static projects() {
+  projects() {
     //Projects homepage
     app.get("/projects/", async function () {
       var projects = [];
@@ -149,7 +149,7 @@ class Get {
     });
   }
 
-  static writing() {
+  writing() {
     //Writing homepage
     app.get("/writing/", async function () {
       var writing = [];
@@ -168,7 +168,7 @@ class Get {
     });
   }
 
-  static literary() {
+  literary() {
     //Literary work display page
     app.get("/writing/:workId/", async function () {
       var work = {};
@@ -181,7 +181,7 @@ class Get {
     });
   }
 
-  static redirects() {
+  redirects() {
     //Redirects
     app.get("/projects/learnclef/", function () {
       this.response.redirect(301, "/projects/learn-clef/")
