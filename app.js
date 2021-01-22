@@ -12,6 +12,10 @@ const basicAuth = require('express-basic-auth');
 //Import config
 const config = require('./config.json');
 
+//Import local modules
+const crud = require('./modules/crud');
+const validate = require('./modules/validate');
+
 var app = express();
 var transporter = nodemailer.createTransport(config.nodemailTransport);
 
@@ -32,136 +36,6 @@ bcrypt.genSalt(3, function (err, salt) {
 //Define templates with no extra processing
 const finishedTemplates = [{"path": "/", "template": "homepage"}, {"path": "/contact/", "template": "contact"}, {"path": "/admin/", "template": "admin"}, {"path": "/admin/post/article/", "template": "postarticle"}, {"path": "/blog/subscribe/", "template": "subscribe"}];
 
-/* * * * * * * * * *
- * CRUD Functions  *
- * * * * * * * * * */
-
-//Create document
-async function insertDocument(collection, value) {
-  const uri = config.mongodbURI;
-
-  const client = new MongoClient(uri, {useUnifiedTopology: true});
-
-  try {
-      // Connect to the MongoDB cluster
-      await client.connect();
-
-      //Insert document
-      return await client.db("swec-core").collection(collection).insertOne(value);
-
-  } catch (e) {
-      console.error(e);
-  } finally {
-      await client.close();
-  }
-}
-
-//Read document
-async function findDocument(collection, filter) {
-  const uri = config.mongodbURI;
-
-  const client = new MongoClient(uri, {useUnifiedTopology: true});
-
-  try {
-      // Connect to the MongoDB cluster
-      await client.connect();
-
-      //Find document
-      return await client.db("swec-core").collection(collection).findOne(filter);
-
-  } catch (e) {
-      console.error(e);
-  } finally {
-      await client.close();
-  }
-}
-
-//Read multiple documents
-async function findMultipleDocuments(collection, filter) {
-  const uri = config.mongodbURI;
-
-  const client = new MongoClient(uri, {useUnifiedTopology: true});
-
-  try {
-      // Connect to the MongoDB cluster
-      await client.connect();
-
-      //Find documents
-      return await client.db("swec-core").collection(collection).find(filter).toArray();
-
-  } catch (e) {
-      console.error(e);
-  } finally {
-      await client.close();
-  }
-}
-
-//Update document
-async function updateDocument(collection, filter, set) {
-  const uri = config.mongodbURI;
-
-  const client = new MongoClient(uri, {useUnifiedTopology: true});
-
-  try {
-      // Connect to the MongoDB cluster
-      await client.connect();
-
-      //Update document
-      return await client.db("swec-core").collection(collection).updateOne(filter, {$set: set});
-
-  } catch (e) {
-      console.error(e);
-  } finally {
-      await client.close();
-  }
-}
-
-//Update multiple documents
-async function updateMultipleDocuments(collection, filter, set) {
-  const uri = config.mongodbURI;
-
-  const client = new MongoClient(uri, {useUnifiedTopology: true});
-
-  try {
-      // Connect to the MongoDB cluster
-      await client.connect();
-
-      //Update document
-      return await client.db("swec-core").collection(collection).updateMany(filter, {$set: set});
-
-  } catch (e) {
-      console.error(e);
-  } finally {
-      await client.close();
-  }
-}
-
-//Delete document
-async function deleteDocument(collection, filter) {
-  const uri = config.mongodbURI;
-
-  const client = new MongoClient(uri, {useUnifiedTopology: true});
-
-  try {
-      // Connect to the MongoDB cluster
-      await client.connect();
-
-      //Delete document
-      return await client.db("swec-core").collection(collection).deleteOne(filter);
-
-  } catch (e) {
-      console.error(e);
-  } finally {
-      await client.close();
-  }
-}
-
-//Validate Email
-function validEmail(email) {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
-}
-
 //All requests in finishedTemplates
 app.get('*', function (request, response, next) {
   if (finishedTemplates.find(template => template.path === request.path || template.path === request.path + "/") !== undefined) {
@@ -174,7 +48,7 @@ app.get('*', function (request, response, next) {
 //Blog homepage
 app.get("/blog/", async function (request,  response) {
   var articles = [];
-  await findMultipleDocuments("articles", {}).then(result => {
+  await crud.findMultipleDocuments("articles", {}).then(result => {
     articles = result;
   });
 
@@ -197,7 +71,7 @@ app.get("/blog/", async function (request,  response) {
 app.get("/blog/article/:articleId/", async function (request, response) {
   var article;
   var articles;
-  await findMultipleDocuments("articles", {}).then(result => {
+  await crud.findMultipleDocuments("articles", {}).then(result => {
     article = result.find(article => article.id.toUpperCase() === request.params.articleId.toUpperCase());
     articles = result;
   });
@@ -205,7 +79,7 @@ app.get("/blog/article/:articleId/", async function (request, response) {
 
   if (!request.session.viewed) {
     article.hits++;
-    updateDocument("articles", {"id": new RegExp("^" + request.params.articleId + "$", "i")}, {"hits": article.hits});
+    crud.updateDocument("articles", {"id": new RegExp("^" + request.params.articleId + "$", "i")}, {"hits": article.hits});
     request.session.viewed = true;
   }
 
@@ -271,24 +145,24 @@ app.post("/blog/article/:articleId/comment", async function (request, response) 
   if (!reCAPTCHAvalid) return response.redirect(302, "/blog/article/" + request.params.articleId + "/#comment-form?err=" + 401 + request.params.articleId + "&name=" + encodeURIComponent(request.body.name) + "&comment=" + encodeURIComponent(request.body.comment));
 
   var article;
-  await findDocument("articles", {"id": request.params.articleId}).then(result => {
+  await crud.findDocument("articles", {"id": request.params.articleId}).then(result => {
     article = result;
   });
   if (article === null) response.status(404).end();
 
   if (request.session.identifier == undefined) request.session.identifier = Math.floor(Math.random() * 8999999) + 1000000;
   article.comments.push({"identifier": await bcrypt.hash(request.session.identifier.toString(), bcryptSalt), "author": request.body.name, "message": request.body.comment, "time": Math.floor(Date.now() / 1000)});
-  updateDocument("articles", {"id": request.params.articleId.toString()}, {"comments": article.comments});
+  crud.updateDocument("articles", {"id": request.params.articleId.toString()}, {"comments": article.comments});
 
   response.redirect(302, "/blog/article/" + request.params.articleId + "/#comment-form");
 });
 
 //Subscribe
 app.post("/blog/subscribe/", async function (request, response) {
-  if (!validEmail(request.body.email)) return response.render("subscribe", {"success": false, "message": "You must provide a valid email address."});
+  if (!validate.email(request.body.email)) return response.render("subscribe", {"success": false, "message": "You must provide a valid email address."});
 
   var check;
-  await findDocument("subscribers", {"email": request.body.email.toLowerCase()}).then(result => {
+  await crud.findDocument("subscribers", {"email": request.body.email.toLowerCase()}).then(result => {
     check = result;
   });
   if (check !== null) return response.render("subscribe", {"success": false, "message": "You're already subscribed. If you haven't been receiving updates, <a href='/contact/'>contact me</a> and we'll figure it out."});
@@ -301,7 +175,7 @@ app.post("/blog/subscribe/", async function (request, response) {
     }
   }
 
-  await insertDocument("subscribers", subscribeObject);
+  await crud.insertDocument("subscribers", subscribeObject);
 
   var message = {
     from: 'Benjamin Hollon <benjamin@seewitheyesclosed.com>',
@@ -334,7 +208,7 @@ app.get("/blog/unsubscribe/", async function (request, response) {
     title = "418 Error: I'm a teapot";
     message = "<article>\n\n# 418 Error: I'm a teapot\n\n_The resulting entity body may be short and stout_\n\nWe're honestly not sure what went wrong, but evidence suggests that you tried to brew coffee in a teapot. Make sure you got here by clicking \"Unsubscribe\" in one of my emails. If that doesn't work, [contact me](/contact/) and I'll try to work it out.</article>"
   } else {
-    await deleteDocument("subscribers", {"email": request.query.email.toLowerCase()});
+    await crud.deleteDocument("subscribers", {"email": request.query.email.toLowerCase()});
   }
 
   response.render("layout", {title: title, content: message});
@@ -343,7 +217,7 @@ app.get("/blog/unsubscribe/", async function (request, response) {
 //Projects homepage
 app.get("/projects/", async function (request, response) {
   var projects = [];
-  await findMultipleDocuments("projects", {}).then(result => {
+  await crud.findMultipleDocuments("projects", {}).then(result => {
     projects = result;
   });
   response.render("projectsmain", {"projects": projects});
@@ -352,7 +226,7 @@ app.get("/projects/", async function (request, response) {
 //Writing homepage
 app.get("/writing/", async function (request, response) {
   var writing = [];
-  await findMultipleDocuments("writing", {}).then(result => {
+  await crud.findMultipleDocuments("writing", {}).then(result => {
     writing = result;
   });
 
@@ -369,7 +243,7 @@ app.get("/writing/", async function (request, response) {
 //Literary work display page
 app.get("/writing/:workId/", async function (request, response) {
   var work = {};
-  await findDocument("writing", {"id": request.params.workId}).then(result => {
+  await crud.findDocument("writing", {"id": request.params.workId}).then(result => {
     work = result;
   });
   if (work === null || work.published === false || work.published.website !== true) return response.status(404).end();
@@ -394,7 +268,7 @@ app.post("/admin/post/article/", async function (request, response) {
     hits: 0
   };
 
-  await insertDocument("articles", article);
+  await crud.insertDocument("articles", article);
 
   response.redirect(302, "/blog/article/" + request.body.id + "/");
 });
