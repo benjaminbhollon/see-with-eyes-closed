@@ -1,0 +1,7 @@
+{
+  "/": "homepage",
+  "/contact/": "contact",
+  "/admin/": "admin",
+  "/admin/post/article/": "postarticle",
+  "/blog/subscribe/": "subscribe"
+}

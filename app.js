@@ -11,6 +11,7 @@ const basicAuth = require('express-basic-auth');
 
 //Import config
 const config = require('./config.json');
+const directory = require('./directory.json');
 
 //Import local modules
 const crud = require('./modules/crud');
@@ -33,13 +34,10 @@ bcrypt.genSalt(3, function (err, salt) {
   bcryptSalt = salt;
 });
 
-//Define templates with no extra processing
-const finishedTemplates = [{"path": "/", "template": "homepage"}, {"path": "/contact/", "template": "contact"}, {"path": "/admin/", "template": "admin"}, {"path": "/admin/post/article/", "template": "postarticle"}, {"path": "/blog/subscribe/", "template": "subscribe"}];
-
-//All requests in finishedTemplates
+//Templates in directory
 app.get('*', function (request, response, next) {
-  if (finishedTemplates.find(template => template.path === request.path || template.path === request.path + "/") !== undefined) {
-    return response.render(finishedTemplates.find(template => template.path === request.path || template.path === request.path + "/").template, {"parameters": request.query, "config": config});
+  if (directory[request.path] !== undefined) {
+    return response.render(directory[request.path], {});
   }
   if (next) next();
   else response.status(404).end();
