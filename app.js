@@ -1,10 +1,13 @@
+"use strict";
+
 //Import modules
 const express = require("express");
 const MongoClient = require('mongodb').MongoClient;
 const nodemailer = require('nodemailer');
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
-MarkdownIt = require('markdown-it'), md = new MarkdownIt({"html": true});
+const MarkdownIt = require('markdown-it');
+var md = new MarkdownIt({"html": true});
 const fetch = require('isomorphic-fetch'), bodyParser = require('body-parser');
 const compression = require('compression');
 const basicAuth = require('express-basic-auth');
@@ -37,7 +40,7 @@ bcrypt.genSalt(3, function (err, salt) {
 //Templates in directory
 app.get('*', function (request, response, next) {
   if (directory[request.path] !== undefined) {
-    return response.render(directory[request.path], {});
+    return response.render(directory[request.path], {"parameters": request.query, "config": config});
   }
   if (next) next();
   else response.status(404).end();
@@ -62,7 +65,7 @@ app.get("/blog/", async function (request,  response) {
 
   var popularHTML = JSON.parse(JSON.stringify(articles.slice(0, 5)));
 
-  response.render('blogmain', {"recent": recentHTML, "popular": popularHTML, "parameters": request.query});
+  response.render('blogmain', {"recent": recentHTML, "popular": popularHTML, "parameters": request.query, "md": md});
 });
 
 //Blog articles
@@ -130,7 +133,7 @@ app.get("/blog/article/:articleId/", async function (request, response) {
   });
   related = related.slice(0, 5);
 
-  response.render('blogarticle', {"article": article, "related": related, "siteKey": config.reCAPTCHApublic, "parameters": request.query});
+  response.render('blogarticle', {"article": article, "related": related, "siteKey": config.reCAPTCHApublic, "parameters": request.query, "md": md});
 });
 
 //Add comment
@@ -218,7 +221,7 @@ app.get("/projects/", async function (request, response) {
   await crud.findMultipleDocuments("projects", {}).then(result => {
     projects = result;
   });
-  response.render("projectsmain", {"projects": projects});
+  response.render("projectsmain", {"projects": projects, "md": md});
 });
 
 //Writing homepage
@@ -235,7 +238,7 @@ app.get("/writing/", async function (request, response) {
     return -1;
   });
 
-  response.render("writingmain", {"writing": writing});
+  response.render("writingmain", {"writing": writing, "md": md});
 });
 
 //Literary work display page
@@ -246,7 +249,7 @@ app.get("/writing/:workId/", async function (request, response) {
   });
   if (work === null || work.published === false || work.published.website !== true) return response.status(404).end();
 
-  response.render("writingwork", {"work": work, "title": work.title, "metaDescription": md.render(work.synopsis.split("\n\n")[0]).replace( /(<([^>]+)>)/ig, '')});
+  response.render("writingwork", {"work": work, "title": work.title, "metaDescription": md.render(work.synopsis.split("\n\n")[0]).replace( /(<([^>]+)>)/ig, ''), "md": md});
 });
 
 //Post article
@@ -409,7 +412,7 @@ These terms and conditions effective as of 26 March 2020.`,
   }
 
   if (policies[request.params.policy] === undefined) return response.status(204).end();
-  else response.render("policy", policies[request.params.policy])
+  else response.render("policy", {"policy": policies[request.params.policy], "md": md})
 });
 
 //Redirects
