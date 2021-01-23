@@ -14,10 +14,11 @@
     "markdown-it": "^12.0.4",
     "mongodb": "^3.6.3",
     "nodemailer": "^6.4.17",
-    "pug": "^3.0.0"
+    "pug": "^3.0.0",
+    "pm2": "^4.5.1"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "pm2 start app.js"
   },
   "author": "Benjamin Hollon",
   "license": "GPL-3.0",

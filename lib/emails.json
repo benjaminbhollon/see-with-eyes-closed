@@ -2,6 +2,6 @@
   "new_subscriber": {
     "from": "Benjamin Hollon <benjamin@seewitheyesclosed.com>",
     "subject": "You've been subscribed!",
-    "html": "<h1>Success! You have been subscribed!</h1> <p>You are now receiving email updates from the See With Eyes Closed Blog. I'm so glad to have you! I try to release a blog post every week or so, though I often forget and occasionally have even more to say.</p> <p>If you didn't ask to be subscribed or you've reconsidered, you can easily <a href='https://seewitheyesclosed.com/blog/unsubscribe/?email=${subscribeObject.email}&token=${await bcrypt.hash(subscribeObject.email, 1)}'>unsubscribe</a>.</p>"
+    "html": "<h1>Success! You have been subscribed!</h1> <p>You are now receiving email updates from the See With Eyes Closed Blog. I'm so glad to have you! I try to release a blog post every week or so, though I often forget and occasionally have even more to say.</p> <p>If you didn't ask to be subscribed or you've reconsidered, you can easily <a href='https://seewitheyesclosed.com/blog/unsubscribe/?email=$EMAIL&token=$TOKEN'>unsubscribe</a>.</p>"
   }
 }

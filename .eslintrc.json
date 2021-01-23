@@ -12,6 +12,7 @@
     },
     "rules": {
         "max-len": 2,
-        "array-element-newline": 2
+        "array-element-newline": 2,
+        "no-console": 0
     }
 }

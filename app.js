@@ -115,21 +115,34 @@ app.get('/blog/article/:articleId/', async (request, response) => {
   }
 
   // Comment time ago
-  for (const c in article.comments) {
-    article.comments[c].time = `${timeSince(article.comments[c].time * 1000)} ago`;
+  let data = article.comments;
+  let keys = Object.keys(data);
+  let values = Object.values(data);
+  for (let i = 0; i < keys.length; i += 1) {
+    values[i].time = `${timeSince(values[i].time * 1000)} ago`;
   }
 
   // Similar Articles
+  // TECH DEBT: Use the database to select all by tag for performance.
   let related = [];
   let matches;
-  for (const a in articles) {
-    if (articles[a].id !== article.id) {
+
+  data = articles;
+  keys = Object.keys(data);
+  values = Object.values(data);
+
+  for (let i = 0; i < keys.length; i += 1) {
+    if (values[i].id !== article.id) {
       matches = 0;
-      for (const t in article.tags) {
-        if (articles[a].tags.indexOf(article.tags[t]) !== -1) matches += 1;
+
+      const matchingTags = values[i].tags;
+      const tagKeys = Object.keys(matchingTags);
+
+      for (let j = 0; j < tagKeys.length; j += 1) {
+        if (values[i].tags.indexOf(values[i].tags[j]) !== -1) matches += 1;
       }
-      articles[a].matches = matches;
-      related.push(articles[a]);
+      values[i].matches = matches;
+      related.push(values[i]);
     }
   }
   related.sort((a, b) => b.matches - a.matches);
@@ -214,11 +227,13 @@ app.post('/blog/subscribe/', async (request, response) => {
     from: emails.new_subscriber.from,
     to: subscribeObject.email,
     subject: emails.new_subscriber.subject,
-    html: emails.new_subscriber.html,
+    html: emails.new_subscriber.html
+      .replace('$EMAIL', subscribeObject.email)
+      .replace('$TOKEN', await bcrypt.hash(subscribeObject.email, 1)),
   };
   await transporter.sendMail(message, (err) => {
     if (err) {
-      console.log(err);
+      console.error(err);
     }
   });
 
@@ -332,7 +347,7 @@ app.post('/contact/send/', async (request, response) => {
   };
   await transporter.sendMail(message, (err) => {
     if (err) {
-      console.log(err);
+      console.error(err);
     }
   });
 
