@@ -18,7 +18,8 @@
     "pm2": "^4.5.1"
   },
   "scripts": {
-    "start": "pm2 start app.js"
+    "start": "pm2 start app.js --name SWEC",
+    "stop": "pm2 delete SWEC"
   },
   "author": "Benjamin Hollon",
   "license": "GPL-3.0",
