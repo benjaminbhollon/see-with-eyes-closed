@@ -345,7 +345,7 @@ app.get('/policies/:policy/', (request, response) => {
     privacy: {
       title: policies.privacy.title,
       description: policies.privacy.description,
-      markdown: policies.privacy.markdown,
+      markdown: policies.privacy.markdown.join('\n'),
       related: [
         {
           name: 'Cookie Policy',
@@ -360,7 +360,7 @@ app.get('/policies/:policy/', (request, response) => {
     cookies: {
       title: policies.cookies.title,
       description: policies.cookies.description,
-      markdown: policies.cookies.markdown,
+      markdown: policies.cookies.markdown.join('\n'),
       related: [
         {
           name: 'Privacy Policy',
@@ -375,7 +375,7 @@ app.get('/policies/:policy/', (request, response) => {
     terms: {
       title: policies.terms.title,
       description: policies.terms.description,
-      markdown: policies.terms.markdown,
+      markdown: policies.terms.markdown.join('\n'),
       related: [
         {
           name: 'Privacy Policy',
