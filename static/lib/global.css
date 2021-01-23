@@ -130,6 +130,8 @@ body[data-scrolled="down"] .main-nav {
   right: 0.75em;
   position: absolute;
   z-index: 11;
+  margin: 0;
+  width: min-content;
 }
 
 .main-nav__collapsible, #nav-collapse {
@@ -137,7 +139,18 @@ body[data-scrolled="down"] .main-nav {
   display: none;
 }
 
+@keyframes expand {
+  0% {
+    height: 0%;
+  }
+  100% {
+    height: 100%;
+  }
+}
+
 #nav-collapse:checked ~ .main-nav__collapsible {
+  animation: expand 0.75s;
+  overflow: hidden;
   display: block;
   position: fixed;
   top: 0;
@@ -145,6 +158,7 @@ body[data-scrolled="down"] .main-nav {
   left: 0;
   right: 0;
   background-color: #fff;
+  border-bottom: 2px solid #000;
 }
 
 .main-nav__collapsible a {

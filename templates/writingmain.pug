@@ -26,7 +26,7 @@ block content
                 span.tag() #{tag}
                 |
                 |
-          a.listing__button--red(href="javascript:more('" + work.id + "')") More
+          span.listing__button--red(onclick=(work.published !== false ? "javascript:more('" + work.id + "')" : "javascript:none()"))= (work.published !== false ? "More" : "Unpublished")
         .listing__modal(data-id=work.id)
           a.listing__hide(href="javascript:close('" + work.id + "')") ✕
           if work.image

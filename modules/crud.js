@@ -2,7 +2,7 @@ const { MongoClient } = require('mongodb'); // Import MongoDB
 const config = require('../config.json');
 
 // Create document
-exports.insertDocument = async function (collection, value) {
+exports.insertDocument = async function insertDocument(collection, value) {
   const uri = config.mongodbURI;
 
   const client = new MongoClient(uri, { useUnifiedTopology: true });
@@ -21,7 +21,7 @@ exports.insertDocument = async function (collection, value) {
 };
 
 // Read document
-exports.findDocument = async function (collection, filter) {
+exports.findDocument = async function findDocument(collection, filter) {
   const uri = config.mongodbURI;
 
   const client = new MongoClient(uri, { useUnifiedTopology: true });
@@ -40,7 +40,7 @@ exports.findDocument = async function (collection, filter) {
 };
 
 // Read multiple documents
-exports.findMultipleDocuments = async function (collection, filter) {
+exports.findMultipleDocuments = async function findMultipleDocuments(collection, filter) {
   const uri = config.mongodbURI;
 
   const client = new MongoClient(uri, { useUnifiedTopology: true });
@@ -59,7 +59,7 @@ exports.findMultipleDocuments = async function (collection, filter) {
 };
 
 // Update document
-exports.updateDocument = async function (collection, filter, set) {
+exports.updateDocument = async function updateDocument(collection, filter, set) {
   const uri = config.mongodbURI;
 
   const client = new MongoClient(uri, { useUnifiedTopology: true });
@@ -78,7 +78,7 @@ exports.updateDocument = async function (collection, filter, set) {
 };
 
 // Update multiple documents
-exports.updateMultipleDocuments = async function (collection, filter, set) {
+exports.updateMultipleDocuments = async function updateMultipleDocuments(collection, filter, set) {
   const uri = config.mongodbURI;
 
   const client = new MongoClient(uri, { useUnifiedTopology: true });
@@ -97,7 +97,7 @@ exports.updateMultipleDocuments = async function (collection, filter, set) {
 };
 
 // Delete document
-exports.deleteDocument = async function (collection, filter) {
+exports.deleteDocument = async function deleteDocument(collection, filter) {
   const uri = config.mongodbURI;
 
   const client = new MongoClient(uri, { useUnifiedTopology: true });
@@ -116,7 +116,7 @@ exports.deleteDocument = async function (collection, filter) {
 };
 
 // Delete multiple documents
-exports.deleteMultipleDocuments = async function (collection, filter) {
+exports.deleteMultipleDocuments = async function deleteMultipleDocuments(collection, filter) {
   const uri = config.mongodbURI;
 
   const client = new MongoClient(uri, { useUnifiedTopology: true });

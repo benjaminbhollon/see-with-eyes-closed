@@ -1,0 +1,11 @@
+{
+  "already_subscribed": "You're already subscribed. If you haven't been receiving updates, <a href='/contact/'>contact me</a> and we'll figure it out.",
+  "unsubscribe_success": {
+    "title": "Unsubscribe",
+    "message": "<a href='https://xkcd.com/2257/'><img alt='xkcd Unsubscribe Message' src='https://imgs.xkcd.com/comics/unsubscribe_message.png' title=\"A mix of the two is even worse: 'Thanks for unsubscribing and helping us pare this list down to reliable supporters.'\"></a><p><cite>- Randall Munroe, xkcd ([CC BY-NC 2.5](https://creativecommons.org/licenses/by-nc/2.5/))</cite></p><p>Or was that a mistake? You can [resubscribe](/blog/subscribe/)!</p>"
+  },
+  "unsubscribe_error": {
+    "title": "418 Error: I'm a teapot",
+    "message": "<article>\n\n# 418 Error: I'm a teapot\n\n_The resulting entity body may be short and stout_\n\nWe're honestly not sure what went wrong, but evidence suggests that you tried to brew coffee in a teapot. Make sure you got here by clicking \"Unsubscribe\" in one of my emails. If that doesn't work, [contact me](/contact/) and I'll try to work it out.</article>"
+  }
+}
