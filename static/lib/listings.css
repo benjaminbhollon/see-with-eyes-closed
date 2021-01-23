@@ -39,7 +39,7 @@
 
 .listing__modal {
   background-color: #fff;
-  border-radius: 1em;
+  border-radius: .5em;
   position: fixed;
   width: 90%;
   height: 90%;
@@ -102,6 +102,7 @@
   margin: 0.5em;
   background-color: #000;
   color: #fff;
+  border-radius: .5em;
 }
 
 .listing__button:hover, .listing__button--red:hover, .listing__button--blue:hover, .listing__button--black:hover {
@@ -110,7 +111,8 @@
 }
 
 .listing__button--red {
-  background-image: linear-gradient(to top right, red, maroon);
+  /*background-image: linear-gradient(to top right, red, maroon);*/
+  background-color: maroon;
 }
 
 .listing__button--blue {

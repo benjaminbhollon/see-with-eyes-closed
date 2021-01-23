@@ -1,303 +1,316 @@
-"use strict";
-
-//Import modules
-const express = require("express");
-const MongoClient = require('mongodb').MongoClient;
+// Import modules
+const express = require('express');
+const { MongoClient } = require('mongodb');
 const nodemailer = require('nodemailer');
-const bcrypt = require("bcryptjs");
-const session = require("express-session");
+const bcrypt = require('bcryptjs');
+const session = require('express-session');
 const MarkdownIt = require('markdown-it');
-var md = new MarkdownIt({"html": true});
-const fetch = require('isomorphic-fetch'), bodyParser = require('body-parser');
+
+const md = new MarkdownIt({ html: true });
+const fetch = require('isomorphic-fetch'); const
+  bodyParser = require('body-parser');
 const compression = require('compression');
 const basicAuth = require('express-basic-auth');
 
-//Import config
+// Import config
 const config = require('./config.json');
 const directory = require('./directory.json');
 
-//Import local modules
+// Import local modules
 const crud = require('./modules/crud');
 const validate = require('./modules/validate');
 
-var app = express();
-var transporter = nodemailer.createTransport(config.nodemailTransport);
+const app = express();
+const transporter = nodemailer.createTransport(config.nodemailTransport);
 
-//Set up middleware
+// Set up middleware
 app.use(express.static('static'));
-app.use(session({"secret": config.sessionSecret, "resave": false, "saveUninitialized": false}));
-app.use(express.urlencoded({extended: true}));
+app.use(session({ secret: config.sessionSecret, resave: false, saveUninitialized: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(compression());
-app.use("/admin/", basicAuth({"users": config.admins, "challenge": true}));
+app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
 app.set('view engine', 'pug');
 app.set('views', './templates');
-var bcryptSalt;
-bcrypt.genSalt(3, function (err, salt) {
+let bcryptSalt;
+bcrypt.genSalt(3, (err, salt) => {
   bcryptSalt = salt;
 });
 
-//Templates in directory
-app.get('*', function (request, response, next) {
+// Templates in directory
+app.get('*', (request, response, next) => {
   if (directory[request.path] !== undefined) {
-    return response.render(directory[request.path], {"parameters": request.query, "config": config});
+    return response.render(directory[request.path], { parameters: request.query, config });
   }
   if (next) next();
   else response.status(404).end();
 });
 
-//Blog homepage
-app.get("/blog/", async function (request,  response) {
-  var articles = [];
-  await crud.findMultipleDocuments("articles", {}).then(result => {
+// Blog homepage
+app.get('/blog/', async (request, response) => {
+  let articles = [];
+  await crud.findMultipleDocuments('articles', {}).then((result) => {
     articles = result;
   });
 
-  articles.sort(function(a,b){
-    return new Date(b.date) - new Date(a.date);
+  articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  const recentHTML = JSON.parse(JSON.stringify(articles));
+
+  articles.sort((a, b) => b.hits - a.hits);
+
+  const popularHTML = JSON.parse(JSON.stringify(articles.slice(0, 5)));
+
+  response.render('blogmain', {
+    recent: recentHTML, popular: popularHTML, parameters: request.query, md,
   });
-
-  var recentHTML = JSON.parse(JSON.stringify(articles));
-
-  articles.sort(function(a,b){
-    return b.hits - a.hits;
-  });
-
-  var popularHTML = JSON.parse(JSON.stringify(articles.slice(0, 5)));
-
-  response.render('blogmain', {"recent": recentHTML, "popular": popularHTML, "parameters": request.query, "md": md});
 });
 
-//Blog articles
-app.get("/blog/article/:articleId/", async function (request, response) {
-  var article;
-  var articles;
-  await crud.findMultipleDocuments("articles", {}).then(result => {
-    article = result.find(article => article.id.toUpperCase() === request.params.articleId.toUpperCase());
+// Blog articles
+app.get('/blog/article/:articleId/', async (request, response) => {
+  let article;
+  let articles;
+  await crud.findMultipleDocuments('articles', {}).then((result) => {
+    article = result.find((article) => article.id.toUpperCase() === request.params.articleId.toUpperCase());
     articles = result;
   });
   if (article === undefined) return response.status(404).end();
 
   if (!request.session.viewed) {
     article.hits++;
-    crud.updateDocument("articles", {"id": new RegExp("^" + request.params.articleId + "$", "i")}, {"hits": article.hits});
+    crud.updateDocument('articles', { id: new RegExp(`^${request.params.articleId}$`, 'i') }, { hits: article.hits });
     request.session.viewed = true;
   }
 
   function timeSince(date) {
-    var seconds = Math.floor((new Date() - date) / 1000);
+    const seconds = Math.floor((new Date() - date) / 1000);
 
-    var interval = seconds / 31536000;
+    let interval = seconds / 31536000;
 
     if (interval > 1) {
-      return Math.floor(interval) + " years";
+      return `${Math.floor(interval)} years`;
     }
     interval = seconds / 2592000;
     if (interval > 1) {
-      return Math.floor(interval) + " months";
+      return `${Math.floor(interval)} months`;
     }
     interval = seconds / 86400;
     if (interval > 1) {
-      return Math.floor(interval) + " days";
+      return `${Math.floor(interval)} days`;
     }
     interval = seconds / 3600;
     if (interval > 1) {
-      return Math.floor(interval) + " hours";
+      return `${Math.floor(interval)} hours`;
     }
     interval = seconds / 60;
     if (interval > 1) {
-      return Math.floor(interval) + " minutes";
+      return `${Math.floor(interval)} minutes`;
     }
-    return Math.floor(seconds) + " seconds";
+    return `${Math.floor(seconds)} seconds`;
   }
 
-  //Comment time ago
-  for (var c in article.comments) {
-    article.comments[c].time = timeSince(article.comments[c].time * 1000) + " ago";
+  // Comment time ago
+  for (const c in article.comments) {
+    article.comments[c].time = `${timeSince(article.comments[c].time * 1000)} ago`;
   }
 
-  //Similar Articles
-  var related = [];
-  var matches;
-  for (var a in articles) {
+  // Similar Articles
+  let related = [];
+  let matches;
+  for (const a in articles) {
     if (articles[a].id === article.id) continue;
     matches = 0;
-    for (var t in article.tags) {
+    for (const t in article.tags) {
       if (articles[a].tags.indexOf(article.tags[t]) !== -1) matches++;
     }
     articles[a].matches = matches;
     related.push(articles[a]);
   }
-  related.sort(function (a,b) {
-    return b.matches - a.matches;
-  });
+  related.sort((a, b) => b.matches - a.matches);
   related = related.slice(0, 5);
 
-  response.render('blogarticle', {"article": article, "related": related, "siteKey": config.reCAPTCHApublic, "parameters": request.query, "md": md});
+  response.render('blogarticle', {
+    article, related, siteKey: config.reCAPTCHApublic, parameters: request.query, md,
+  });
 });
 
-//Add comment
-app.post("/blog/article/:articleId/comment", async function (request, response) {
-  if (!request.body.name || !request.body.comment || (request.body.comment && request.body.comment.length > 512) || (request.body.name && request.body.name.length > 128)) return response.redirect(302, "/blog/article/" + request.params.articleId + "/#comment-form?err=" + 400 + "&name=" + encodeURIComponent(request.body.name) + "&comment=" + encodeURIComponent(request.body.comment));
-  var reCAPTCHAvalid = false;
-  await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${config.reCAPTCHAprivate}&response=${request.body["g-recaptcha-response"]}`, {
-    method: 'post'
-  }).then(result => result.json()).then(google_response => reCAPTCHAvalid = google_response);
-  if (!reCAPTCHAvalid) return response.redirect(302, "/blog/article/" + request.params.articleId + "/#comment-form?err=" + 401 + request.params.articleId + "&name=" + encodeURIComponent(request.body.name) + "&comment=" + encodeURIComponent(request.body.comment));
+// Add comment
+app.post('/blog/article/:articleId/comment', async (request, response) => {
+  if (!request.body.name || !request.body.comment || (request.body.comment && request.body.comment.length > 512) || (request.body.name && request.body.name.length > 128)) return response.redirect(302, `/blog/article/${request.params.articleId}/#comment-form?err=${400}&name=${encodeURIComponent(request.body.name)}&comment=${encodeURIComponent(request.body.comment)}`);
+  let reCAPTCHAvalid = false;
+  await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${config.reCAPTCHAprivate}&response=${request.body['g-recaptcha-response']}`, {
+    method: 'post',
+  }).then((result) => result.json()).then((google_response) => reCAPTCHAvalid = google_response);
+  if (!reCAPTCHAvalid) return response.redirect(302, `/blog/article/${request.params.articleId}/#comment-form?err=${401}${request.params.articleId}&name=${encodeURIComponent(request.body.name)}&comment=${encodeURIComponent(request.body.comment)}`);
 
-  var article;
-  await crud.findDocument("articles", {"id": request.params.articleId}).then(result => {
+  let article;
+  await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
     article = result;
   });
   if (article === null) response.status(404).end();
 
   if (request.session.identifier == undefined) request.session.identifier = Math.floor(Math.random() * 8999999) + 1000000;
-  article.comments.push({"identifier": await bcrypt.hash(request.session.identifier.toString(), bcryptSalt), "author": request.body.name, "message": request.body.comment, "time": Math.floor(Date.now() / 1000)});
-  crud.updateDocument("articles", {"id": request.params.articleId.toString()}, {"comments": article.comments});
+  article.comments.push({
+    identifier: await bcrypt.hash(request.session.identifier.toString(), bcryptSalt), author: request.body.name, message: request.body.comment, time: Math.floor(Date.now() / 1000),
+  });
+  crud.updateDocument('articles', { id: request.params.articleId.toString() }, { comments: article.comments });
 
-  response.redirect(302, "/blog/article/" + request.params.articleId + "/#comment-form");
+  response.redirect(302, `/blog/article/${request.params.articleId}/#comment-form`);
 });
 
-//Subscribe
-app.post("/blog/subscribe/", async function (request, response) {
-  if (!validate.email(request.body.email)) return response.render("subscribe", {"success": false, "message": "You must provide a valid email address."});
+// Subscribe
+app.post('/blog/subscribe/', async (request, response) => {
+  if (!validate.email(request.body.email)) return response.render('subscribe', { success: false, message: 'You must provide a valid email address.' });
 
-  var check;
-  await crud.findDocument("subscribers", {"email": request.body.email.toLowerCase()}).then(result => {
+  let check;
+  await crud.findDocument('subscribers', { email: request.body.email.toLowerCase() }).then((result) => {
     check = result;
   });
-  if (check !== null) return response.render("subscribe", {"success": false, "message": "You're already subscribed. If you haven't been receiving updates, <a href='/contact/'>contact me</a> and we'll figure it out."});
+  if (check !== null) return response.render('subscribe', { success: false, message: "You're already subscribed. If you haven't been receiving updates, <a href='/contact/'>contact me</a> and we'll figure it out." });
 
-  var subscribeObject = {
-    "name": request.body.name.toString(),
-    "email": request.body.email.toLowerCase(),
-    "subscribedTo": {
-      "blog": true
-    }
-  }
+  const subscribeObject = {
+    name: request.body.name.toString(),
+    email: request.body.email.toLowerCase(),
+    subscribedTo: {
+      blog: true,
+    },
+  };
 
-  await crud.insertDocument("subscribers", subscribeObject);
+  await crud.insertDocument('subscribers', subscribeObject);
 
-  var message = {
+  const message = {
     from: 'Benjamin Hollon <benjamin@seewitheyesclosed.com>',
     to: subscribeObject.email,
     subject: "You've been subscribed!",
     html: `<h1>Success! You have been subscribed!</h1>
     <p>You are now receiving email updates from the See With Eyes Closed Blog. I'm so glad to have you! I try to release a blog post every week or so, though I often forget and occasionally have even more to say.
 
-    <p>If you didn't ask to be subscribed or you've reconsidered, you can easily <a href='https://seewitheyesclosed.com/blog/unsubscribe/?email=` + subscribeObject.email +`&token=` + (await bcrypt.hash(subscribeObject.email, 1)) + `'>unsubscribe</a>.</p>`
+    <p>If you didn't ask to be subscribed or you've reconsidered, you can easily <a href='https://seewitheyesclosed.com/blog/unsubscribe/?email=${subscribeObject.email}&token=${await bcrypt.hash(subscribeObject.email, 1)}'>unsubscribe</a>.</p>`,
   };
-  await transporter.sendMail(message, function(err) {
+  await transporter.sendMail(message, (err) => {
     if (err) {
-      console.log(err)
+      console.log(err);
     }
   });
 
-  response.redirect(302, "/blog/?justSubscribed=true");
+  response.redirect(302, '/blog/?justSubscribed=true');
 });
 
-//Unsubscribe
-app.get("/blog/unsubscribe/", async function (request, response) {
-  var title = "Unsubscribe";
-  var message = "<a href='https://xkcd.com/2257/'><img alt='xkcd Unsubscribe Message' src='https://imgs.xkcd.com/comics/unsubscribe_message.png' title=\"A mix of the two is even worse: 'Thanks for unsubscribing and helping us pare this list down to reliable supporters.'\"></a><p><cite>- Randall Munroe, xkcd ([CC BY-NC 2.5](https://creativecommons.org/licenses/by-nc/2.5/))</cite></p><p>Or was that a mistake? You can [resubscribe](/blog/subscribe/)!</p>";
-  var isValid = false;
-  await bcrypt.compare(request.query.email, request.query.token).then(result => {
+// Unsubscribe
+app.get('/blog/unsubscribe/', async (request, response) => {
+  let title = 'Unsubscribe';
+  let message = "<a href='https://xkcd.com/2257/'><img alt='xkcd Unsubscribe Message' src='https://imgs.xkcd.com/comics/unsubscribe_message.png' title=\"A mix of the two is even worse: 'Thanks for unsubscribing and helping us pare this list down to reliable supporters.'\"></a><p><cite>- Randall Munroe, xkcd ([CC BY-NC 2.5](https://creativecommons.org/licenses/by-nc/2.5/))</cite></p><p>Or was that a mistake? You can [resubscribe](/blog/subscribe/)!</p>";
+  let isValid = false;
+  await bcrypt.compare(request.query.email, request.query.token).then((result) => {
     isValid = result;
   });
 
   if (!isValid) {
     title = "418 Error: I'm a teapot";
-    message = "<article>\n\n# 418 Error: I'm a teapot\n\n_The resulting entity body may be short and stout_\n\nWe're honestly not sure what went wrong, but evidence suggests that you tried to brew coffee in a teapot. Make sure you got here by clicking \"Unsubscribe\" in one of my emails. If that doesn't work, [contact me](/contact/) and I'll try to work it out.</article>"
+    message = "<article>\n\n# 418 Error: I'm a teapot\n\n_The resulting entity body may be short and stout_\n\nWe're honestly not sure what went wrong, but evidence suggests that you tried to brew coffee in a teapot. Make sure you got here by clicking \"Unsubscribe\" in one of my emails. If that doesn't work, [contact me](/contact/) and I'll try to work it out.</article>";
   } else {
-    await crud.deleteDocument("subscribers", {"email": request.query.email.toLowerCase()});
+    await crud.deleteDocument('subscribers', { email: request.query.email.toLowerCase() });
   }
 
-  response.render("layout", {title: title, content: message});
+  response.render('layout', { title, content: message });
 });
 
-//Projects homepage
-app.get("/projects/", async function (request, response) {
-  var projects = [];
-  await crud.findMultipleDocuments("projects", {}).then(result => {
+// Projects homepage
+app.get('/projects/', async (request, response) => {
+  let projects = [];
+  await crud.findMultipleDocuments('projects', {}).then((result) => {
     projects = result;
   });
-  response.render("projectsmain", {"projects": projects, "md": md});
+  response.render('projectsmain', { projects, md });
 });
 
-//Writing homepage
-app.get("/writing/", async function (request, response) {
-  var writing = [];
-  await crud.findMultipleDocuments("writing", {}).then(result => {
+// Writing homepage
+app.get('/writing/', async (request, response) => {
+  let writing = [];
+  await crud.findMultipleDocuments('writing', {}).then((result) => {
     writing = result;
   });
 
-  //Sort by published
-  writing.sort(function (a,b) {
+  // Sort by published
+  writing.sort((a, b) => {
     if (a.published === b.published || (a.published !== false && b.published !== false)) return 0;
-    else if (a.published === false) return 1
+    if (a.published === false) return 1;
     return -1;
   });
 
-  response.render("writingmain", {"writing": writing, "md": md});
+  response.render('writingmain', { writing, md });
 });
 
-//Literary work display page
-app.get("/writing/:workId/", async function (request, response) {
-  var work = {};
-  await crud.findDocument("writing", {"id": request.params.workId}).then(result => {
+// Literary work display page
+app.get('/writing/:workId/', async (request, response) => {
+  let work = {};
+  await crud.findDocument('writing', { id: request.params.workId }).then((result) => {
     work = result;
   });
   if (work === null || work.published === false || work.published.website !== true) return response.status(404).end();
 
-  response.render("writingwork", {"work": work, "title": work.title, "metaDescription": md.render(work.synopsis.split("\n\n")[0]).replace( /(<([^>]+)>)/ig, ''), "md": md});
+  response.render('writingwork', {
+    work, title: work.title, metaDescription: md.render(work.synopsis.split('\n\n')[0]).replace(/(<([^>]+)>)/ig, ''), md,
+  });
 });
 
-//Post article
-app.post("/admin/post/article/", async function (request, response) {
-  var today = new Date();
-  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  var article = {
+// Post article
+app.post('/admin/post/article/', async (request, response) => {
+  const today = new Date();
+  const months = ['January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'];
+  const article = {
     id: request.body.id,
     title: request.body.title,
     author: request.body.author,
-    date: months[today.getMonth()] + " " + today.getDate() + ", " + today.getFullYear(),
+    date: `${months[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`,
     image: request.body.image.toString(),
     summary: request.body.summary,
     content: request.body.content,
-    tags: request.body.tags.split(",").map(tag => tag.trim()),
+    tags: request.body.tags.split(',').map((tag) => tag.trim()),
     comments: (request.body.comments ? [] : false),
-    hits: 0
+    hits: 0,
   };
 
-  await crud.insertDocument("articles", article);
+  await crud.insertDocument('articles', article);
 
-  response.redirect(302, "/blog/article/" + request.body.id + "/");
+  response.redirect(302, `/blog/article/${request.body.id}/`);
 });
 
-//Contact me
-app.post("/contact/send/", async function (request, response) {
-  var message = {
+// Contact me
+app.post('/contact/send/', async (request, response) => {
+  const message = {
     from: 'noreply@seewitheyesclosed.com',
     to: config.email,
     subject: request.body.subject.toString(),
-    text: "Message from " + request.body.email.toString() + ":" + request.body.message.toString()
+    text: `Message from ${request.body.email.toString()}:${request.body.message.toString()}`,
   };
-  await transporter.sendMail(message, function(err) {
+  await transporter.sendMail(message, (err) => {
     if (err) {
-      console.log(err)
+      console.log(err);
     }
   });
 
-  response.redirect(302, "/contact/?success=true");
+  response.redirect(302, '/contact/?success=true');
 });
 
-//Policies
-app.get("/policies/:policy/", function (request, response) {
-  var policies = {
-    "privacy": {
-      "title": "Privacy Policy",
-      "description": "The privacy policy for the See With Eyes Closed website and blog.",
-      "markdown": `# Privacy Policy
+// Policies
+app.get('/policies/:policy/', (request, response) => {
+  const policies = {
+    privacy: {
+      title: 'Privacy Policy',
+      description: 'The privacy policy for the See With Eyes Closed website and blog.',
+      markdown: `# Privacy Policy
 I care about your privacy. I promise that no matter what you do on this website, I will be doing the most I possibly can to ensure your safety.
 
 I only collect information you give me with the understanding that I will store it and only use it for the reason you give it to me. I don't use any creepy trackers or analytics programs to gather information about you. The only information I gather is how many people visit each article. I don't even keep track of who it is that visits them.
@@ -309,15 +322,14 @@ That being said, I may have to use scripts from other websites on occasion (incl
 If you have any concerns about your data or privacy, please [contact me](/contact/) and I'll try to assist you.
 
 This policy is effective as of March 26 2020.`,
-      "related": [
-        {"name": "Cookie Policy", "link": "/policies/cookies/"},
-        {"name": "Terms of Use", "link": "/policies/terms/"}
-      ]
+      related: [
+        { name: 'Cookie Policy', link: '/policies/cookies/' }, { name: 'Terms of Use', link: '/policies/terms/' },
+      ],
     },
-    "cookies": {
-      "title": "Cookie Policy",
-      "description": "The cookie policy for the See With Eyes Closed website and blog.",
-      "markdown": `# Cookie Policy
+    cookies: {
+      title: 'Cookie Policy',
+      description: 'The cookie policy for the See With Eyes Closed website and blog.',
+      markdown: `# Cookie Policy
 
 ### What Are Cookies?
 Cookies are small text files that websites store on your computer to help remember information about you (usually to make your experience better). For example, if you ever click "remember me" on a login page, the website uses a cookie to remember you.
@@ -340,15 +352,14 @@ I hope this cleared up any questions you had. To sum up: I hardly use cookies, a
 If you still have questions, you can [contact me](/contact/) and I'll work to help you resolve them.
 
 This policy is effective as of March 26 2020.`,
-      "related": [
-        {"name": "Privacy Policy", "link": "/policies/privacy/"},
-        {"name": "Terms of Use", "link": "/policies/terms/"}
-      ]
+      related: [
+        { name: 'Privacy Policy', link: '/policies/privacy/' }, { name: 'Terms of Use', link: '/policies/terms/' },
+      ],
     },
-    "terms": {
-      "title": "Terms of Use",
-      "description": "The terms of use for the See With Eyes Closed website and blog.",
-      "markdown": `# Terms of Use
+    terms: {
+      title: 'Terms of Use',
+      description: 'The terms of use for the See With Eyes Closed website and blog.',
+      markdown: `# Terms of Use
 ### 1. Terms
 
 First, I have to use some fancy legal jargon.
@@ -404,24 +415,22 @@ See With Eyes Closed may revise these terms of service for its website at any ti
 I may have to change this from time to time and I may not be able to contact you. But you don't need to worry about that, because you are only responsible for the terms as they are when you are browsing.
 
 These terms and conditions effective as of 26 March 2020.`,
-      "related": [
-        {"name": "Privacy Policy", "link": "/policies/privacy/"},
-        {"name": "Cookie Policy", "link": "/policies/cookies/"}
-      ]
-    }
-  }
+      related: [
+        { name: 'Privacy Policy', link: '/policies/privacy/' }, { name: 'Cookie Policy', link: '/policies/cookies/' },
+      ],
+    },
+  };
 
   if (policies[request.params.policy] === undefined) return response.status(204).end();
-  else response.render("policy", {"policy": policies[request.params.policy], "md": md})
+  response.render('policy', { policy: policies[request.params.policy], md });
 });
 
-//Redirects
-app.get("/projects/learnclef/", function (request, response) {
-  response.redirect(301, "/projects/learn-clef/")
+// Redirects
+app.get('/projects/learnclef/', (request, response) => {
+  response.redirect(301, '/projects/learn-clef/');
 });
 
-
-//Listen on port from config.json or process.env.PORT (for the heroku test)
+// Listen on port from config.json or process.env.PORT (for the heroku test)
 app.listen(process.env.PORT || config.port, () => {
- console.log("Server running on port " + (process.env.port || config.port));
+  console.log(`Server running on port ${process.env.port || config.port}`);
 });
