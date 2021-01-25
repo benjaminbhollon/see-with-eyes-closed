@@ -26,21 +26,19 @@ block content
                 span.tag() #{tag}
                 |
                 |
-          a.listing__button--red(href="javascript:more('" + work.id + "')") More
-        .listing__modal(data-id=work.id)
-          a.listing__hide(href="javascript:close('" + work.id + "')") ✕
-          if work.image
-            img.listing__banner(src=work.image,alt="Banner Image")
-          h1 #{work.title}
-          p.listing__author
-            cite by #{work.author}
-          != md.render(work.synopsis)
-          if work.excerpt !== false
-            details.listing__excerpt
-              summary Read Exerpt
-              != md.render(work.excerpt)
-          if work.published !== false
+          span.listing__button--red(onclick=(work.published !== false ? "javascript:more('" + work.id + "')" : ""))= (work.published !== false ? "More" : "Unpublished")
+        if work.published !== false
+          .listing__modal(data-id=work.id)
+            a.listing__hide(href="javascript:close('" + work.id + "')") ✕
+            if work.image
+              img.listing__banner(src=work.image,alt="Banner Image")
+            h1 #{work.title}
+            p.listing__author
+              cite by #{work.author}
+            != md.render(work.synopsis)
+            if work.excerpt !== false
+              details.listing__excerpt
+                summary Read Exerpt
+                != md.render(work.excerpt)
             a.listing__button--blue(href=work.published.link, target="_blank") Read
-          else if work.published === false
-            p: em Not yet published. Status: #{work.status}.
-        .listing__mask
+          .listing__mask

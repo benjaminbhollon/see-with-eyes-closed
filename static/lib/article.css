@@ -1,5 +1,5 @@
 .article, .related, .tags, .comments {
-  width: 100%;
+  width: 90%;
   max-width: 700px;
   display: inline-block;
   text-align: left;
