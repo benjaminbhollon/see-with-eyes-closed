@@ -12,7 +12,7 @@ exports.insertDocument = async function insertDocument(collection, value) {
     await client.connect();
 
     // Insert document
-    await client.db('swec-core').collection(collection).insertOne(value);
+    return await client.db('swec-core').collection(collection).insertOne(value);
   } catch (e) {
     console.error(e);
     return false;
@@ -34,7 +34,7 @@ exports.findDocument = async function findDocument(collection, filter) {
     await client.connect();
 
     // Find document
-    await client.db('swec-core').collection(collection).findOne(filter);
+    return await client.db('swec-core').collection(collection).findOne(filter);
   } catch (e) {
     console.error(e);
     return false;
@@ -56,7 +56,7 @@ exports.findMultipleDocuments = async function findMultipleDocuments(collection,
     await client.connect();
 
     // Find documents
-    await client.db('swec-core').collection(collection).find(filter).toArray();
+    return await client.db('swec-core').collection(collection).find(filter).toArray();
   } catch (e) {
     console.error(e);
     return false;
@@ -78,7 +78,7 @@ exports.updateDocument = async function updateDocument(collection, filter, set) 
     await client.connect();
 
     // Update document
-    await client.db('swec-core').collection(collection).updateOne(filter, { $set: set });
+    return await client.db('swec-core').collection(collection).updateOne(filter, { $set: set });
   } catch (e) {
     console.error(e);
     return false;
@@ -100,7 +100,7 @@ exports.updateMultipleDocuments = async function updateMultipleDocuments(collect
     await client.connect();
 
     // Update document
-    await client.db('swec-core').collection(collection).updateMany(filter, { $set: set });
+    return await client.db('swec-core').collection(collection).updateMany(filter, { $set: set });
   } catch (e) {
     console.error(e);
     return false;
@@ -122,7 +122,7 @@ exports.deleteDocument = async function deleteDocument(collection, filter) {
     await client.connect();
 
     // Delete document
-    await client.db('swec-core').collection(collection).deleteOne(filter);
+    return await client.db('swec-core').collection(collection).deleteOne(filter);
   } catch (e) {
     console.error(e);
     return false;
@@ -144,7 +144,7 @@ exports.deleteMultipleDocuments = async function deleteMultipleDocuments(collect
     await client.connect();
 
     // Find document
-    await client.db('swec-core').collection(collection).deleteMany(filter);
+    return await client.db('swec-core').collection(collection).deleteMany(filter);
   } catch (e) {
     console.error(e);
     return false;
