@@ -19,8 +19,6 @@ exports.insertDocument = async function insertDocument(collection, value) {
   } finally {
     await client.close();
   }
-
-  return true;
 };
 
 // Read document
@@ -41,8 +39,6 @@ exports.findDocument = async function findDocument(collection, filter) {
   } finally {
     await client.close();
   }
-
-  return true;
 };
 
 // Read multiple documents
@@ -63,8 +59,6 @@ exports.findMultipleDocuments = async function findMultipleDocuments(collection,
   } finally {
     await client.close();
   }
-
-  return true;
 };
 
 // Update document
@@ -85,8 +79,6 @@ exports.updateDocument = async function updateDocument(collection, filter, set) 
   } finally {
     await client.close();
   }
-
-  return true;
 };
 
 // Update multiple documents
@@ -107,8 +99,6 @@ exports.updateMultipleDocuments = async function updateMultipleDocuments(collect
   } finally {
     await client.close();
   }
-
-  return true;
 };
 
 // Delete document
@@ -129,8 +119,6 @@ exports.deleteDocument = async function deleteDocument(collection, filter) {
   } finally {
     await client.close();
   }
-
-  return true;
 };
 
 // Delete multiple documents
@@ -151,6 +139,4 @@ exports.deleteMultipleDocuments = async function deleteMultipleDocuments(collect
   } finally {
     await client.close();
   }
-
-  return true;
 };
