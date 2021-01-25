@@ -26,7 +26,7 @@ block content
                 span.tag() #{tag}
                 |
                 |
-          span.listing__button--red(onclick=(work.published !== false ? "javascript:more('" + work.id + "')" : "javascript:none()"))= (work.published !== false ? "More" : "Unpublished")
+          span.listing__button--red(onclick=(work.published !== false ? "javascript:more('" + work.id + "')" : ""))= (work.published !== false ? "More" : "Unpublished")
         if work.published !== false
           .listing__modal(data-id=work.id)
             a.listing__hide(href="javascript:close('" + work.id + "')") ✕
@@ -40,8 +40,5 @@ block content
               details.listing__excerpt
                 summary Read Exerpt
                 != md.render(work.excerpt)
-            if work.published !== false
-              a.listing__button--blue(href=work.published.link, target="_blank") Read
-            else if work.published === false
-              p: em Not yet published. Status: #{work.status}.
+            a.listing__button--blue(href=work.published.link, target="_blank") Read
           .listing__mask

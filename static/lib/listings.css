@@ -19,11 +19,11 @@
 
 .listing__card.listing__unpublished {
   opacity: 0.5;
-  transition: opacity 0.5s;
 }
 
 .listing__card.listing__unpublished .listing__button--red {
   background-color: #888888;
+  cursor: not-allowed;
 }
 
 .listing__card .listing__button--red {
