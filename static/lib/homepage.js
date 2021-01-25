@@ -106,13 +106,17 @@ function load() {
     recentlyRead.push({ title: book.children[0].innerText, link: book.children[0].href });
   });
 
-  for (const b in recentlyRead) {
-    const book = document.createElement('A');
-    book.innerHTML = `<span>${recentlyRead[b].title}</span>`;
-    book.href = recentlyRead[b].link;
-    book.className = 'book';
-    book.rel = 'nofollow noopener';
-    book.target = '_blank';
+  for (let b = 0; b < 50; b++) {
+    const book = document.createElement("A");
+    if (recentlyRead[b]) {
+      book.innerHTML =  `<span>${recentlyRead[b].title}</span>`;
+      book.href = recentlyRead[b].link;
+      book.rel = 'nofollow noopener';
+      book.target = '_blank';
+    } else {
+      book.innerHTML =  `<span>&nbsp;</span>`;
+    }
+    book.className = "book";
     let color = (Math.random() * 2 ** 24 << 0);
     while (color.toString(16).length < 6) {
       color = (Math.random() * 2 ** 24 << 0);
