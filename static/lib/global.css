@@ -130,6 +130,8 @@ body[data-scrolled="down"] .main-nav {
   right: 0.75em;
   position: absolute;
   z-index: 11;
+  width: initial;
+  margin: 0;
 }
 
 .main-nav__collapsible, #nav-collapse {

@@ -122,15 +122,15 @@ block append head
 
     /* Code editing */
     #code-editor, .code-result {
-      width: 50%;
-      height: 100vh;
+      width: 100%;
+      height: 50vh;
       position: absolute;
-      top: 0;
       margin: 0;
     }
 
     #code-editor {
       left: 0;
+      top: 0;
       word-wrap: break-word;
       overflow: auto;
       text-align: left;
@@ -140,8 +140,22 @@ block append head
     }
 
     .code-result {
-      right: 0;
       border: none;
+      bottom: 0;
+    }
+    
+    @media (orientation: landscape) {
+      #code-editor, .code-result {
+        width: 50%;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+      }
+
+      .code-result {
+        right: 0;
+        border: none;
+      }
     }
   script(async,src="https://buttons.github.io/buttons.js")
   script(async,src="https://www.goodreads.com/review/custom_widget/80839667.Recently%20read%20books?cover_position=left&cover_size=small&num_books=50&order=d&shelf=read&show_author=0&show_cover=0&show_rating=0&show_review=0&show_tags=0&show_title=1&sort=date_read&widget_bg_color=FFFFFF&widget_bg_transparent=true&widget_border_width=1&widget_id=1610423899&widget_text_color=000000&widget_title_size=medium&widget_width=medium")
