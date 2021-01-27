@@ -79,7 +79,7 @@ setInterval(() => {
         document.getElementsByClassName('code__result')[typedCSS.length % 2].src = dataURI;
         document.getElementsByClassName('code__result')[typedCSS.length % 2].style.display = 'none';
       });
-      document.getElementById('code__skip').style.display = "none";
+      document.getElementById('code__skip').style.display = 'none';
     }
   } else {
     isScrolling = false;
@@ -119,16 +119,16 @@ function load() {
   });
 
   for (let b = 0; b < 50; b++) {
-    const book = document.createElement("A");
+    const book = document.createElement('A');
     if (recentlyRead[b]) {
-      book.innerHTML =  `<span>${recentlyRead[b].title}</span>`;
+      book.innerHTML = `<span>${recentlyRead[b].title}</span>`;
       book.href = recentlyRead[b].link;
       book.rel = 'nofollow noopener';
       book.target = '_blank';
     } else {
-      book.innerHTML =  `<span>&nbsp;</span>`;
+      book.innerHTML = '<span>&nbsp;</span>';
     }
-    book.className = "book";
+    book.className = 'book';
     let color = (Math.random() * 2 ** 24 << 0);
     while (color.toString(16).length < 6) {
       color = (Math.random() * 2 ** 24 << 0);

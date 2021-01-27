@@ -13,7 +13,7 @@ document.addEventListener('scroll', () => {
   prevScrollpos = currentScrollPos;
 });
 
-//Console Message
+// Console Message
 console.log('                                                  \n                                                  \n                                                  \n                 &@@@@@@@@@@@@@@@#                \n            @@@@@@@@@@@@@@@@@@@@@@@@@@@           \n         @@@@@@@@@@@@@@&, ,&@@@@@@@@@@@@@@        \n      &@@@@@@@@                     @@@@@@@@/     \n    @@@@@@@.            *@@@@@@        (@@@@@@,   \n   @@@@@@                @@@@@@@@         @@@@@@  \n (@@@@@@        &        @@@@@@@@@(        @@@@@@.\n&@@@@@@         @@@@@@@@@@@@@@@@@@@         @@@@@@\n  @@@@@@        &@@@@@@@@@@@@@@@@@*        @@@@@@ \n   @@@@@@        .@@@@@@@@@@@@@@@         @@@@@(  \n     ,@@@@@*        @@@@@@@@@@@        &@@@@@     \n        @@@@@@@                     @@@@@@&       \n            @@@@@@@@@@@@@@@@@@@@@@@@@@@           \n                   #@@@@@@@@@@@(                  \n                                                  \n                                                  \n                                                  \n');
 console.log('%cSee With Eyes Closed', 'font-size:30px');
 console.log('Found a bug? Want to help me with my code?\nLet me know at https://seewitheyesclosed.com/contact/ or visit this site\'s Github repository at https://github.com/benjaminbhollon/see-with-eyes-closed');
