@@ -4,11 +4,11 @@ const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const MarkdownIt = require('markdown-it');
-
 const md = new MarkdownIt({ html: true });
 const fetch = require('isomorphic-fetch');
 const compression = require('compression');
 const basicAuth = require('express-basic-auth');
+const cookieParser = require('cookie-parser');
 
 // Import emails, messages, and policies
 const emails = require('./lib/emails.json');
@@ -27,6 +27,7 @@ const app = express();
 const transporter = nodemailer.createTransport(config.nodemailTransport);
 
 // Set up middleware
+app.use(cookieParser());
 app.use(express.static('static'));
 app.use(session({ secret: config.sessionSecret, resave: false, saveUninitialized: false }));
 app.use(express.urlencoded({ extended: true }));
@@ -222,6 +223,8 @@ app.post('/blog/subscribe/', async (request, response) => {
   };
 
   await crud.insertDocument('subscribers', subscribeObject);
+
+  response.cookie('subscribed', true, {maxAge: 1000 * 60 * 60 * 24 * 182});
 
   const message = {
     from: emails.new_subscriber.from,
