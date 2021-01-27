@@ -1,14 +1,13 @@
-.article, .related, .tags, .comments {
+.article, .related, .tags, .comments, .subscribe {
   width: 90%;
   max-width: 700px;
   display: inline-block;
-  text-align: left;
   padding-bottom: 1em;
   border-bottom: 1px solid #ccc;
 }
 
-.related, .tags, .comments {
-  text-align: center;
+.article {
+  text-align: left;
 }
 
 .comments form input, .comments form textarea {
