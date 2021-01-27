@@ -67,7 +67,7 @@ app.get('/blog/', async (request, response) => {
   const popularHTML = JSON.parse(JSON.stringify(articles.slice(0, 5)));
 
   return response.render('blogmain', {
-    recent: recentHTML, popular: popularHTML, parameters: request.query, md,
+    recent: recentHTML, popular: popularHTML, parameters: request.query, md, subscribed: request.cookies["subscribed"]
   });
 });
 
@@ -224,7 +224,7 @@ app.post('/blog/subscribe/', async (request, response) => {
 
   await crud.insertDocument('subscribers', subscribeObject);
 
-  response.cookie('subscribed', true, {maxAge: 1000 * 60 * 60 * 24 * 182});
+  response.cookie('subscribed', true, {maxAge: 1000 * 60 * 60 * 24 * 365});
 
   const message = {
     from: emails.new_subscriber.from,

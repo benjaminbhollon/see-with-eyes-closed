@@ -135,6 +135,23 @@ body[data-scrolled="up"] .popular__sticky {
   padding: 1em;
 }
 
+.subscribe__button {
+    text-decoration: none;
+    padding: 0.5em;
+    display: block;
+    transition: box-shadow 0.5s, filter 0.5s;
+    margin: 0.5em;
+    background-color: maroon;
+    color: #fff;
+    border-radius: .5em;
+}
+
+.subscribe__button:hover {
+  box-shadow: 0 0 0.5em #888;
+  filter: hue-rotate(30deg);
+  cursor: pointer;
+}
+
 @media (min-width: 750px) {
   #split {
     display: grid;

@@ -42,6 +42,10 @@ block content
             strong #{post.title}
             br
             | #{post.date} by #{post.author}
+        if subscribed === true
+          .subscribe
+            h3 Like the content?
+            a.subscribe__button(href="/blog/subscribe/") Subscribe for updates!
     script.
       function searchArticles() {
         var input, filter, container, articles, count;
