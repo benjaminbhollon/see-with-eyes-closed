@@ -46,6 +46,15 @@ block append head
       from { opacity: 1; }
       to { opacity: 0; }
     }
+    
+    .scroll-down {
+      border-right: 0.1em solid #000;
+      border-bottom: 0.1em solid #000;
+      width: 2em;
+      height: 2em;
+      display: inline-block;
+      transform: rotate(45deg);
+    }
 
     #panel-3 {
       background-color: midnightblue;
@@ -176,10 +185,12 @@ block content
       noscript#occupations-noscript
         p Human Being, Avid Reader, Writer, Trombonist, Composer, Actor, Christian, and Part-Time Polymath
       p#occupations-typewriter(data-occupations="Human Being|Avid Reader|Writer|Trombonist|Composer|Actor|Christian|Part-Time Polymath")
+      p
+        a.scroll-down(href="#panel-2")
   .fullpage#panel-2
     pre#code__editor
-    iframe.code__result(src="data:text/html,<body></body>",onload="this.style.display = 'block';document.getElementsByClassName('code__result')[1].style.display='none'",sandbox)
-    iframe.code__result(src="data:text/html,<body></body>",onload="this.style.display = 'block';document.getElementsByClassName('code__result')[0].style.display='none'",sandbox)
+    iframe.code__result(src="data:text/html," title="Live-coded avocado" onload="this.style.display = 'block';document.getElementsByClassName('code__result')[1].style.display='none'",sandbox)
+    iframe.code__result(src="data:text/html," title="Live-coded avocado" onload="this.style.display = 'block';document.getElementsByClassName('code__result')[0].style.display='none'",sandbox)
     #code__skip(onclick="skipCode()") Skip to end
     .fullpage__center--fill
       h2 I code things that make me smile.
@@ -191,7 +202,7 @@ block content
       .shelf
     .fullpage__center--fill
       h2 I read books that expand my horizons.
-      a(href="https://www.goodreads.com/user/show/80839667-benjamin-hollon",title="Benjamin Hollon's book recommendations, liked quotes, book clubs, book trivia, book lists",target="_blank",rel="nofollow")
+      a(href="https://www.goodreads.com/user/show/80839667-benjamin-hollon",title="Benjamin Hollon's book recommendations, liked quotes, book clubs, book trivia, book lists",target="_blank",rel="nofollow noopener")
         img(alt="Benjamin Hollon's book recommendations, liked quotes, book clubs, book trivia, book lists",src="https://www.goodreads.com/images/badge/badge1.jpg",style="border-radius: 5px")
     #gr_custom_widget_1610423899
   .fullpage#panel-4

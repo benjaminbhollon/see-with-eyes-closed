@@ -3,6 +3,7 @@ const occupations = document.getElementById('occupations-typewriter').getAttribu
 const occupationLength = 5000;
 const typingLength = 1500;
 let occupationNo = 0;
+let isScrolling = false;
 
 // Change occupation
 function changeOccupation() {
@@ -55,8 +56,12 @@ function skipCode() {
   typedCSS = css.slice(0, -1);
 }
 
+window.addEventListener('scroll', () => {
+  isScrolling = true;
+});
+
 setInterval(() => {
-  if (!done && document.hasFocus() && isScrolledIntoView(document.getElementById('code__editor'))) {
+  if (!done && document.hasFocus() && isScrolledIntoView(document.getElementById('code__editor')) && !isScrolling) {
     typedCSS += css[typedCSS.length];
     const dataURI = `data:text/html,${encodeURIComponent(`${html}<style>${typedCSS}</style>`)}`;
     document.getElementById('code__editor').innerText = typedCSS;
@@ -76,6 +81,8 @@ setInterval(() => {
       });
       document.getElementById('code__skip').style.display = "none";
     }
+  } else {
+    isScrolling = false;
   }
 }, 40);
 
