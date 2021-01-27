@@ -51,25 +51,30 @@ function isScrolledIntoView(el) {
   return isVisible;
 }
 
+function skipCode() {
+  typedCSS = css.slice(0, -1);
+}
+
 setInterval(() => {
-  if (!done && document.hasFocus() && isScrolledIntoView(document.getElementById('code-editor'))) {
+  if (!done && document.hasFocus() && isScrolledIntoView(document.getElementById('code__editor'))) {
     typedCSS += css[typedCSS.length];
     const dataURI = `data:text/html,${encodeURIComponent(`${html}<style>${typedCSS}</style>`)}`;
-    document.getElementById('code-editor').innerText = typedCSS;
-    document.getElementById('code-editor').scrollTop = document.getElementById('code-editor').scrollHeight;
+    document.getElementById('code__editor').innerText = typedCSS;
+    document.getElementById('code__editor').scrollTop = document.getElementById('code__editor').scrollHeight;
     if (typedCSS.length % 5 == 0 || typedCSS.length === css.length) {
-      document.getElementsByClassName('code-result')[typedCSS.length % 2].src = dataURI;
-      document.getElementsByClassName('code-result')[typedCSS.length % 2].style.display = 'none';
+      document.getElementsByClassName('code__result')[typedCSS.length % 2].src = dataURI;
+      document.getElementsByClassName('code__result')[typedCSS.length % 2].style.display = 'none';
     }
     if (typedCSS.length === css.length) {
       done = true;
-      document.getElementById('code-editor').setAttribute('contenteditable', 'true');
-      document.getElementById('code-editor').addEventListener('input', () => {
-        typedCSS = document.getElementById('code-editor').innerText;
+      document.getElementById('code__editor').setAttribute('contenteditable', 'true');
+      document.getElementById('code__editor').addEventListener('input', () => {
+        typedCSS = document.getElementById('code__editor').innerText;
         const dataURI = `data:text/html,${encodeURIComponent(`${html}<style>${typedCSS}</style>`)}`;
-        document.getElementsByClassName('code-result')[typedCSS.length % 2].src = dataURI;
-        document.getElementsByClassName('code-result')[typedCSS.length % 2].style.display = 'none';
+        document.getElementsByClassName('code__result')[typedCSS.length % 2].src = dataURI;
+        document.getElementsByClassName('code__result')[typedCSS.length % 2].style.display = 'none';
       });
+      document.getElementById('code__skip').style.display = "none";
     }
   }
 }, 40);

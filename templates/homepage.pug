@@ -121,14 +121,14 @@ block append head
     }
 
     /* Code editing */
-    #code-editor, .code-result {
+    #code__editor, .code__result {
       width: 100%;
       height: 50vh;
       position: absolute;
       margin: 0;
     }
 
-    #code-editor {
+    #code__editor {
       left: 0;
       top: 0;
       word-wrap: break-word;
@@ -139,20 +139,32 @@ block append head
       color: #fff;
     }
 
-    .code-result {
+    .code__result {
       border: none;
       bottom: 0;
     }
     
+    #code__skip {
+      display: inline-block;
+      background-color: orange;
+      position: absolute;
+      bottom: 0.5em;
+      right: 0.5em;
+      font-size: 1.2em;
+      padding: 0.25em 0.75em;
+      border-radius: 0.25em;
+      cursor: pointer;
+    }
+    
     @media (orientation: landscape) {
-      #code-editor, .code-result {
+      #code__editor, .code__result {
         width: 50%;
         height: 100vh;
         position: absolute;
         top: 0;
       }
 
-      .code-result {
+      .code__result {
         right: 0;
         border: none;
       }
@@ -169,9 +181,10 @@ block content
         p Human Being, Avid Reader, Writer, Trombonist, Composer, Actor, Christian, and Part-Time Polymath
       p#occupations-typewriter(data-occupations="Human Being|Avid Reader|Writer|Trombonist|Composer|Actor|Christian|Part-Time Polymath")
   .fullpage#panel-2
-    pre#code-editor
-    iframe.code-result(src="data:text/html,<body></body>",onload="this.style.display = 'block';document.getElementsByClassName('code-result')[1].style.display='none'",sandbox)
-    iframe.code-result(src="data:text/html,<body></body>",onload="this.style.display = 'block';document.getElementsByClassName('code-result')[0].style.display='none'",sandbox)
+    pre#code__editor
+    iframe.code__result(src="data:text/html,<body></body>",onload="this.style.display = 'block';document.getElementsByClassName('code__result')[1].style.display='none'",sandbox)
+    iframe.code__result(src="data:text/html,<body></body>",onload="this.style.display = 'block';document.getElementsByClassName('code__result')[0].style.display='none'",sandbox)
+    #code__skip(onclick="skipCode()") Skip to end
     .fullpage__center--fill
       h2 I code things that make me smile.
       a.github-button(href="https://github.com/benjaminbhollon",data-color-scheme="no-preference: dark; light: dark; dark: dark;",data-size="large",data-show-count="true",aria-label="Follow @benjaminbhollon on GitHub") Follow @benjaminbhollon
