@@ -7,6 +7,7 @@ const fetch = require('isomorphic-fetch');
 const compression = require('compression');
 const basicAuth = require('express-basic-auth');
 const cookieParser = require('cookie-parser');
+const minify = require('express-minify');
 const MarkdownIt = require('markdown-it');
 
 const md = new MarkdownIt({ html: true });
@@ -29,11 +30,12 @@ const transporter = nodemailer.createTransport(config.nodemailTransport);
 
 // Set up middleware
 app.use(cookieParser());
+app.use(compression());
+app.use(minify());
 app.use(express.static('static'));
 app.use(session({ secret: config.sessionSecret, resave: false, saveUninitialized: false }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(compression());
 app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
 app.set('view engine', 'pug');
 app.set('views', './templates');
