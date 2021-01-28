@@ -420,7 +420,7 @@ app.get('/policies/:policy/', (request, response) => {
 });
 
 // Redirects
-app.get('/projects/learnclef/', (request, response) => response.redirect(301, '/projects/learn-clef/'));
+app.get('/projects/learnclef/*', (request, response) => response.redirect(301, '/projects/learn-clef/'));
 
 // Listen on port from config.json or process.env.PORT (for the heroku test)
 app.listen(process.env.PORT || config.port, () => {
