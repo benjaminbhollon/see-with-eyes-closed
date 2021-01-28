@@ -39,7 +39,9 @@ block append head
     #occupations-typewriter::after {
       content: "_";
       padding-left:0px;
-      animation: cursor-blink 800ms infinite
+      animation: cursor-blink 800ms infinite;
+      display: inline-block;
+      width: 0;
     }
 
     @keyframes cursor-blink {

@@ -37,21 +37,19 @@ app.use(session({ secret: config.sessionSecret, resave: false, saveUninitialized
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
-app.set('view engine', 'pug');
-app.set('views', './templates');
-let bcryptSalt;
-bcrypt.genSalt(3, (err, salt) => {
-  bcryptSalt = salt;
-});
-
-// Templates in directory
-app.get('*', (request, response, next) => {
+app.use((request, response, next) => {
   if (directory[request.path] !== undefined) {
     return response.render(directory[request.path], { parameters: request.query, config });
   }
 
   if (next) return next();
   return response.status(404).end();
+});
+app.set('view engine', 'pug');
+app.set('views', './templates');
+let bcryptSalt;
+bcrypt.genSalt(3, (err, salt) => {
+  bcryptSalt = salt;
 });
 
 // Blog homepage
@@ -366,7 +364,7 @@ app.post('/contact/send/', async (request, response) => {
 });
 
 // Policies
-app.get('/policies/:policy/', (request, response) => {
+app.get('/policies/:policy/', async (request, response) => {
   const policyPages = {
     privacy: {
       title: policies.privacy.title,
@@ -420,7 +418,7 @@ app.get('/policies/:policy/', (request, response) => {
 });
 
 // Redirects
-app.get('/projects/learnclef/*', (request, response) => response.redirect(301, '/projects/learn-clef/'));
+app.get('/projects/learnclef/*', async (request, response) => response.redirect(301, '/projects/learn-clef/'));
 
 // Listen on port from config.json or process.env.PORT (for the heroku test)
 app.listen(process.env.PORT || config.port, () => {
