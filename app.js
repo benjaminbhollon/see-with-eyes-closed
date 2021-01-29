@@ -420,7 +420,7 @@ app.get('/policies/:policy/', async (request, response) => {
 // Redirects
 app.get('/projects/learnclef/*', async (request, response) => response.redirect(301, '/projects/learn-clef/'));
 
-// Listen on port from config.json or process.env.PORT (for the heroku test)
-app.listen(process.env.PORT || config.port, () => {
-  console.log(`Server running on port ${process.env.port || config.port}`);
+// Listen on port from config.json
+app.listen(config.port, () => {
+  console.log(`Server running on port ${config.port}`);
 });
