@@ -1,6 +1,6 @@
 // Import modules
 const express = require('express');
-const nodemailer = require('nodemailer');
+const sendmail = require('sendmail')();
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const fetch = require('isomorphic-fetch');
@@ -26,7 +26,6 @@ const crud = require('./modules/crud');
 const validate = require('./modules/validate');
 
 const app = express();
-const transporter = nodemailer.createTransport(config.nodemailTransport);
 
 // Set up middleware
 app.use(cookieParser());
@@ -240,11 +239,7 @@ app.post('/blog/subscribe/', async (request, response) => {
       .replace('$EMAIL', subscribeObject.email)
       .replace('$TOKEN', await bcrypt.hash(subscribeObject.email, 1)),
   };
-  await transporter.sendMail(message, (err) => {
-    if (err) {
-      console.error(err);
-    }
-  });
+  await sendmail(message);
 
   return response.redirect(302, '/blog/?justSubscribed=true');
 });
@@ -349,16 +344,12 @@ app.post('/admin/post/article/', async (request, response) => {
 // Contact me
 app.post('/contact/send/', async (request, response) => {
   const message = {
-    from: 'test@seewitheyesclosed.com',
+    from: 'benjamin@seewitheyesclosed.com',
     to: config.email,
     subject: request.body.subject.toString(),
     text: `Message from ${request.body.email.toString()}:${request.body.message.toString()}`,
   };
-  await transporter.sendMail(message, (err) => {
-    if (err) {
-      console.error(err);
-    }
-  });
+  await sendmail(message);
 
   return response.redirect(302, '/contact/?success=true');
 });
