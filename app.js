@@ -349,7 +349,7 @@ app.post('/admin/post/article/', async (request, response) => {
 // Contact me
 app.post('/contact/send/', async (request, response) => {
   const message = {
-    from: 'noreply@seewitheyesclosed.com',
+    from: 'test@seewitheyesclosed.com',
     to: config.email,
     subject: request.body.subject.toString(),
     text: `Message from ${request.body.email.toString()}:${request.body.message.toString()}`,
