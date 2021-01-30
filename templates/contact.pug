@@ -8,11 +8,8 @@ block content
   if parameters.success === "true"
     .success Your message is on its way! I'll get back to you ASAP.
   h1 Contact Me
-  p I'm still setting up my mail server. This page will be back up when I'm done.
-  //-
-    span.accessibility Subject:
-    form(method="POST",action="/contact/send/")
-      input(type="text","name"="subject",placeholder="Subject...",required,autofocus)
-      input(type="email","name"="email",placeholder="Your email...",required)
-      textarea(name="message",placeholder="Your message goes here...",required)
-      input(type="submit" value="Send")
+  form(method="POST",action="/contact/send/")
+    input(type="text","name"="subject",placeholder="Subject...",required,autofocus)
+    input(type="email","name"="email",placeholder="Your email...",required)
+    textarea(name="message",placeholder="Your message goes here...",required)
+    input(type="submit" value="Send")
