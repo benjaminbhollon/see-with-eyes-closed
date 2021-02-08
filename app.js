@@ -8,6 +8,8 @@ const compression = require('compression');
 const basicAuth = require('express-basic-auth');
 const cookieParser = require('cookie-parser');
 const minify = require('express-minify');
+const fs = require('fs');
+const SitemapGenerator = require('sitemap-generator');
 const MarkdownIt = require('markdown-it');
 
 const md = new MarkdownIt({ html: true });
@@ -26,6 +28,20 @@ const crud = require('./modules/crud');
 const validate = require('./modules/validate');
 
 const app = express();
+
+//Crawl site once per day
+const generator = SitemapGenerator('https://seewitheyesclosed.com', {
+  stripQuerystring: true,
+  filepath: './static/sitemap.xml',
+  userAgent: 'verbGuac 1.0',
+  priorityMap: [1.0, 0.9, 0.8]
+});
+generator.on('done', () => {
+  console.log('Sitemap for seewitheyesclosed.com created.');
+});
+setInterval(() => {
+  generator.start();
+}, 1000 * 60 * 60 * 24);
 
 // Set up middleware
 app.use(cookieParser());
@@ -415,3 +431,6 @@ app.get('/projects/learnclef/*', async (request, response) => response.redirect(
 app.listen(config.port, () => {
   console.log(`Server running on port ${config.port}`);
 });
+
+//Generate sitemap
+setTimeout( () => generator.start(), 0)
