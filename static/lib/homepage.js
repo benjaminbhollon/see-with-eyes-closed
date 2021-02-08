@@ -87,11 +87,6 @@ setInterval(() => {
 }, 40);
 
 // bookshelf
-function padZero(str, len) {
-  len = len || 2;
-  const zeros = new Array(len).join('0');
-  return (zeros + str).slice(-len);
-}
 
 function load() {
   const recentlyRead = [];
@@ -110,11 +105,7 @@ function load() {
       book.innerHTML = '<span>&nbsp;</span>';
     }
     book.className = 'book';
-    let color = (Math.random() * 2 ** 24 << 0);
-    while (color.toString(16).length < 6) {
-      color = (Math.random() * 2 ** 24 << 0);
-    }
-    book.style = `--background-color: #${color.toString(16)};--color: ${color > 8388608 ? '#000' : 'bisque'};--height:${Math.random() * 5 + 23}vmin;--no:${Math.floor(b / 3)}`;
+    book.style = `--background-color: hsl(${Math.random() * 256}, 75%, ${(Math.random() * 15) + 65}%);--height:${Math.random() * 5 + 23}vmin;--no:${Math.floor(b / 3)}`;
     document.getElementsByClassName('shelf')[b % 3].appendChild(book);
   }
 }
