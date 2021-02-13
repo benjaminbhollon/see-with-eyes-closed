@@ -427,9 +427,8 @@ app.get('/policies/:policy/', async (request, response) => {
 
 //Gamified Reading Reading Bingo
 app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, response) => {
-  console.log(request.body.html);
   nodeHtmlToImage({
-    output: '/static/projects/gamified-reading/finriq/reading-bingo/bingo.png',
+    output: './static/projects/gamified-reading/finriq/reading-bingo/bingo.png',
     html: `<html>
     <body>
       <style>
@@ -448,7 +447,7 @@ app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, res
     </body>
     </html>`
   })
-    .then(() => response.status().json({success: true}));
+    .then(() => response.status(201).json({success: true}));
 });
 
 // Redirects
