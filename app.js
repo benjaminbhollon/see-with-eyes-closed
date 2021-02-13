@@ -429,7 +429,7 @@ app.get('/policies/:policy/', async (request, response) => {
 app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, response) => {
   console.log(request.body.html);
   nodeHtmlToImage({
-    output: '/projects/gamified-reading/finriq/reading-bingo/bingo.png',
+    output: '/static/projects/gamified-reading/finriq/reading-bingo/bingo.png',
     html: `<html>
     <body>
       <style>
