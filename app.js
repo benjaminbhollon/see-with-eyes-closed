@@ -448,7 +448,7 @@ app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, res
     </body>
     </html>`
   })
-    .then(() => response.status().json({success: true})));
+    .then(() => response.status().json({success: true}));
 });
 
 // Redirects
