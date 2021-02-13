@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser');
 const minify = require('express-minify');
 const fs = require('fs');
 const nodeHtmlToImage = require('node-html-to-image');
+const puppeteer = { args: [ '--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-accelerated-2d-canvas', '--no-first-run', '--headless', '--no-zygote', '--disable-gpu' ], headless: true, ignoreHTTPSErrors: true };
 const SitemapGenerator = require('sitemap-generator');
 const MarkdownIt = require('markdown-it');
 
@@ -426,7 +427,8 @@ app.get('/policies/:policy/', async (request, response) => {
 });
 
 //Gamified Reading Reading Bingo
-app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, response) => {
+app.get('/projects/gamified-reading/finriq/reading-bingo/', async (request, response) => {
+  request.body.html = "<table><tr><td>Read a book written in the 20th century or earlier<br>44 completions (15%)</td><td>Read a book by one of your favorite authors<br>42 completions (14%)</td><td>Read a mystery or detective novel<br>39 completions (13%)</td><td>Read a book with at least 500 pages<br>53 completions (18%)</td><td>Read a book about religion or social science<br>30 completions (10%)</td></tr><tr><td>Read a book that won a literary award<br>35 completions (12%)</td><td>Read a book recommended by someone who's taste you respect<br>32 completions (11%)</td><td>Read a classic you've been meaning to read<br>39 completions (13%)</td><td>Read a book published within the last three years<br>61 completions (21%)</td><td>Read a book written by someone with a different race than you<br>47 completions (16%)</td></tr><tr><td>Read a graphic novel<br>55 completions (19%)</td><td>Read a book written by an author you've never read before<br>68 completions (23%)</td><td>Read a science fiction or fantasy novel<br>41 completions (14%)</td><td>Read a self-improvement book<br>31 completions (11%)</td><td>Start and finish reading a book on the same day<br>62 completions (21%)</td></tr><tr><td>A book that has been translated into your language from another language<br>35 completions (12%)</td><td>Read a book set in a country that's not your own<br>50 completions (17%)</td><td>Read a novel in a genre you generally avoid<br>28 completions (10%)</td><td>Read a biography or autobiography<br>29 completions (10%)</td><td>Read a book of poetry, a play, or an essay collection<br>31 completions (11%)</td></tr><tr><td>Read a book nominated for an award in the past year (i.e. 2020 or 2021)<br>19 completions (6%)</td><td>Read a book that's part of a series<br>70 completions (24%)</td><td>Read a book with a cover you love<br>44 completions (15%)</td><td>Read a book that's been made into a movie<br>39 completions (13%)</td><td>Read a book recommended by a family member or friend<br>38 completions (13%)</td></tr></table>";
   nodeHtmlToImage({
     output: './static/projects/gamified-reading/finriq/reading-bingo/bingo.png',
     html: `<html>
@@ -435,6 +437,8 @@ app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, res
       table {
         border-collapse: collapse;
         font-family: calibri, sans-serif;
+        width: 100%;
+        min-height: 100vh;
       }
       td {
         width: 100px;
@@ -445,7 +449,8 @@ app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, res
       </style>
       ${request.body.html}
     </body>
-    </html>`
+    </html>`,
+    puppeteerArgs: puppeteer
   })
     .then(() => response.status(201).json({success: true}));
 });
