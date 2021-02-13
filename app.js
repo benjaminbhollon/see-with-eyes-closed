@@ -460,4 +460,4 @@ app.listen(config.port, () => {
 });
 
 //Generate sitemap
-setTimeout( () => generator.start(), 0)
+//setTimeout( () => generator.start(), 0)
