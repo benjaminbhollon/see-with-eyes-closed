@@ -9,6 +9,7 @@ const basicAuth = require('express-basic-auth');
 const cookieParser = require('cookie-parser');
 const minify = require('express-minify');
 const fs = require('fs');
+const nodeHtmlToImage = require('node-html-to-image');
 const SitemapGenerator = require('sitemap-generator');
 const MarkdownIt = require('markdown-it');
 
@@ -422,6 +423,32 @@ app.get('/policies/:policy/', async (request, response) => {
 
   if (policyPages[request.params.policy] === undefined) return response.status(204).end();
   return response.render('policy', { policy: policyPages[request.params.policy], md });
+});
+
+//Gamified Reading Reading Bingo
+app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, response) => {
+  console.log(request.body.html);
+  nodeHtmlToImage({
+    output: '/projects/gamified-reading/finriq/reading-bingo/bingo.png',
+    html: `<html>
+    <body>
+      <style>
+      table {
+        border-collapse: collapse;
+        font-family: calibri, sans-serif;
+      }
+      td {
+        width: 100px;
+        border: 1px solid #000;
+        padding: 3px;
+        text-align: center;
+      }
+      </style>
+      ${request.body.html}
+    </body>
+    </html>`
+  })
+    .then(() => response.status().json({success: true})));
 });
 
 // Redirects
