@@ -24,7 +24,7 @@
   "scripts": {
     "start": "pm2 start app.js --name SWEC --watch",
     "stop": "pm2 delete SWEC",
-    "test": "eslint . --fix"
+    "lint": "eslint . --fix"
   },
   "author": "Benjamin Hollon",
   "license": "GPL-3.0",

@@ -8,9 +8,20 @@ const compression = require('compression');
 const basicAuth = require('express-basic-auth');
 const cookieParser = require('cookie-parser');
 const minify = require('express-minify');
-const fs = require('fs');
 const nodeHtmlToImage = require('node-html-to-image');
-const puppeteer = { args: [ '--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-accelerated-2d-canvas', '--no-first-run', '--headless', '--no-zygote', '--disable-gpu' ], headless: true, ignoreHTTPSErrors: true };
+
+const puppeteer = {
+  args: ['--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-dev-shm-usage',
+    '--disable-accelerated-2d-canvas',
+    '--no-first-run',
+    '--headless',
+    '--no-zygote',
+    '--disable-gpu'],
+  headless: true,
+  ignoreHTTPSErrors: true,
+};
 const SitemapGenerator = require('sitemap-generator');
 const MarkdownIt = require('markdown-it');
 
@@ -31,12 +42,14 @@ const validate = require('./modules/validate');
 
 const app = express();
 
-//Crawl site once per day
+// Crawl site once per day
 const generator = SitemapGenerator('https://seewitheyesclosed.com', {
   stripQuerystring: true,
   filepath: './static/sitemap.xml',
   userAgent: 'verbGuac 1.0',
-  priorityMap: [1.0, 0.9, 0.8]
+  priorityMap: [1.0,
+    0.9,
+    0.8],
 });
 generator.on('done', () => {
   console.log('Sitemap for seewitheyesclosed.com created.');
@@ -426,7 +439,7 @@ app.get('/policies/:policy/', async (request, response) => {
   return response.render('policy', { policy: policyPages[request.params.policy], md });
 });
 
-//Gamified Reading Reading Bingo
+// Gamified Reading Reading Bingo
 app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, response) => {
   nodeHtmlToImage({
     output: './static/projects/gamified-reading/finriq/reading-bingo/bingo.png',
@@ -449,9 +462,9 @@ app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, res
       ${request.body.html}
     </body>
     </html>`,
-    puppeteerArgs: puppeteer
+    puppeteerArgs: puppeteer,
   })
-    .then(() => response.status(201).json({success: true}));
+    .then(() => response.status(201).json({ success: true }));
 });
 
 // Redirects
@@ -462,5 +475,5 @@ app.listen(config.port, () => {
   console.log(`Server running on port ${config.port}`);
 });
 
-//Generate sitemap
-//setTimeout( () => generator.start(), 0)
+// Generate sitemap
+// setTimeout( () => generator.start(), 0)
