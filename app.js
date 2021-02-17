@@ -9,7 +9,10 @@ const basicAuth = require('express-basic-auth');
 const cookieParser = require('cookie-parser');
 const minify = require('express-minify');
 const nodeHtmlToImage = require('node-html-to-image');
+const SitemapGenerator = require('sitemap-generator');
+const MarkdownIt = require('markdown-it');
 
+const md = new MarkdownIt({ html: true });
 const puppeteer = {
   args: ['--no-sandbox',
     '--disable-setuid-sandbox',
@@ -22,10 +25,6 @@ const puppeteer = {
   headless: true,
   ignoreHTTPSErrors: true,
 };
-const SitemapGenerator = require('sitemap-generator');
-const MarkdownIt = require('markdown-it');
-
-const md = new MarkdownIt({ html: true });
 
 // Import emails, messages, and policies
 const emails = require('./lib/emails.json');
@@ -232,66 +231,6 @@ app.post('/blog/article/:articleId/comment', async (request, response) => {
   crud.updateDocument('articles', { id: request.params.articleId.toString() }, { comments: article.comments });
 
   return response.redirect(302, `/blog/article/${request.params.articleId}/#comment-form`);
-});
-
-// Subscribe
-app.post('/blog/subscribe/', async (request, response) => {
-  if (!validate.email(request.body.email)) return response.render('subscribe', { success: false, message: 'You must provide a valid email address.' });
-
-  let check;
-  await crud.findDocument('subscribers', { email: request.body.email.toLowerCase() }).then((result) => {
-    check = result;
-  });
-
-  if (check !== null) {
-    return response.render('subscribe', {
-      success: false,
-      message: messages.already_subscribed,
-    });
-  }
-
-  const subscribeObject = {
-    name: request.body.name.toString(),
-    email: request.body.email.toLowerCase(),
-    subscribedTo: {
-      blog: true,
-    },
-  };
-
-  await crud.insertDocument('subscribers', subscribeObject);
-
-  response.cookie('subscribed', true, { maxAge: 1000 * 60 * 60 * 24 * 365 });
-
-  const message = {
-    from: emails.new_subscriber.from,
-    to: subscribeObject.email,
-    subject: emails.new_subscriber.subject,
-    html: emails.new_subscriber.html
-      .replace('$EMAIL', subscribeObject.email)
-      .replace('$TOKEN', await bcrypt.hash(subscribeObject.email, 1)),
-  };
-  await sendmail(message);
-
-  return response.redirect(302, '/blog/?justSubscribed=true');
-});
-
-// Unsubscribe
-app.get('/blog/unsubscribe/', async (request, response) => {
-  let { title } = messages.unsubscribe_success;
-  let { message } = messages.unsubscribe_success;
-  let isValid = false;
-  await bcrypt.compare(request.query.email, request.query.token).then((result) => {
-    isValid = result;
-  });
-
-  if (!isValid) {
-    title = messages.unsubscribe_error.title;
-    message = messages.unsubscribe_error.message;
-  } else {
-    await crud.deleteDocument('subscribers', { email: request.query.email.toLowerCase() });
-  }
-
-  return response.render('layout', { title, content: message });
 });
 
 // Projects homepage

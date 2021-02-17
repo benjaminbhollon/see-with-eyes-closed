@@ -9,8 +9,6 @@ block append resources
   link(rel="stylesheet",href="/lib/article.css")
     
 block content
-  if (parameters.justSubscribed === "true")
-    .success Success! You will now receive updates from my blog! You should receive an email in a minute confirming that you were subscribed.
   header
     h1 See With Eyes Closed
     h2 A Blog
@@ -42,10 +40,10 @@ block content
             strong #{post.title}
             br
             | #{post.date} by #{post.author}
-        if subscribed === true
-          .subscribe
-            h3 Like the content?
-            a.subscribe__button(href="/blog/subscribe/") Subscribe for updates!
+        .subscribe
+          h3 Like the content?
+          a.subscribe__button(href="https://digest.seewitheyesclosed.com" target="_blank" rel="noopener") Subscribe for updates!
+          p A weekly digest of new articles, projects, and things I'm working on.
     script.
       function searchArticles() {
         var input, filter, container, articles, count;

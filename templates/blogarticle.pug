@@ -24,21 +24,11 @@ block content
         br
         em #{Math.ceil(article.content.split(" ").length / 250)} minute read
     .article__content!= md.render(article.content)
-  if subscribed === true
-    br
-    .subscribe
-      h2 Like the content?
-      p You can subscribe below to get updates whenever I release new stuff! I promise I won't spam you or give away your email address or anything like that. For more information, see my 
-        a(href="/policies/privacy/") Privacy Policy
-        | .
-      form(method="POST" action="/blog/subscribe/")
-        span.accessibility Your first name (optional):
-        input(type="text","name"="name","placeholder"="Your first name (optional)...")
-        input(type="email",name="email","placeholder"="Your email address...",required)
-        label
-          input(type="checkbox", name="agree",required)
-          | I agree to receive updates from See With Eyes Closed to the email address I specified.
-        input(type="submit",value="Sign me up!")
+  br
+  .subscribe
+    h2 Like the content?
+    p I send out a weekly digest of new posts, projects, things I'm currently working on. If you'd like to be a part of that, subscribe below. Can't wait to see you there!
+    a.subscribe__button(href="https://digest.seewitheyesclosed.com" target="_blank" rel="noopener") Subscribe for updates!
   br
   .related
     h2 Related Articles
