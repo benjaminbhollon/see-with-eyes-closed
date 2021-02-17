@@ -27,8 +27,6 @@ const puppeteer = {
 };
 
 // Import emails, messages, and policies
-const emails = require('./lib/emails.json');
-const messages = require('./lib/messages.json');
 const policies = require('./lib/policies.json');
 
 // Import config
@@ -37,7 +35,6 @@ const directory = require('./directory.json');
 
 // Import local modules
 const crud = require('./modules/crud');
-const validate = require('./modules/validate');
 
 const app = express();
 
