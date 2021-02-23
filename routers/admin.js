@@ -27,7 +27,7 @@ router.post('/post/article/submit', async (request, response) => {
     'September',
     'October',
     'November',
-    'December'
+    'December',
   ];
   const article = {
     id: request.body.id,

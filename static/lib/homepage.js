@@ -39,7 +39,176 @@ changeOccupation();
 
 // Code editor
 const html = '<div id="container"> <div id="peel"> <div id="bulge-peel"></div> <div id="bulge"> <div id="eyes"> <div id="eye-1"></div> <div id="eye-2"></div> </div> <div id="mouth"></div> </div> <div id="body"> <div id="pit"> <div id="inner-pit-1"> <div id="inner-pit-2"></div> </div> </div> </div> </div> </div>';
-const css = 'body {\n  background-color: DeepSkyBlue;\n  overflow: hidden;\n}\n\n#peel {\n  background-color: #440;\n  width: 200px;\n  height: 200px;\n  padding: 7px;\n  border-radius: 100%;\n}\n\n#container {\n  padding-top: 90px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: -ms-translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n}\n\n#body {\n  background-color: #a5f0a2;\n  width: 140px;\n  height: 140px;\n  padding: 30px;\n  border-radius: 100%;\n}\n\n#pit {\n  position: absolute;\n  background-color: #740;\n  width: 140px;\n  height: 140px;\n  border-radius: 100%;\n  z-index: 2;\n}\n\n#inner-pit-1, #inner-pit-2 {\n  border-radius: 100%;\n}\n\n#inner-pit-1 {\n  position: absolute;\n  left: 6px;\n  top: 6px;\n  background-color: #960;\n  width: 120px;\n  height: 120px;\n}\n\n#inner-pit-2 {\n  left: 6px;\n  top: 6px;\n  position: absolute;\n  background-color: #a80;\n  width: 100px;\n  height: 100px;\n}\n\n#bulge {\n  position: absolute;\n  background-color: #a5f0a2;\n  margin-top: 30px;\n  left: 50%;\n  height: 200px;\n  width: 150px;\n  border-radius: 50%;\n  -ms-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n  z-index: 1;\n}\n\n#bulge-peel {\n  position: absolute;\n  background-color: #440;\n  left: 50%;\n  margin-top: 30px;\n  height: 214px;\n  width: 164px;\n  border-radius: 50%;\n  -ms-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n  z-index: -1;\n}\n\n#eyes {\n  position: absolute;\n  top: 20%;\n  left: 50%;\n  height: 30px;\n  width: 60px;\n  -ms-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n}\n\n#eye-1, #eye-2 {\n  background-color: #fff;\n  width: 22px;\n  height: 30px;\n  border-radius: 40px;\n}\n\n#eye-1::after, #eye-2::after {\n  content: \'\';\n  position: absolute;\n  margin-left: 3px;\n  margin-top: 3px;\n  width: 10px;\n  height: 10px;\n  background-color: #000;\n  border-radius: 100%;\n  z-index: 5;\n  animation: eyes 10s infinite;\n}\n\n#eye-1 {\n  float: left;\n}\n\n#eye-2 {\n  float: right;\n}\n\n#mouth {\n  border-bottom: 5px solid #000;\n  height: 25px;\n  width: 100px;\n  position: absolute;\n  top: 33%;\n  left: 50%;\n  border-radius: 50%;\n  -ms-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n}\n\n/* Animations */\n@keyframes eyes {\n  0% {\n    margin-left: 3px;\n    margin-top: 3px;\n  }\n\n  25% {\n    margin-left: 3px;\n    margin-top: 17px;\n  }\n\n  50% {\n    margin-left: 9px;\n    margin-top: 17px;\n  }\n\n  75% {\n    margin-left: 9px;\n    margin-top: 3px;\n  }\n\n}\n\n\n\n/* * * * * * * * * * * * * * * * * * *\n * You can edit this CSS! Try it! <3 *\n * * * * * * * * * * * * * * * * * * */\n\n\n\n';
+const css = `body {
+  background-color: DeepSkyBlue;
+  overflow: hidden;
+}
+
+#container * {
+  background-color: #f008;
+}
+
+#peel {
+  width: 200px;
+  height: 200px;
+  padding: 7px;
+  border-radius: 100%;
+  background-color: #440;
+}
+
+#container {
+  position: absolute;
+  padding-top: 90px;
+  top: 50%;
+  left: 50%;
+  transform: -ms-translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+#body {
+  width: 140px;
+  height: 140px;
+  padding: 30px;
+  border-radius: 100%;
+  background-color: #a5f0a2;
+}
+
+#pit {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 100%;
+  background-color: #740;
+  z-index: 2;
+}
+
+#inner-pit-1, #inner-pit-2 {
+  border-radius: 100%;
+}
+
+#inner-pit-1 {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  left: 6px;
+  top: 6px;
+  background-color: #960;
+}
+
+#inner-pit-2 {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  left: 6px;
+  top: 6px;
+  background-color: #a80;
+}
+
+#bulge {
+  position: absolute;
+  height: 200px;
+  width: 150px;
+  margin-top: 30px;
+  left: 50%;
+  border-radius: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background-color: #a5f0a2;
+  z-index: 1;
+}
+
+#bulge-peel {
+  position: absolute;
+  height: 214px;
+  width: 164px;
+  margin-top: 30px;
+  left: 50%;
+  border-radius: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background-color: #440;
+  z-index: -1;
+}
+
+#eyes {
+  height: 30px;
+  width: 60px;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+}
+
+#eye-1, #eye-2 {
+  width: 22px;
+  height: 30px;
+  border-radius: 40px;
+  background-color: #fff;
+}
+
+#eye-1::after, #eye-2::after {
+  content: '';
+  position: absolute;
+  margin-left: 3px;
+  margin-top: 3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background-color: #000;
+  z-index: 5;
+  animation: eyes 10s infinite;
+}
+
+#eye-1 {
+  float: left;
+}
+
+#eye-2 {
+  float: right;
+}
+
+#mouth {
+  height: 25px;
+  width: 100px;
+  border-bottom: 5px solid #000;
+  border-radius: 50%;
+  background-color: transparent;
+  position: absolute;
+  top: 33%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+/* Animations */
+@keyframes eyes {
+  0% {
+    margin-left: 3px;
+    margin-top: 3px;
+  }
+
+  25% {
+    margin-left: 3px;
+    margin-top: 17px;
+  }
+
+  50% {
+    margin-left: 9px;
+    margin-top: 17px;
+  }
+
+  75% {
+    margin-left: 9px;
+    margin-top: 3px;
+  }
+}
+\n\n
+/* * * * * * * * * * * * * * * * * * *
+ * You can edit this CSS! Try it! <3 *
+ * * * * * * * * * * * * * * * * * * */
+\n\n\n`;
 let typedCSS = '';
 let done = false;
 
@@ -86,7 +255,7 @@ setInterval(() => {
   } else {
     isScrolling = false;
   }
-}, 40);
+}, 30);
 
 // bookshelf
 function load() {

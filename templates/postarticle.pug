@@ -11,12 +11,12 @@ block content
       input(type="text" name="id" placeholder="Article URL name (unique)..." required)
       input(type="text" name="author" placeholder="Author name..." value=config.mainAuthor required)
       input(type="text" name="image" placeholder="Banner URL (optional)...")
+      input(type="text" name="date" placeholder="Release date (leave blank for default)")
       h3 Summary:
       textarea(name="summary" placeholder="Markdown, HTML, or a mix of both" required)
       h3 Content:
       textarea(name="content" placeholder="Markdown, HTML, or a mix of both" required)
       input(type="text" name="tags" placeholder="Article tags (comma-separated)..." required)
-      input(type="text" name="date" placeholder="Release date (leave blank for default)")
       label
         input(type="checkbox" name="comments" checked)
         | Enable comments
