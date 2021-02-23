@@ -1,17 +1,9 @@
 // Require modules
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs');
-const MarkdownIt = require('markdown-it');
-
-const md = new MarkdownIt({ html: true });
-const { ObjectId } = require('mongodb');
 
 // Local modules
 const crud = require('../modules/crud');
-
-// Config
-const config = require('../config.json');
 
 const router = express.Router();
 
@@ -20,9 +12,11 @@ router.use(express.json());
 router.use(bodyParser.json());
 
 // Routes
-router.post('/admin/post/article/', async (request, response) => {
+router.post('/post/article/submit', async (request, response) => {
+  console.log('HELLO???');
   const today = new Date();
-  const months = ['January',
+  const months = [
+    'January',
     'February',
     'March',
     'April',
@@ -33,12 +27,13 @@ router.post('/admin/post/article/', async (request, response) => {
     'September',
     'October',
     'November',
-    'December'];
+    'December'
+  ];
   const article = {
     id: request.body.id,
     title: request.body.title,
     author: request.body.author,
-    date: `${months[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`,
+    date: (request.body.date ? request.body.date : `${months[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`),
     image: request.body.image.toString(),
     summary: request.body.summary,
     content: request.body.content,

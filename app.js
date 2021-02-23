@@ -78,7 +78,7 @@ bcrypt.genSalt(3, (err, salt) => {
   bcryptSalt = salt;
 });
 
-//Admin router
+// Admin router
 const adminRouter = require('./routers/admin');
 
 app.use('/admin/', adminRouter);
