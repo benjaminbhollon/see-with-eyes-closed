@@ -16,7 +16,7 @@ function changeOccupation() {
   let waited = 0;
 
   // For each letter set a timeout
-  for (var l in currentOccupation) {
+  for (let l = 0; l < currentOccupation.length; l += 1) {
     typedSoFar += currentOccupation[typedSoFar.length];
     waited += typingLength / currentOccupation.length;
     setTimeout(updateText.bind({ text: typedSoFar }), waited);
@@ -26,13 +26,13 @@ function changeOccupation() {
   waited += occupationLength - (2 * typingLength);
 
   // Delete each letter
-  for (var l in currentOccupation) {
+  for (let l = 0; l < currentOccupation.length; l += 1) {
     typedSoFar = typedSoFar.slice(0, -1);
     waited += typingLength / currentOccupation.length;
     setTimeout(updateText.bind({ text: typedSoFar }), waited);
   }
 
-  occupationNo++;
+  occupationNo += 1;
   setTimeout(changeOccupation, occupationLength);
 }
 changeOccupation();
@@ -56,6 +56,8 @@ function skipCode() {
   typedCSS = css.slice(0, -1);
 }
 
+document.getElementById('code__skip').addEventListener('click', skipCode);
+
 window.addEventListener('scroll', () => {
   isScrolling = true;
 });
@@ -63,10 +65,10 @@ window.addEventListener('scroll', () => {
 setInterval(() => {
   if (!done && document.hasFocus() && isScrolledIntoView(document.getElementById('code__editor')) && !isScrolling) {
     typedCSS += css[typedCSS.length];
-    const dataURI = `data:text/html,${encodeURIComponent(`${html}<style>${typedCSS}</style>`)}`;
+    let dataURI = `data:text/html,${encodeURIComponent(`${html}<style>${typedCSS}</style>`)}`;
     document.getElementById('code__editor').innerText = typedCSS;
     document.getElementById('code__editor').scrollTop = document.getElementById('code__editor').scrollHeight;
-    if (typedCSS.length % 5 == 0 || typedCSS.length === css.length) {
+    if (typedCSS.length % 5 === 0 || typedCSS.length === css.length) {
       document.getElementsByClassName('code__result')[typedCSS.length % 2].src = dataURI;
       document.getElementsByClassName('code__result')[typedCSS.length % 2].style.display = 'none';
     }
@@ -75,7 +77,7 @@ setInterval(() => {
       document.getElementById('code__editor').setAttribute('contenteditable', 'true');
       document.getElementById('code__editor').addEventListener('input', () => {
         typedCSS = document.getElementById('code__editor').innerText;
-        const dataURI = `data:text/html,${encodeURIComponent(`${html}<style>${typedCSS}</style>`)}`;
+        dataURI = `data:text/html,${encodeURIComponent(`${html}<style>${typedCSS}</style>`)}`;
         document.getElementsByClassName('code__result')[typedCSS.length % 2].src = dataURI;
         document.getElementsByClassName('code__result')[typedCSS.length % 2].style.display = 'none';
       });
@@ -87,14 +89,13 @@ setInterval(() => {
 }, 40);
 
 // bookshelf
-
 function load() {
   const recentlyRead = [];
   document.querySelectorAll('.gr_custom_title_1610423899').forEach((book) => {
     recentlyRead.push({ title: book.children[0].innerText, link: book.children[0].href });
   });
 
-  for (let b = 0; b < 50; b++) {
+  for (let b = 0; b < 50; b += 1) {
     const book = document.createElement('A');
     if (recentlyRead[b]) {
       book.innerHTML = `<span>${recentlyRead[b].title}</span>`;

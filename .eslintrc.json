@@ -2,7 +2,9 @@
     "env": {
         "commonjs": true,
         "es2021": true,
-        "node": true
+        "node": true,
+        "browser": true,
+        "jquery": true
     },
     "extends": [
         "airbnb-base"
@@ -13,6 +15,9 @@
     "rules": {
         "max-len": 2,
         "array-element-newline": 2,
-        "no-console": 0
+        "no-console": 0,
+        "no-underscore-dangle": 0,
+        "no-restricted-globals": 0,
+        "no-unused-vars": 1
     }
 }
