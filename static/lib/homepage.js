@@ -267,7 +267,7 @@ function load() {
   for (let b = 0; b < 50; b += 1) {
     const book = document.createElement('A');
     if (recentlyRead[b]) {
-      book.innerHTML = `<span>${recentlyRead[b].title}</span>`;
+      book.innerHTML = `<span>${recentlyRead[b].title.split(':')[0]}</span>`;
       book.href = recentlyRead[b].link;
       book.rel = 'nofollow noopener';
       book.target = '_blank';
@@ -275,7 +275,8 @@ function load() {
       book.innerHTML = '<span>&nbsp;</span>';
     }
     book.className = 'book';
-    book.style = `--background-color: hsl(${Math.random() * 256}, 75%, ${(Math.random() * 15) + 65}%);--height:${Math.random() * 5 + 23}vmin;--no:${Math.floor(b / 3)}`;
+    let bookLightness = Math.random() > 0.5 ? (Math.random() * 15) + 20 : (Math.random() * 10) + 70;
+    book.style = `color:${bookLightness > 50 ? '#59330d' : 'bisque'};--background-color: hsl(${Math.random() * 10 + 30}, 75%, ${bookLightness}%);--height:${Math.random() * 3 + 24.5}vmin;--no:${Math.floor(b / 3)}`;
     document.getElementsByClassName('shelf')[b % 3].appendChild(book);
   }
 }
