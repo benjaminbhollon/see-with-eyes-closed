@@ -3,6 +3,7 @@ const occupations = document.getElementById('occupations-typewriter').getAttribu
 const occupationLength = 5000;
 const typingLength = 1500;
 let occupationNo = 0;
+let isScrolling = false;
 
 // Change occupation
 function changeOccupation() {
@@ -227,12 +228,19 @@ function skipCode() {
 
 document.getElementById('code__skip').addEventListener('click', skipCode);
 
+window.addEventListener('scroll', () => {
+  isScrolling = true;
+});
+
 setInterval(() => {
   if (!done && document.hasFocus() && isScrolledIntoView(document.getElementById('code__editor'))) {
-    typedCSS += css[typedCSS.length];
-    document.getElementById('code__editor').innerText = typedCSS;
-    document.getElementById('code__editor').scrollTop = document.getElementById('code__editor').scrollHeight;
-    document.getElementById('code__result').contentWindow.document.getElementById('style').innerText = typedCSS;
+    if (!isScrolling) {
+      typedCSS += css[typedCSS.length];
+      document.getElementById('code__editor').innerText = typedCSS;
+      document.getElementById('code__editor').scrollTop = document.getElementById('code__editor').scrollHeight;
+      document.getElementById('code__result').contentWindow.document.getElementById('style').innerText = typedCSS;
+    }
+    else isScrolling = false;
     if (typedCSS.length === css.length) {
       done = true;
       document.getElementById('code__editor').setAttribute('contenteditable', 'true');
@@ -243,7 +251,7 @@ setInterval(() => {
       document.getElementById('code__skip').style.display = 'none';
     }
   }
-}, 30);
+}, 50);
 
 // bookshelf
 function load() {
