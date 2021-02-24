@@ -299,6 +299,7 @@ let typed = 0;
 let rewinding = false;
 
 function writeNext() {
+  if (!isScrolledIntoView(document.getElementById('window__text')) || !(document.hasFocus())) return;
   if (toWrite.length === typed) {
     clearInterval(writingInterval);
   } else if (rewinding === true) {

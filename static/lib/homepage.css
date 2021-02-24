@@ -117,7 +117,7 @@ body {
   left: 50%;
   bottom: 0;
   width: calc(100% - 3em);
-  height: calc(100% - 1.5em);
+  height: calc(100% - 1em);
   max-width: 750px;
   max-height: 750px;
   background-color: #fff;
@@ -125,6 +125,17 @@ body {
   border-top-right-radius: 0.3em;
   transform: translateX(-50%);
   overflow: hidden;
+}
+
+@media (min-height: 500px) {
+  #panel-4 .fullpage__center--fill {
+    top: 1.5em;
+    transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+  }
+  #window {
+    height: calc(100% - 250px - 3em);
+  }
 }
 
 #window__toolbar {
