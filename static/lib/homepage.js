@@ -239,8 +239,7 @@ setInterval(() => {
       document.getElementById('code__editor').innerText = typedCSS;
       document.getElementById('code__editor').scrollTop = document.getElementById('code__editor').scrollHeight;
       document.getElementById('code__result').contentWindow.document.getElementById('style').innerText = typedCSS;
-    }
-    else isScrolling = false;
+    } else isScrolling = false;
     if (typedCSS.length === css.length) {
       done = true;
       document.getElementById('code__editor').setAttribute('contenteditable', 'true');
@@ -253,8 +252,8 @@ setInterval(() => {
   }
 }, 50);
 
-// bookshelf
-function load() {
+// Bookshelf
+function addRecentlyRead() {
   const recentlyRead = [];
   document.querySelectorAll('.gr_custom_title_1610423899').forEach((book) => {
     recentlyRead.push({ title: book.children[0].innerText, link: book.children[0].href });
@@ -282,4 +281,48 @@ function load() {
   }
 }
 
-document.body.onload = load;
+document.body.onload = addRecentlyRead;
+
+// Writing
+const toWrite = `It was midnight when the onions~|zucchinis~|radishes~|potatoes~~ came for him. Potatoes, potatoes everywhere, all seeking hugs.~~~~~|revenge.~~~ The freezing|humid night air reeked of their want~|lust for blood. And yet he drove~~~|slept on, oblivious to his impending doom.
+
+A shadow passed over his face, and he murmured sleepily and rubbed his elbows~~|eyes. He jolted~~|sat up to see what had wakened~|woken him and froze as he saw the potatoes, silently waiting in their ranks.
+
+He tried to yelp~|scream~~ but couldn’t. The Leader~~~~~~|Spud King moved up to him, moonlight shining~~|glinting off his knife. And then, he struck.
+
+The camper screamed~~|dodged,~ and the blade flew past his nose~|ear,~ the Spud King losing his balance and jumping~~|falling after it. The man giggled~~|backed into a corner of the hut~~~|tent,~~~ afraid to move or speak as the spuds~|potatoes closed in noisily~~|silently.
+
+Just as the potatoes had slain~~|reached him and were preparing to boil~|leap on him, the camper sobbed~~~|woke up and realized that it had been a dream.~~~ Letting out a sigh of horror~|dismay~|wistfulness~|relief,~~ he sat up and looked around him, slowly~~|joyfully~ drinking in the sight of a tie-die-colored~~~|spud-free~~ tent. But wait—~~~~had something moved up on the ceiling~~|chair~~|table?~~~~~~
+
+The man~|camper,~ hesitant and nervous, moved closer to the table and was met by the flash of the Unicorn~~|Spud King’s waiting blade.`;
+let typed = 0;
+let rewinding = false;
+
+function writeNext() {
+  if (!isScrolledIntoView(document.getElementById('window__text')) || !(document.hasFocus()) || isScrolling) {
+    isScrolling = false;
+    return false;
+  }
+  if (toWrite.length === typed) {
+    clearInterval(this);
+  } else if (rewinding === true) {
+    if (document.getElementById('window__text').innerText[document.getElementById('window__text').innerText.length - 1] === ' ') {
+      rewinding = false;
+    } else {
+      document.getElementById('window__text').innerText = document.getElementById('window__text').innerText.slice(0, -1);
+    }
+  } else if (toWrite[typed] === '|') {
+    rewinding = true;
+    typed += 1;
+  } else if (toWrite[typed] === '~') {
+    typed += 1;
+  } else {
+    document.getElementById('window__text').innerText += toWrite[typed];
+    typed += 1;
+  }
+  document.getElementById('window__text').scrollTop = document.getElementById('window__text').scrollHeight;
+  return true;
+}
+
+let writingInterval = '';
+writingInterval = setInterval(writeNext.bind(writingInterval), 75);

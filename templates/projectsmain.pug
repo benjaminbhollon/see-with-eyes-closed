@@ -17,14 +17,14 @@ block content
             img.listing__banner(src=project.image,alt="Banner Image")
           h3 #{project.name}
           != md.render(project.summary.split("\n\n")[0])
-          a.listing__button--red(href="javascript:more('" + project.id + "')") More
+          a.button--red(href="javascript:more('" + project.id + "')") More
         .listing__modal(data-id=project.id)
           a.listing__hide(href="javascript:close('" + project.id + "')") ✕
           if project.image
             img.listing__banner(src=project.image,alt="Banner Image")
           h1 #{project.name}
           != md.render(project.summary)
-          a.listing__button--blue(href=project.link,target="_blank") Open Project
+          a.button--blue(href=project.link,target="_blank") Open Project
           if project.code !== false
-            a.listing__button--black(href=project.code,target="_blank") View Code
+            a.button--black(href=project.code,target="_blank") View Code
         .listing__mask

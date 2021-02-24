@@ -11,7 +11,7 @@ body {
 .fullpage__center, .fullpage__center--fill {
   position: absolute;
   top: 50vh;
-  left: 50vw;
+  left: 50%;
   width: 100%;
   max-width: 600px;
   padding: 1em;
@@ -105,12 +105,105 @@ body {
   display: none;
 }
 
+/* Writing */
 #panel-4 {
-  background-color: bisque;
-  background-image: url("/lib/images/homepage/6.jpg");
-  background-size: cover;
-  background-position: top;
+  overflow: hidden;
+  background-color: DeepSkyBlue;
 }
+
+#window {
+  text-align: left;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: calc(100% - 3em);
+  height: calc(100% - 1em);
+  max-width: 750px;
+  max-height: 750px;
+  background-color: #fff;
+  border-top-left-radius: 0.3em;
+  border-top-right-radius: 0.3em;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+
+@media (min-height: 500px) {
+  #panel-4 .fullpage__center--fill {
+    top: 1.5em;
+    transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+  }
+  #window {
+    height: calc(100% - 250px - 3em);
+  }
+}
+
+#window__toolbar {
+  padding: 0.25em;
+  padding-left: 0.4em;
+  background-color: #d7d7d7;
+}
+
+.window__toolbar__icon--expand, .window__toolbar__icon--minimize, .window__toolbar__icon--close {
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 100%;
+  display: inline-block;
+  background-color: bisque;
+  cursor: pointer;
+  margin: 0 0.15em;
+}
+
+.window__toolbar__icon--close {
+  background-color: #fb4948
+}
+
+.window__toolbar__icon--minimize {
+  background-color: #fdb225
+}
+
+.window__toolbar__icon--expand {
+  background-color: #2ac833
+}
+
+#window__text {
+  height: calc(100% - 1.5em);
+  overflow: auto;
+  font-family: 'Trebuchet MS', Calibri, sans-serif;
+  padding: 1em;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+#window__text::after {
+  content: '_';
+  display: inline;
+  animation: cursor-blink 1s infinite;
+}
+
+@keyframes cursor-blink {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+#window__text::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+#window__text::-webkit-scrollbar-track {
+  background-color: #f5f5f5;
+}
+
+#window__text::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 1em;
+}
+
+#window__text::-webkit-scrollbar-thumb:hover {
+  background-color: #bbb;
+}
+
+/* Music */
 
 #panel-5 {
   background-color: maroon;
