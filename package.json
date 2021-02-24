@@ -15,8 +15,7 @@
     "isomorphic-fetch": "^3.0.0",
     "markdown-it": "^12.0.4",
     "mongodb": "^3.6.3",
-    "node-html-to-image": "^3.1.0",
-    "pm2": "^4.5.1",
+    "pm2": "^4.5.4",
     "pug": "^3.0.0",
     "sendmail": "^1.6.1",
     "sitemap-generator": "^8.5.1"

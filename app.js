@@ -8,7 +8,6 @@ const compression = require('compression');
 const basicAuth = require('express-basic-auth');
 const cookieParser = require('cookie-parser');
 const minify = require('express-minify');
-const nodeHtmlToImage = require('node-html-to-image');
 const SitemapGenerator = require('sitemap-generator');
 const MarkdownIt = require('markdown-it');
 
@@ -349,7 +348,7 @@ app.get('/policies/:policy/', async (request, response) => {
 
 // Gamified Reading Reading Bingo
 app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, response) => {
-  nodeHtmlToImage({
+  /*nodeHtmlToImage({
     output: './static/projects/gamified-reading/finriq/reading-bingo/bingo.png',
     html: `<html>
     <body>
@@ -372,7 +371,8 @@ app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, res
     </html>`,
     puppeteerArgs: puppeteer,
   })
-    .then(() => response.status(201).json({ success: true }));
+    .then(() => response.status(201).json({ success: true }));*/
+    response.status(500).end();
 });
 
 // Redirects
