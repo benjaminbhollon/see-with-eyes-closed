@@ -239,8 +239,7 @@ setInterval(() => {
       document.getElementById('code__editor').innerText = typedCSS;
       document.getElementById('code__editor').scrollTop = document.getElementById('code__editor').scrollHeight;
       document.getElementById('code__result').contentWindow.document.getElementById('style').innerText = typedCSS;
-    }
-    else isScrolling = false;
+    } else isScrolling = false;
     if (typedCSS.length === css.length) {
       done = true;
       document.getElementById('code__editor').setAttribute('contenteditable', 'true');
@@ -254,7 +253,7 @@ setInterval(() => {
 }, 50);
 
 // bookshelf
-function load() {
+function addRecentlyRead() {
   const recentlyRead = [];
   document.querySelectorAll('.gr_custom_title_1610423899').forEach((book) => {
     recentlyRead.push({ title: book.children[0].innerText, link: book.children[0].href });
@@ -282,4 +281,4 @@ function load() {
   }
 }
 
-document.body.onload = load;
+document.body.onload = addRecentlyRead;

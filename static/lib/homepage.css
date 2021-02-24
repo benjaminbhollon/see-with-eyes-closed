@@ -11,7 +11,7 @@ body {
 .fullpage__center, .fullpage__center--fill {
   position: absolute;
   top: 50vh;
-  left: 50vw;
+  left: 50%;
   width: 100%;
   max-width: 600px;
   padding: 1em;

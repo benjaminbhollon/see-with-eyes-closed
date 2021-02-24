@@ -22,6 +22,35 @@ a {
   color: inherit;
 }
 
+.button, .button--red, .button--blue, .button--black {
+  text-decoration: none;
+  padding: 0.5em;
+  display: block;
+  transition: box-shadow 0.5s, filter 0.5s;
+  margin: 0.5em;
+  background-color: #000;
+  color: #fff;
+  border-radius: .5em;
+}
+
+.button:hover, .button--red:hover:not(.listing__unpublished .button--red), .button--blue:hover, .button--black:hover {
+  box-shadow: 0 0 0.5em #888;
+  filter: hue-rotate(30deg);
+  cursor: pointer;
+}
+
+.button--red {
+  background-color: maroon;
+}
+
+.button--blue {
+  background-color: #1565C0;
+}
+
+.--inline-block {
+  display: inline-block;
+}
+
 h1 {
   text-align: center;
 }
