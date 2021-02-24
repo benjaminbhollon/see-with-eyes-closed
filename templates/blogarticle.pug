@@ -17,13 +17,13 @@ block content
   article.article
     header
       if article.image !== ""
-        img.article__banner(src=article.image,alt="Banner Image")
+        img.article__banner(src=article.image alt="Banner Image")
       h1.article__title #{article.title}
       p.article__details
         | #{article.date} by #{article.author}
         br
         em #{Math.ceil(article.content.split(" ").length / 250)} minute read
-    .article__content!= md.render(article.content)
+    .article__content!= md.render(article.content).replace("<a", "<a target='_blank' rel='noopener'").replace("<img", "<img loading='lazy'").replace("<iframe", "<iframe loading='lazy'")
   br
   .subscribe
     h2 Like the content?

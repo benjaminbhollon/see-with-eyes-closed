@@ -22,13 +22,13 @@ block content
           if ((new Date(post.date)).getTime() < Date.now())
             article.recent__article
               if (post.image !== "")
-                img.article__banner(src=post.image,alt="Banner Image")
+                img.article__banner(src=post.image alt="Banner Image" loading="lazy")
               h1.article__title
                 a(href="./article/" + post.id + "/") #{post.title}
               p.article__details #{post.date} by #{post.author}
                 br
                 | #{Math.ceil(post.content.split(" ").length / 250)} minute read
-              != md.render(post.summary)
+              != md.render(post.summary).replace("<a", "<a target='_blank' rel='noopener'")
               p
                 a(href="./article/" + post.id + "/") Read the full article
               p
