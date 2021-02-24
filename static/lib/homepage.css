@@ -105,12 +105,96 @@ body {
   display: none;
 }
 
+/* Writing */
 #panel-4 {
-  background-color: bisque;
-  background-image: url("/lib/images/homepage/6.jpg");
-  background-size: cover;
-  background-position: top;
+  overflow: hidden;
+  background-color: DeepSkyBlue;
 }
+
+#window {
+  text-align: left;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: calc(100% - 3em);
+  height: calc(100% - 1.5em);
+  max-width: 750px;
+  max-height: 750px;
+  background-color: #fff;
+  border-top-left-radius: 0.3em;
+  border-top-right-radius: 0.3em;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+
+#window__toolbar {
+  padding: 0.25em;
+  padding-left: 0.4em;
+  background-color: #d7d7d7;
+}
+
+.window__toolbar__icon--expand, .window__toolbar__icon--minimize, .window__toolbar__icon--close {
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 100%;
+  display: inline-block;
+  background-color: bisque;
+  cursor: pointer;
+  margin: 0 0.15em;
+}
+
+.window__toolbar__icon--close {
+  background-color: #fb4948
+}
+
+.window__toolbar__icon--minimize {
+  background-color: #fdb225
+}
+
+.window__toolbar__icon--expand {
+  background-color: #2ac833
+}
+
+#window__text {
+  height: calc(100% - 1.5em);
+  overflow: auto;
+  font-family: 'Trebuchet MS', Calibri, sans-serif;
+  padding: 0 1em;
+}
+
+#window__text p {
+  text-indent: 0.5in;
+}
+
+#window__text p:last-child::after {
+  content: '_';
+  display: inline;
+  animation: cursor-blink 1s infinite;
+}
+
+@keyframes cursor-blink {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+#window__text::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+#window__text::-webkit-scrollbar-track {
+  background-color: #f5f5f5;
+}
+
+#window__text::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 1em;
+}
+
+#window__text::-webkit-scrollbar-thumb:hover {
+  background-color: #bbb;
+}
+
+/* Music */
 
 #panel-5 {
   background-color: maroon;
