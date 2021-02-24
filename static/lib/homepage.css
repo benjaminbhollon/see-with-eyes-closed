@@ -160,13 +160,10 @@ body {
   overflow: auto;
   font-family: 'Trebuchet MS', Calibri, sans-serif;
   padding: 0 1em;
+  white-space: pre-wrap;
 }
 
-#window__text p {
-  text-indent: 0.5in;
-}
-
-#window__text p:last-child::after {
+#window__text::after {
   content: '_';
   display: inline;
   animation: cursor-blink 1s infinite;
