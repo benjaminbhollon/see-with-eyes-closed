@@ -3,7 +3,6 @@ const occupations = document.getElementById('occupations-typewriter').getAttribu
 const occupationLength = 5000;
 const typingLength = 1500;
 let occupationNo = 0;
-let isScrolling = false;
 
 // Change occupation
 function changeOccupation() {
@@ -38,7 +37,7 @@ function changeOccupation() {
 changeOccupation();
 
 // Code editor
-const html = '<div id="container"> <div id="peel"> <div id="bulge-peel"></div> <div id="bulge"> <div id="eyes"> <div id="eye-1"></div> <div id="eye-2"></div> </div> <div id="mouth"></div> </div> <div id="body"> <div id="pit"> <div id="inner-pit-1"> <div id="inner-pit-2"></div> </div> </div> </div> </div> </div>';
+const html = '<div id="container"> <div id="peel"> <div id="bulge-peel"></div> <div id="bulge"> <div id="eyes"> <div id="eye-1"></div> <div id="eye-2"></div> </div> <div id="mouth"></div> </div> <div id="body"> <div id="pit"> <div id="inner-pit-1"> <div id="inner-pit-2"></div> </div> </div> </div> </div> </div><style id="style"></style>';
 const css = `body {
   background-color: DeepSkyBlue;
   overflow: hidden;
@@ -155,8 +154,8 @@ const css = `body {
   margin-top: 3px;
   width: 10px;
   height: 10px;
-  border-radius: 100%;
   background-color: #000;
+  border-radius: 100%;
   z-index: 5;
   animation: eyes 10s infinite;
 }
@@ -211,6 +210,7 @@ const css = `body {
 \n\n\n`;
 let typedCSS = '';
 let done = false;
+document.getElementById('code__result').contentWindow.document.documentElement.innerHTML = html;
 
 function isScrolledIntoView(el) {
   const rect = el.getBoundingClientRect();
@@ -227,33 +227,21 @@ function skipCode() {
 
 document.getElementById('code__skip').addEventListener('click', skipCode);
 
-window.addEventListener('scroll', () => {
-  isScrolling = true;
-});
-
 setInterval(() => {
-  if (!done && document.hasFocus() && isScrolledIntoView(document.getElementById('code__editor')) && !isScrolling) {
+  if (!done && document.hasFocus() && isScrolledIntoView(document.getElementById('code__editor'))) {
     typedCSS += css[typedCSS.length];
-    let dataURI = `data:text/html,${encodeURIComponent(`${html}<style>${typedCSS}</style>`)}`;
     document.getElementById('code__editor').innerText = typedCSS;
     document.getElementById('code__editor').scrollTop = document.getElementById('code__editor').scrollHeight;
-    if (typedCSS.length % 5 === 0 || typedCSS.length === css.length) {
-      document.getElementsByClassName('code__result')[typedCSS.length % 2].src = dataURI;
-      document.getElementsByClassName('code__result')[typedCSS.length % 2].style.display = 'none';
-    }
+    document.getElementById('code__result').contentWindow.document.getElementById('style').innerText = typedCSS;
     if (typedCSS.length === css.length) {
       done = true;
       document.getElementById('code__editor').setAttribute('contenteditable', 'true');
       document.getElementById('code__editor').addEventListener('input', () => {
         typedCSS = document.getElementById('code__editor').innerText;
-        dataURI = `data:text/html,${encodeURIComponent(`${html}<style>${typedCSS}</style>`)}`;
-        document.getElementsByClassName('code__result')[typedCSS.length % 2].src = dataURI;
-        document.getElementsByClassName('code__result')[typedCSS.length % 2].style.display = 'none';
+        document.getElementById('code__result').contentWindow.document.getElementById('style').innerText = typedCSS;
       });
       document.getElementById('code__skip').style.display = 'none';
     }
-  } else {
-    isScrolling = false;
   }
 }, 30);
 

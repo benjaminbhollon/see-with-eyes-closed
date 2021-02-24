@@ -21,8 +21,7 @@ block content
         a.scroll-down(href="#panel-2") Scroll Down
   .fullpage#panel-2
     pre#code__editor
-    iframe.code__result(src="data:text/html," title="Live-coded avocado" onload="this.style.display = 'block';document.getElementsByClassName('code__result')[1].style.display='none'",sandbox)
-    iframe.code__result(src="data:text/html," title="Live-coded avocado" onload="this.style.display = 'block';document.getElementsByClassName('code__result')[0].style.display='none'",sandbox)
+    iframe#code__result(title="Live-coded avocado")
     #code__skip Skip to end
     .fullpage__center--fill
       h2 I code things that make me smile.
