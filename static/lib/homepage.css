@@ -170,7 +170,8 @@ body {
   height: calc(100% - 1.5em);
   overflow: auto;
   font-family: 'Trebuchet MS', Calibri, sans-serif;
-  padding: 0 1em;
+  padding: 1em;
+  margin: 0;
   white-space: pre-wrap;
 }
 

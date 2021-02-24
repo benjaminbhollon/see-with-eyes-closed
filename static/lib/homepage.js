@@ -284,7 +284,7 @@ function addRecentlyRead() {
 document.body.onload = addRecentlyRead;
 
 // Writing
-let toWrite = `It was midnight when the onions~|zucchinis~|radishes~|potatoes~~ came for him. Potatoes, potatoes everywhere, all seeking hugs.~~~~~|revenge.~~~ The freezing|humid night air reeked of their want~|lust for blood. And yet he drove~~~|slept on, oblivious to his impending doom.
+const toWrite = `It was midnight when the onions~|zucchinis~|radishes~|potatoes~~ came for him. Potatoes, potatoes everywhere, all seeking hugs.~~~~~|revenge.~~~ The freezing|humid night air reeked of their want~|lust for blood. And yet he drove~~~|slept on, oblivious to his impending doom.
 
 A shadow passed over his face, and he murmured sleepily and rubbed his elbows~~|eyes. He jolted~~|sat up to see what had wakened~|woken him and froze as he saw the potatoes, silently waiting in their ranks.
 
@@ -294,14 +294,17 @@ The camper screamed~~|dodged,~ and the blade flew past his nose~|ear,~ the Spud 
 
 Just as the potatoes had slain~~|reached him and were preparing to boil~|leap on him, the camper sobbed~~~|woke up and realized that it had been a dream.~~~ Letting out a sigh of horror~|dismay~|wistfulness~|relief,~~ he sat up and looked around him, slowly~~|joyfully~ drinking in the sight of a tie-die-colored~~~|spud-free~~ tent. But wait—~~~~had something moved up on the ceiling~~|chair~~|table?~~~~~~
 
-The man~|camper,~ hesitant and nervous, moved closer to the table and was met by the flash of the Unicorn~~|Spud King’s waiting blade.`
+The man~|camper,~ hesitant and nervous, moved closer to the table and was met by the flash of the Unicorn~~|Spud King’s waiting blade.`;
 let typed = 0;
 let rewinding = false;
 
 function writeNext() {
-  if (!isScrolledIntoView(document.getElementById('window__text')) || !(document.hasFocus())) return;
+  if (!isScrolledIntoView(document.getElementById('window__text')) || !(document.hasFocus()) || isScrolling) {
+    isScrolling = false;
+    return false;
+  }
   if (toWrite.length === typed) {
-    clearInterval(writingInterval);
+    clearInterval(this);
   } else if (rewinding === true) {
     if (document.getElementById('window__text').innerText[document.getElementById('window__text').innerText.length - 1] === ' ') {
       rewinding = false;
@@ -312,11 +315,14 @@ function writeNext() {
     rewinding = true;
     typed += 1;
   } else if (toWrite[typed] === '~') {
-    typed += 1
+    typed += 1;
   } else {
     document.getElementById('window__text').innerText += toWrite[typed];
     typed += 1;
   }
+  document.getElementById('window__text').scrollTop = document.getElementById('window__text').scrollHeight;
+  return true;
 }
 
-let writingInterval = setInterval(writeNext, 75);
+let writingInterval = '';
+writingInterval = setInterval(writeNext.bind(writingInterval), 75);
