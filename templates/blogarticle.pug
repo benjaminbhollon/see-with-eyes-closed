@@ -3,6 +3,8 @@ extends layout.pug
 block variables
   - metaDescription = md.render(article.summary).replace( /(<([^>]+)>)/ig, '')
   - title = article.title
+  if article.image
+    - metaImage = article.image
   
 block append resources
   link(rel="stylesheet",href="/lib/article.css")
