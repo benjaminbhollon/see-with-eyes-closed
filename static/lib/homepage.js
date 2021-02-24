@@ -275,8 +275,13 @@ function load() {
       book.innerHTML = '<span>&nbsp;</span>';
     }
     book.className = 'book';
-    let bookLightness = Math.random() > 0.5 ? (Math.random() * 15) + 20 : (Math.random() * 10) + 70;
-    book.style = `color:${bookLightness > 50 ? '#59330d' : 'bisque'};--background-color: hsl(${Math.random() * 10 + 30}, 75%, ${bookLightness}%);--height:${Math.random() * 3 + 24.5}vmin;--no:${Math.floor(b / 3)}`;
+    const bookLightness = Math.random() > 0.5
+      ? (Math.random() * 15) + 20
+      : (Math.random() * 10) + 70;
+    book.style = `color:${bookLightness > 50 ? '#59330d' : 'bisque'};
+      --background-color: hsl(${Math.random() * 10 + 30}, 75%, ${bookLightness}%);
+      --height:${Math.random() * 3 + 24.5}vmin;
+      --no:${Math.floor(b / 3)}`;
     document.getElementsByClassName('shelf')[b % 3].appendChild(book);
   }
 }
