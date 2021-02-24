@@ -305,6 +305,7 @@ function writeNext() {
   }
   if (toWrite.length === typed) {
     clearInterval(this);
+    return true;
   } else if (rewinding === true) {
     if (document.getElementById('window__text').innerText[document.getElementById('window__text').innerText.length - 1] === ' ') {
       rewinding = false;
