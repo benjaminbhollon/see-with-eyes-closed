@@ -12,18 +12,6 @@ const SitemapGenerator = require('sitemap-generator');
 const MarkdownIt = require('markdown-it');
 
 const md = new MarkdownIt({ html: true });
-const puppeteer = {
-  args: ['--no-sandbox',
-    '--disable-setuid-sandbox',
-    '--disable-dev-shm-usage',
-    '--disable-accelerated-2d-canvas',
-    '--no-first-run',
-    '--headless',
-    '--no-zygote',
-    '--disable-gpu'],
-  headless: true,
-  ignoreHTTPSErrors: true,
-};
 
 // Import emails, messages, and policies
 const policies = require('./lib/policies.json');
@@ -49,9 +37,7 @@ const generator = SitemapGenerator('https://seewitheyesclosed.com', {
 generator.on('done', () => {
   console.log('Sitemap for seewitheyesclosed.com created.');
 });
-setInterval(() => {
-  generator.start();
-}, 1000 * 60 * 60 * 24);
+setInterval(generator.start, 1000 * 60 * 60 * 24);
 
 // Set up middleware
 app.use(cookieParser());
@@ -384,4 +370,4 @@ app.listen(config.port, () => {
 });
 
 // Generate sitemap
-// setTimeout( () => generator.start(), 0)
+setTimeout( () => generator.start(), 0);
