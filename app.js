@@ -334,7 +334,7 @@ app.get('/policies/:policy/', async (request, response) => {
 
 // Gamified Reading Reading Bingo
 app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, response) => {
-  /*nodeHtmlToImage({
+  /* nodeHtmlToImage({
     output: './static/projects/gamified-reading/finriq/reading-bingo/bingo.png',
     html: `<html>
     <body>
@@ -357,8 +357,8 @@ app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, res
     </html>`,
     puppeteerArgs: puppeteer,
   })
-    .then(() => response.status(201).json({ success: true }));*/
-    response.status(500).end();
+    .then(() => response.status(201).json({ success: true })); */
+  response.status(500).end();
 });
 
 // Redirects
@@ -370,4 +370,4 @@ app.listen(config.port, () => {
 });
 
 // Generate sitemap
-setTimeout( () => generator.start(), 0);
+if (process.env.NODE_ENV === 'production') setTimeout(() => generator.start(), 0);
