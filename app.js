@@ -103,7 +103,7 @@ app.get('/blog/article/:articleId/', async (request, response) => {
   });
   if (article === undefined) return response.status(404).end();
 
-  if (!request.session.viewed) {
+  if (!request.session.viewed && request.headers['user-agent'] !== 'verbGuac 1.0') {
     article.hits += 1;
     crud.updateDocument('articles', { id: new RegExp(`^${request.params.articleId}$`, 'i') }, { hits: article.hits });
     request.session.viewed = true;

@@ -21,9 +21,9 @@ block content
           if ((new Date(post.date)).getTime() < Date.now())
             article.recent__article
               if (post.image !== "")
-                a.article__banner(href="./article/" + post.id + "/"): img(src=post.image alt="Banner Image" loading="lazy")
+                a.article__banner(href="/blog/article/" + post.id + "/"): img(src=post.image alt="Banner Image" loading="lazy")
               h1.article__title
-                a(href="./article/" + post.id + "/") #{post.title}
+                a(href="/blog/article/" + post.id + "/") #{post.title}
               p.article__details #{post.date} by #{post.author}
                 br
                 | #{Math.ceil(post.content.split(" ").length / 250)} minute read
@@ -34,7 +34,7 @@ block content
       .popular__sticky
         h3 Popular Articles
         each post in popular
-          a.popular__article(href="./article/" + post.id + "/") 
+          a.popular__article(href="/blog/article/" + post.id + "/") 
             strong #{post.title}
             br
             | #{post.date} by #{post.author}
