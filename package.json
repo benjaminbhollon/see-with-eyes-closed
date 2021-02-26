@@ -25,7 +25,8 @@
     "stop": "pm2 delete SWEC",
     "lint": "eslint . --fix",
     "logs": "pm2 logs SWEC",
-    "restart": "pm2 restart SWEC"
+    "restart": "pm2 restart SWEC",
+    "dev": "nodemon app.js"
   },
   "author": "Benjamin Hollon",
   "license": "GPL-3.0",
@@ -40,6 +41,7 @@
   "devDependencies": {
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1"
+    "eslint-plugin-import": "^2.22.1",
+    "nodemon": "^2.0.7"
   }
 }
