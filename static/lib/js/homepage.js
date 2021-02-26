@@ -284,7 +284,7 @@ function addRecentlyRead() {
 document.body.onload = addRecentlyRead;
 
 // Writing
-const toWrite = `It was midnight when the onions~|zucchinis~|radishes~|potatoes~~ came for him. Potatoes, potatoes everywhere, all seeking hugs.~~~~~|revenge.~~~ The freezing|humid night air reeked of their want~|lust for blood. And yet he drove~~~|slept on, oblivious to his impending doom.
+const toWrite = `It was midnight when the onions~|zucchinis~|radishes~|potatoes~~ came for him. Potatoes, potatoes everywhere, all seeking hugs.~~~~~|revenge.~~~ The freezing|humid night air reeked of their want~|lust for blood. And yet he drove~~~|slept on, oblivious of his impending doom.
 
 A shadow passed over his face, and he murmured sleepily and rubbed his elbows~~|eyes. He jolted~~|sat up to see what had wakened~|woken him and froze as he saw the potatoes, silently waiting in their ranks.
 

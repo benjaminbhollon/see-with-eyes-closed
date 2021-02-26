@@ -14,7 +14,7 @@ const MarkdownIt = require('markdown-it');
 const md = new MarkdownIt({ html: true });
 
 // Import emails, messages, and policies
-const policies = require('./lib/policies.json');
+const policies = require('./src/policies.json');
 
 // Import config
 const config = require('./config.json');

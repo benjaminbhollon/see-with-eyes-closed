@@ -5,10 +5,10 @@ block variables
   - metaDescription = '"And now here is my secret, a very simple secret: It is only with the heart that one can see rightly; what is essential is invisible to the eye." - Antoine de Saint-Exupéry, The Little Prince'
 
 block append head
-  link(rel="stylesheet", href="/lib/homepage.css")
-  script(async,src="https://buttons.github.io/buttons.js")
-  script(async,src="https://www.goodreads.com/review/custom_widget/80839667.Recently%20read%20books?cover_position=left&cover_size=small&num_books=50&order=d&shelf=read&show_author=0&show_cover=0&show_rating=0&show_review=0&show_tags=0&show_title=1&sort=date_read&widget_bg_color=FFFFFF&widget_bg_transparent=true&widget_border_width=1&widget_id=1610423899&widget_text_color=000000&widget_title_size=medium&widget_width=medium")
-  script(async,src="/lib/homepage.js")
+  link(rel="stylesheet" href="/lib/css/homepage.css")
+  script(async src="https://buttons.github.io/buttons.js")
+  script(async src="https://www.goodreads.com/review/custom_widget/80839667.Recently%20read%20books?cover_position=left&cover_size=small&num_books=50&order=d&shelf=read&show_author=0&show_cover=0&show_rating=0&show_review=0&show_tags=0&show_title=1&sort=date_read&widget_bg_color=FFFFFF&widget_bg_transparent=true&widget_border_width=1&widget_id=1610423899&widget_text_color=000000&widget_title_size=medium&widget_width=medium")
+  script(async src="/lib/js/homepage.js")
 
 block content
   .fullpage#panel-1
@@ -25,7 +25,7 @@ block content
     #code__skip Skip to end
     .fullpage__center--fill
       h2 I code things that make me smile.
-      a.github-button(href="https://github.com/benjaminbhollon",data-color-scheme="no-preference: dark; light: dark; dark: dark;",data-size="large",data-show-count="true",aria-label="Follow @benjaminbhollon on GitHub") Follow @benjaminbhollon
+      a.github-button(href="https://github.com/benjaminbhollon" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-size="large" data-show-count="true" aria-label="Follow @benjaminbhollon on GitHub") Follow @benjaminbhollon
   .fullpage#panel-3
     #bookshelf
       .shelf
@@ -33,8 +33,8 @@ block content
       .shelf
     .fullpage__center--fill
       h2 I read books that expand my horizons.
-      a(href="https://www.goodreads.com/user/show/80839667-benjamin-hollon",title="Benjamin Hollon's book recommendations, liked quotes, book clubs, book trivia, book lists",target="_blank",rel="nofollow noopener")
-        img(alt="Benjamin Hollon's book recommendations, liked quotes, book clubs, book trivia, book lists",src="https://s.gr-assets.com/images/widget/widget_logo.gif",style="border-radius: 5px")
+      a(href="https://www.goodreads.com/user/show/80839667-benjamin-hollon" title="Benjamin Hollon's book recommendations, liked quotes, book clubs, book trivia, book lists" target="_blank" rel="nofollow noopener")
+        img(alt="Benjamin Hollon's book recommendations, liked quotes, book clubs, book trivia, book lists" src="https://s.gr-assets.com/images/widget/widget_logo.gif" style="border-radius: 5px")
     #gr_custom_widget_1610423899
   .fullpage#panel-4
     #window
