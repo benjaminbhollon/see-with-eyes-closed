@@ -19,6 +19,11 @@
 
 .listing__card.listing__unpublished {
   opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.listing__card.listing__unpublished:hover {
+  opacity: 1;
 }
 
 .listing__card.listing__unpublished .button--red {
