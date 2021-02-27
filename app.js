@@ -49,7 +49,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
 app.use((request, response, next) => {
-  if (directory[request.path] !== undefined && request.method.toUpperCase() === "GET") {
+  if (directory[request.path] !== undefined && request.method.toUpperCase() === 'GET') {
     return response.render(directory[request.path], { parameters: request.query, config });
   }
 
@@ -95,7 +95,7 @@ app.get('/blog/', async (request, response) => {
 // Blog article
 app.get('/blog/article/:articleId/', async (request, response) => {
   let article = {};
-  await crud.findDocument('articles', {id: request.params.articleId}).then((result) => {
+  await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
     article = result;
   });
   if (article === undefined) return response.status(404).end();
@@ -104,42 +104,46 @@ app.get('/blog/article/:articleId/', async (request, response) => {
   let related = [];
   await crud.aggregate('articles', [
     {
-      '$match': {
-        'tags': {
-          '$elemMatch': {
-            '$in': article.tags
-          }
+      $match: {
+        tags: {
+          $elemMatch: {
+            $in: article.tags,
+          },
         },
-        'id': {
-          '$ne': 'grade-comparing-new-pillory'
-        }
-      }
-    }, {
-      '$addFields': {
-        'matching': {
-          '$filter': {
-            'input': '$tags',
-            'cond': {
-              '$in': [
-                '$$this', article.tags
-              ]
-            }
-          }
-        }
-      }
-    }, {
-      '$set': {
-        'matching': {
-          '$size': '$matching'
-        }
-      }
-    }, {
-      '$sort': {
-        'matching': -1
-      }
-    }, {
-      '$limit': 3
-    }
+        id: {
+          $ne: 'grade-comparing-new-pillory',
+        },
+      },
+    },
+    {
+      $addFields: {
+        matching: {
+          $filter: {
+            input: '$tags',
+            cond: {
+              $in: [
+                '$$this', article.tags,
+              ],
+            },
+          },
+        },
+      },
+    },
+    {
+      $set: {
+        matching: {
+          $size: '$matching',
+        },
+      },
+    },
+    {
+      $sort: {
+        matching: -1,
+      },
+    },
+    {
+      $limit: 3,
+    },
   ]).then((result) => {
     related = result;
   });
@@ -179,8 +183,9 @@ app.get('/blog/article/:articleId/', async (request, response) => {
 
   // Comment time ago
   article.comments = article.comments.map((comment) => {
-    comment.time = `${timeSince(comment.time * 1000)} ago`;
-    return comment;
+    const newComment = { ...comment };
+    newComment.time = `${timeSince(newComment.time * 1000)} ago`;
+    return newComment;
   });
 
   return response.render('blogarticle', {

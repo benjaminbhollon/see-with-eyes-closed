@@ -44,7 +44,7 @@
   display: inline-block;
 }
 
-.article__banner img {
+.article__banner img, img.article__banner {
   width: 100%;
 }
 

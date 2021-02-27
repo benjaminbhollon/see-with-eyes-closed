@@ -126,12 +126,12 @@ router.post('/manage/writing/:workId/', async (request, response) => {
     characters: [],
     published: (request.body.published === 'on' ? {
       website: request.body.website === 'on',
-      link: request.body.link
+      link: request.body.link,
     } : false),
-    status: request.body.status
-  }
+    status: request.body.status,
+  };
 
-  await crud.updateDocument('writing', {id: request.params.workId}, story);
+  await crud.updateDocument('writing', { id: request.params.workId }, story);
 
   response.redirect(302, '/admin/manage/writing/');
 });
@@ -150,10 +150,10 @@ router.post('/post/writing/', async (request, response) => {
     characters: [],
     published: (request.body.published === 'on' ? {
       website: request.body.website === 'on',
-      link: request.body.link
+      link: request.body.link,
     } : false),
-    status: request.body.status
-  }
+    status: request.body.status,
+  };
 
   await crud.insertDocument('writing', story);
 
