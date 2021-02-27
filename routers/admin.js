@@ -19,7 +19,7 @@ router.get('/manage/articles/', async (request, response) => {
   });
   articles.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  response.render('managearticles', { articles });
+  response.render('admin/managearticles', { articles });
 });
 
 router.get('/manage/articles/:articleId/', async (request, response) => {
@@ -29,7 +29,7 @@ router.get('/manage/articles/:articleId/', async (request, response) => {
   });
   if (article === null) response.status(404).end();
 
-  response.render('editarticle', { article });
+  response.render('admin/editarticle', { article });
 });
 
 router.post('/manage/articles/:articleId/', async (request, response) => {
