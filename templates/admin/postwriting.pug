@@ -1,0 +1,86 @@
+extends admin.pug
+
+block variables
+  - title = "Create a New Piece of writing"
+
+block content
+  h1 #{title}
+  +form("POST", "", [
+    {
+      label: "Title",
+      placeholder: "Attack of the Dread Spud King",
+      name: "title",
+      required: true,
+      autofocus: true
+    },
+    {
+      label: "ID",
+      placeholder: "attack-dread-spud-king (unique)",
+      name: "id",
+      required: true
+    },
+    {
+      label: "Author",
+      placeholder: "The Potato Poet",
+      name: "author",
+      value: config.mainAuthor,
+      required: true
+    },
+    {
+      label: "Type",
+      placeholder: "Short Story",
+      name: "type",
+      requred: true
+    },
+    {
+      label: "Genre",
+      placeholder: "Horror",
+      name: "genre",
+      required: true
+    },
+    {
+      label: "Event",
+      placeholder: "Nanowrimo 2020 (optional)",
+      name: "event"
+    },
+    {
+      label: "Synopsis",
+      type: "textarea",
+      placeholder: "A chilling tale of the Spud King's wars on the puny groundwalkers (humans).",
+      name: "synopsis",
+      required: true
+    },
+    {
+      label: "Excerpt",
+      type: "textarea",
+      placeholder: "All hail the spud king (optional)",
+      name: "excerpt"
+    },
+    {
+      label: "Content",
+      type: "textarea",
+      name: "content",
+      placeholder: "[INSERT SCARIEST THING YOU CAN THINK OF HERE] (only if published on website)"
+    },
+    {
+      label: "Published",
+      type: "checkbox",
+      name: "published"
+    },
+    {
+      label: "Available on website",
+      type: "checkbox",
+      name: "website"
+    },
+    {
+      label: "Link to published version",
+      name: "link",
+      placeholder: "/writing/attack-dread-spud-king/ (only if published)"
+    },
+    {
+      label: "Status",
+      name: "status",
+      placeholder: "drafted",
+      required: true
+    }
+  ])

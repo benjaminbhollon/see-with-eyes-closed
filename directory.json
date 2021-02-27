@@ -3,5 +3,6 @@
   "/contact/": "contact",
   "/admin/": "admin/admin",
   "/admin/post/article/": "admin/postarticle",
+  "/admin/post/writing/": "admin/postwriting",
   "/blog/subscribe/": "subscribe"
 }

@@ -59,7 +59,7 @@ router.get('/manage/articles/:articleId/delete', async (request, response) => {
   response.redirect(302, '/admin/manage/articles');
 });
 
-router.post('/post/article/submit', async (request, response) => {
+router.post('/post/article/', async (request, response) => {
   const today = new Date();
   const months = [
     'January',
@@ -91,6 +91,30 @@ router.post('/post/article/submit', async (request, response) => {
   await crud.insertDocument('articles', article);
 
   return response.redirect(302, `/blog/article/${request.body.id}/`);
+});
+
+router.post('/post/writing/', async (request, response) => {
+  const story = {
+    id: request.body.id,
+    title: request.body.title,
+    author: request.body.author,
+    type: request.body.type,
+    event: (request.body.event ? request.body.event : false),
+    genre: request.body.genre,
+    synopsis: request.body.synopsis,
+    excerpt: request.body.excerpt,
+    content: request.body.content,
+    characters: [],
+    published: (request.body.published === 'on' ? {
+      website: request.body.website === 'on',
+      link: request.body.link
+    } : false),
+    status: request.body.status
+  }
+
+  await crud.insertDocument('writing', story);
+
+  response.redirect(302, '/writing/');
 });
 
 // Export
