@@ -1,0 +1,14 @@
+extends admin.pug
+
+block variables
+  - title = "Manage Articles"
+
+block content
+  h1 #{title}
+  each article in articles
+    p
+      strong #{article.title}
+      br
+      | #{article.date} by #{article.author}
+      br
+      a(href=`/admin/manage/articles/${article.id}/` style="color: gold") Edit

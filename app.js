@@ -92,7 +92,7 @@ app.get('/blog/', async (request, response) => {
   });
 });
 
-// Blog articles
+// Blog article
 app.get('/blog/article/:articleId/', async (request, response) => {
   let article;
   let articles;

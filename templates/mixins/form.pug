@@ -5,7 +5,7 @@ mixin form(method, action, inputs, submitLabel, extra)
           case input.type
             when 'textarea'
               label #{input.label}
-                textarea(placeholder=input.placeholder required=input.required name=input.name id=input.id class=input.class maxlength=input.maxlength autofocus=input.autofocus autocomplete = input.autocomplete value=input.value)
+                textarea(placeholder=input.placeholder required=input.required name=input.name id=input.id class=input.class maxlength=input.maxlength autofocus=input.autofocus autocomplete = input.autocomplete) #{input.value}
             when 'checkbox'
             when 'radio'
               label

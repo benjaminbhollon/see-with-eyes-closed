@@ -5,17 +5,17 @@ block variables
   
 block navbar
   nav.main-nav
-    a.main-nav__title(href="/") Admin Dashboard
+    a.main-nav__title(href="/admin/") Admin Dashboard
     label.main-nav__collapse(for="nav-collapse") &#9776;
     input#nav-collapse(type="checkbox")
     .main-nav__collapsible
       a(href="/admin/") Dashboard
-      a(href="/admin/manage/comments/") Manage Comments
       a(href="/admin/post/article/") Post Article
+      a(href="/admin/manage/articles/") Manage Articles
 
 block content
   article
     p Greetings, admin! You can do the following:
     ul
       li: a(href="/admin/post/article/") Post a new article
-      li: a(href="/admin/manage/comments/") Manage comments on current articles
+      li: a(href="/admin/manage/articles/") Manage articles
