@@ -8,8 +8,27 @@ block content
   if parameters.success === "true"
     .success Your message is on its way! I'll get back to you ASAP.
   h1 Contact Me
-  form(method="POST",action="/contact/send/")
-    input(type="text","name"="subject",placeholder="Subject...",required,autofocus)
-    input(type="email","name"="email",placeholder="Your email...",required)
-    textarea(name="message",placeholder="Your message goes here...",required)
-    input(type="submit" value="Send")
+  +form("POST", "/contact/send", [
+    {
+      label: "Subject",
+      name: "subject",
+      placeholder: "What's it all about?",
+      maxlength: 256,
+      required: true,
+      autofocus: true
+    },
+    {
+      label: "Your Email",
+      type: "email",
+      name: "email",
+      placeholder: "you@somewhere.com",
+      required: true
+    },
+    {
+      label: "Message",
+      type: "textarea",
+      name: "message",
+      placeholder: "Tell me all about it.",
+      required: true
+    }
+  ], "Send")

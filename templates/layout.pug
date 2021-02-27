@@ -19,6 +19,8 @@ html(lang='en')
         title #{title} | See With Eyes Closed
       link(rel="shortcut icon" type="image/x-icon" href="/lib/images/favicon.ico")
   body
+    block mixins
+      include mixins/form.pug
     block navbar
       nav.main-nav
         a.main-nav__title(href="/") See With Eyes Closed

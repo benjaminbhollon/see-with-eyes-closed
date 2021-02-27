@@ -1,0 +1,22 @@
+mixin form(method, action, inputs, submitLabel, extra)
+  form(method=method action=action)
+    if inputs
+      each input in inputs
+          case input.type
+            when 'textarea'
+              label #{input.label}
+                textarea(placeholder=input.placeholder required=input.required name=input.name id=input.id class=input.class maxlength=input.maxlength autofocus=input.autofocus autocomplete = input.autocomplete value=input.value)
+            when 'checkbox'
+            when 'radio'
+              label
+                input(type=input.type name=input.name id=input.id class=input.class required=input.required checked=input.checked)
+                | #{" " + input.label}
+            when 'recaptcha'
+              div(style="text-align: center")
+                .g-recaptcha(style="display:inline-block" data-sitekey=input.sitekey)
+            default
+              label #{input.label}
+                input(type=input.type min=input.min max=input.max multiple=input.multiple pattern=input.pattern step=input.step height=input.height width=input.width placeholder=input.placeholder required=input.required name=input.name id=input.id class=input.class maxlength=input.maxlength autofocus=input.autofocus autocomplete = input.autocomplete value=input.value)
+    if extra !== undefined
+      div #[extra]
+    input(type="submit" value=submitLabel)

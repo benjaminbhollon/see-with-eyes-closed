@@ -57,13 +57,28 @@ block content
               strong #{comment.author}&nbsp;&nbsp;
               span #{comment.time}
             div #{comment.message}
-      form#comment-form(method="post",action="/blog/article/" + article.id + "/comment")
-        h3 Post a Comment
-        input(name="name",type="text",placeholder="Your name here...", value=parameters.name,maxlength="128",required)
-        textarea(name="comment",placeholder="Write your comment here...",maxlength="512",required) #{parameters.comment}
-        .g-recaptcha(data-sitekey=siteKey)
-        input(type="submit" value="Go!")
-    else if article.comments === false
+      h3 Post a Comment
+      +form("POST", `/blog/article/${article.id}/comment`, [
+        {
+          label: "Your Name",
+          name: 'name',
+          placeholder: "John Doe",
+          value: parameters.name, 
+          maxlength: 128,
+          required: true
+        },
+        {
+          label: "Your Comment",
+          type: 'textarea',
+          name: 'comment',
+          placeholder: 'What did you think?'
+        },
+        {
+          type: 'recaptcha',
+          sitekey: siteKey
+        }
+      ], "Go!")
+    else if (article.comments === false)
       p Comments have been disabled on this article.
   style.
     #g-recaptcha-response {
