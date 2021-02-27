@@ -2,7 +2,10 @@ extends layout.pug
 
 block append resources
   link(rel="stylesheet" href="/lib/css/article.css")
-  link(rel="stylesheet",href="/lib/js/listings.css")
+    
+block variables
+  if (work.image)
+    - metaImage = work.image
 
 block content
   article.article
