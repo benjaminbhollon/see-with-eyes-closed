@@ -94,14 +94,55 @@ app.get('/blog/', async (request, response) => {
 
 // Blog article
 app.get('/blog/article/:articleId/', async (request, response) => {
-  let article;
-  let articles;
-  await crud.findMultipleDocuments('articles', {}).then((result) => {
-    article = result.find((a) => a.id.toUpperCase() === request.params.articleId.toUpperCase());
-
-    articles = result;
+  let article = {};
+  await crud.findDocument('articles', {id: request.params.articleId}).then((result) => {
+    article = result;
   });
   if (article === undefined) return response.status(404).end();
+
+  // Similar Articles
+  let related = [];
+  await crud.aggregate('articles', [
+    {
+      '$match': {
+        'tags': {
+          '$elemMatch': {
+            '$in': article.tags
+          }
+        },
+        'id': {
+          '$ne': 'grade-comparing-new-pillory'
+        }
+      }
+    }, {
+      '$addFields': {
+        'matching': {
+          '$filter': {
+            'input': '$tags',
+            'cond': {
+              '$in': [
+                '$$this', article.tags
+              ]
+            }
+          }
+        }
+      }
+    }, {
+      '$set': {
+        'matching': {
+          '$size': '$matching'
+        }
+      }
+    }, {
+      '$sort': {
+        'matching': -1
+      }
+    }, {
+      '$limit': 3
+    }
+  ]).then((result) => {
+    related = result;
+  });
 
   if (!request.session.viewed && request.headers['user-agent'] !== 'verbGuac 1.0') {
     article.hits += 1;
@@ -137,38 +178,10 @@ app.get('/blog/article/:articleId/', async (request, response) => {
   }
 
   // Comment time ago
-  let data = article.comments;
-  let keys = Object.keys(data);
-  let values = Object.values(data);
-  for (let i = 0; i < keys.length; i += 1) {
-    values[i].time = `${timeSince(values[i].time * 1000)} ago`;
-  }
-
-  // Similar Articles
-  // TECH DEBT: Use the database to select all by tag for performance.
-  let related = [];
-  let matches;
-
-  data = articles;
-  keys = Object.keys(data);
-  values = Object.values(data);
-
-  for (let i = 0; i < keys.length; i += 1) {
-    if (values[i].id !== article.id) {
-      matches = 0;
-
-      const matchingTags = values[i].tags;
-      const tagKeys = Object.keys(matchingTags);
-
-      for (let j = 0; j < tagKeys.length; j += 1) {
-        if (values[i].tags.indexOf(values[i].tags[j]) !== -1) matches += 1;
-      }
-      values[i].matches = matches;
-      related.push(values[i]);
-    }
-  }
-  related.sort((a, b) => b.matches - a.matches);
-  related = related.slice(0, 5);
+  article.comments = article.comments.map((comment) => {
+    comment.time = `${timeSince(comment.time * 1000)} ago`;
+    return comment;
+  });
 
   return response.render('blogarticle', {
     article,

@@ -152,7 +152,7 @@ exports.aggregate = async function aggregate(collection, pipeline) {
     await client.connect();
 
     // Find document
-    return await client.db('swec-core').collection(collection).aggregate(pipeline);
+    return await client.db('swec-core').collection(collection).aggregate(pipeline).toArray();
   } catch (e) {
     console.error(e);
     return false;
