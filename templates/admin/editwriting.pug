@@ -45,7 +45,7 @@ block content
       label: "Event",
       placeholder: "Nanowrimo 2020 (optional)",
       name: "event",
-      value: work.event
+      value: (work.event ? work.event : "")
     },
     {
       label: "Synopsis",
@@ -66,14 +66,14 @@ block content
       type: "textarea",
       placeholder: "All hail the spud king (optional)",
       name: "excerpt",
-      value: work.excerpt
+      value: (work.excerpt ? work.excerpt : "")
     },
     {
       label: "Content",
       type: "textarea",
       name: "content",
       placeholder: "[INSERT SCARIEST THING YOU CAN THINK OF HERE] (only if published on website)",
-      value: work.content
+      value: (work.content ? work.excerpt : "")
     },
     {
       label: "Published",
