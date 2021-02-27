@@ -1,0 +1,14 @@
+extends admin.pug
+
+block variables
+  - title = "Manage Writing"
+
+block content
+  h1 #{title}
+  each work in writing
+    p
+      strong #{work.title}
+      br
+      | by #{work.author}
+      br
+      a(href=`/admin/manage/writing/${work.id}/` style="color: gold") Edit

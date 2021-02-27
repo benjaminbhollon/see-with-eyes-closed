@@ -11,81 +11,93 @@ block content
       placeholder: "Attack of the Dread Spud King",
       name: "title",
       required: true,
-      autofocus: true
+      value: work.title
     },
     {
       label: "ID",
       placeholder: "attack-dread-spud-king (unique)",
       name: "id",
-      required: true
+      required: true,
+      value: work.id
     },
     {
       label: "Author",
       placeholder: "The Potato Poet",
       name: "author",
-      value: config.mainAuthor,
-      required: true
+      required: true,
+      value: work.author
     },
     {
       label: "Type",
       placeholder: "Short Story",
       name: "type",
-      requred: true
+      requred: true,
+      value: work.type
     },
     {
       label: "Genre",
       placeholder: "Horror",
       name: "genre",
-      required: true
+      required: true,
+      value: work.genre
     },
     {
       label: "Event",
       placeholder: "Nanowrimo 2020 (optional)",
-      name: "event"
-    },
-    {
-      label: "Banner Image",
-      placeholder: "/writing/attack-dread-spud-king/banner.jpg (optional)",
-      name: "image"
+      name: "event",
+      value: work.event
     },
     {
       label: "Synopsis",
       type: "textarea",
       placeholder: "A chilling tale of the Spud King's wars on the puny groundwalkers (humans).",
       name: "synopsis",
-      required: true
+      required: true,
+      value: work.synopsis
+    },
+    {
+      label: "Banner Image",
+      placeholder: "/writing/attack-dread-spud-king/banner.jpg (optional)",
+      name: "image",
+      value: work.image
     },
     {
       label: "Excerpt",
       type: "textarea",
       placeholder: "All hail the spud king (optional)",
-      name: "excerpt"
+      name: "excerpt",
+      value: work.excerpt
     },
     {
       label: "Content",
       type: "textarea",
       name: "content",
-      placeholder: "[INSERT SCARIEST THING YOU CAN THINK OF HERE] (only if published on website)"
+      placeholder: "[INSERT SCARIEST THING YOU CAN THINK OF HERE] (only if published on website)",
+      value: work.content
     },
     {
       label: "Published",
       type: "checkbox",
-      name: "published"
+      name: "published",
+      checked: work.published !== false
     },
     {
       label: "Available on website",
       type: "checkbox",
-      name: "website"
+      name: "website",
+      checked: work.published !== false && work.published.website !== false
     },
     {
       label: "Link to published version",
       name: "link",
-      placeholder: "/writing/attack-dread-spud-king/ (only if published)"
+      placeholder: "/writing/attack-dread-spud-king/ (only if published)",
+      value: (work.published !== false ? work.published.link : "")
     },
     {
       label: "Status",
       name: "status",
       placeholder: "drafted",
-      required: true
+      required: true,
+      value: work.status
     }
   ])

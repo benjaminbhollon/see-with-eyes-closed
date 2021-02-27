@@ -93,6 +93,49 @@ router.post('/post/article/', async (request, response) => {
   return response.redirect(302, `/blog/article/${request.body.id}/`);
 });
 
+router.get('/manage/writing/', async (request, response) => {
+  let writing = [];
+  await crud.findMultipleDocuments('writing', {}).then((result) => {
+    if (result !== null) writing = result;
+  });
+
+  response.render('admin/managewriting', { writing });
+});
+
+router.get('/manage/writing/:workId/', async (request, response) => {
+  let work = {};
+  await crud.findDocument('writing', { id: request.params.workId }).then((result) => {
+    work = result;
+  });
+  if (work === null) response.status(404).end();
+
+  response.render('admin/editwriting', { work });
+});
+
+router.post('/manage/writing/:workId/', async (request, response) => {
+  const story = {
+    title: request.body.title,
+    author: request.body.author,
+    type: request.body.type,
+    event: (request.body.event ? request.body.event : false),
+    genre: request.body.genre,
+    image: request.body.image,
+    synopsis: request.body.synopsis,
+    excerpt: request.body.excerpt,
+    content: request.body.content,
+    characters: [],
+    published: (request.body.published === 'on' ? {
+      website: request.body.website === 'on',
+      link: request.body.link
+    } : false),
+    status: request.body.status
+  }
+
+  await crud.updateDocument('writing', {id: request.params.workId}, story);
+
+  response.redirect(302, '/admin/manage/writing/');
+});
+
 router.post('/post/writing/', async (request, response) => {
   const story = {
     id: request.body.id,
