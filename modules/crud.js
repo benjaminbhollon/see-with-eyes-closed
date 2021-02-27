@@ -140,3 +140,23 @@ exports.deleteMultipleDocuments = async function deleteMultipleDocuments(collect
     await client.close();
   }
 };
+
+// Aggregate
+exports.aggregate = async function aggregate(collection, pipeline) {
+  const uri = config.mongodbURI;
+
+  const client = new MongoClient(uri, { useUnifiedTopology: true });
+
+  try {
+    // Connect to the MongoDB cluster
+    await client.connect();
+
+    // Find document
+    return await client.db('swec-core').collection(collection).aggregate(pipeline);
+  } catch (e) {
+    console.error(e);
+    return false;
+  } finally {
+    await client.close();
+  }
+};
