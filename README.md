@@ -44,4 +44,4 @@ This will start a nodemon script which will automatically reload the server when
 
 One last thing: before contributing changes, always run `npm run lint`. This will alert you to any semantic problems in your code. The one issue you can ignore: `no-unused-vars` when referring to a function that is run from an HTML page. In that case it's wrong. Anything else, fix or ask about.
 
-Enjoy! This has been tested and verified to work properly on Windows 10 and CentOS 8.
+Enjoy! This has been tested and verified to work properly on Windows 10, CentOS 8, and Ubuntu 20.
