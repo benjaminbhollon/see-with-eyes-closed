@@ -97,7 +97,7 @@ app.get('/blog/article/:articleId/', async (request, response) => {
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
     article = result;
   });
-  if (article === undefined) return response.render('errors/404', {});
+  if (article === null) return response.render('errors/404', {});
 
   // Similar Articles
   let related = [];
