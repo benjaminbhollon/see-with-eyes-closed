@@ -3,7 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 // Local modules
-const crud = require('../modules/crud');
+const config = require('../config.json');
+const crud = require('@bibliobone/mongodb-crud').bind(config.mongodbURI, 'swec-core');
 
 const router = express.Router();
 
