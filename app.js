@@ -382,6 +382,10 @@ app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, res
 // Redirects
 app.get('/projects/learnclef/*', async (request, response) => response.redirect(301, '/projects/learn-clef/'));
 
+app.use((request, response) => {
+  response.render('errors/404', {config});
+});
+
 // Listen on port from config.json
 app.listen(config.port, () => {
   console.log(`Server running on port ${config.port}`);

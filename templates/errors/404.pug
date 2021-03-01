@@ -1,0 +1,30 @@
+extends ../layout.pug
+
+block variables
+  - title = "404 Error: We Can't Find the Teapot"
+  - metaDescription = "An oopsie happened. That page isn't where it was supposed to be. Want to look for it with us?"
+
+block append head
+  style.
+    #content {
+      position: relative;
+    }
+    .vcenter {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: inline-block;
+      max-width: 350px;
+      transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+    }
+    
+    h1 {
+      font-size: clamp(2em, 25vmin, 7em);
+      margin: 0;
+    }
+
+block content
+  .vcenter
+    h1 404
+    p An oopsie happened. That page isn't where it was supposed to be. #[a(href="http://seewitheyesclosed.com/") Look for it!]
