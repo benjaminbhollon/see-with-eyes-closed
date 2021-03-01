@@ -27,7 +27,7 @@ router.get('/manage/articles/:articleId/', async (request, response) => {
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
     article = result;
   });
-  if (article === null) response.status(404).end();
+  if (article === null) return response.render('errors/404', {});
 
   response.render('admin/editarticle', { article });
 });
@@ -107,7 +107,7 @@ router.get('/manage/writing/:workId/', async (request, response) => {
   await crud.findDocument('writing', { id: request.params.workId }).then((result) => {
     work = result;
   });
-  if (work === null) response.status(404).end();
+  if (work === null) return response.render('errors/404', {});
 
   response.render('admin/editwriting', { work });
 });

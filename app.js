@@ -53,8 +53,7 @@ app.use((request, response, next) => {
     return response.render(directory[request.path], { parameters: request.query, config });
   }
 
-  if (next) return next();
-  return response.status(404).end();
+  return next();
 });
 app.set('view engine', 'pug');
 app.set('views', './templates');
@@ -98,7 +97,7 @@ app.get('/blog/article/:articleId/', async (request, response) => {
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
     article = result;
   });
-  if (article === undefined) return response.status(404).end();
+  if (article === undefined) return response.render('errors/404', {});
 
   // Similar Articles
   let related = [];
@@ -221,7 +220,7 @@ app.post('/blog/article/:articleId/comment', async (request, response) => {
     article = result;
   });
 
-  if (article === null) response.status(404).end();
+  if (article === null) return response.render('errors/404', {});
 
   if (request.session.identifier === undefined) {
     request.session.identifier = Math.floor(Math.random() * 8999999) + 1000000;
@@ -272,7 +271,7 @@ app.get('/writing/:workId/', async (request, response) => {
   });
 
   if (work === null || work.published === false || work.published.website !== true) {
-    return response.status(404).end();
+    return response.render('errors/404', {});
   }
 
   return response.render('writingwork', {
@@ -383,7 +382,7 @@ app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, res
 app.get('/projects/learnclef/*', async (request, response) => response.redirect(301, '/projects/learn-clef/'));
 
 app.use((request, response) => {
-  response.render('errors/404', {config});
+  return response.render('errors/404', {});
 });
 
 // Listen on port from config.json
