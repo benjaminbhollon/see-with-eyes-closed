@@ -44,7 +44,7 @@ block content
     h2 Tags
     != article.tags.map(tag => "<a href='../../?tag=" + tag + "' class='tag'>" + tag + "</a>").join(" ")
   br
-  .comments
+  .comments#comments
     if article.comments !== false
       h2(style="text-align:left") #{article.comments.length} comments
       div
