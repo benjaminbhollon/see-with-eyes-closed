@@ -36,7 +36,7 @@ block content
             p.listing__author
               cite by #{work.author}
             != md.render(work.synopsis)
-            if work.excerpt !== false
+            if work.excerpt
               details.listing__excerpt
                 summary Read Exerpt
                 != md.render(work.excerpt)
