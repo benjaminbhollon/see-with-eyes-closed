@@ -110,7 +110,7 @@ app.get('/blog/article/:articleId/', async (request, response) => {
           },
         },
         id: {
-          $ne: 'grade-comparing-new-pillory',
+          $ne: article.id,
         },
       },
     },
