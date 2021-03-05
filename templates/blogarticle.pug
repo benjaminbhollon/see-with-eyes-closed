@@ -11,11 +11,6 @@ block append resources
   script(src="https://www.google.com/recaptcha/api.js",defer,async)
   
 block content
-  if parameters.err
-    if parameters.err == 401
-      p.error Please fill out the recaptcha.
-    else if parameters.err == 400
-      p.error Please fill out all the fields.
   article.article
     header
       if article.image !== ""
@@ -71,6 +66,7 @@ block content
           label: "Your Comment",
           type: 'textarea',
           name: 'comment',
+          value: parameters.comment,
           placeholder: 'What did you think?'
         },
         {
@@ -78,6 +74,11 @@ block content
           sitekey: siteKey
         }
       ], "Go!")
+      if parameters.err
+        if parameters.err == 401
+          p.failure Please fill out the recaptcha.
+        else if parameters.err == 400
+          p.failure Please fill out all the fields.
     else if (article.comments === false)
       p Comments have been disabled on this article.
   style.

@@ -3,11 +3,11 @@ const express = require('express');
 const sendmail = require('sendmail')();
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
-const fetch = require('isomorphic-fetch');
 const compression = require('compression');
 const basicAuth = require('express-basic-auth');
 const cookieParser = require('cookie-parser');
 const minify = require('express-minify');
+const Request = require('request');
 const SitemapGenerator = require('sitemap-generator');
 const MarkdownIt = require('markdown-it');
 
@@ -199,42 +199,42 @@ app.get('/blog/article/:articleId/', async (request, response) => {
 
 // Add comment
 app.post('/blog/article/:articleId/comment', async (request, response) => {
-  if (!request.body.name || !request.body.comment || (request.body.comment && request.body.comment.length > 512) || (request.body.name && request.body.name.length > 128)) return response.redirect(302, `/blog/article/${request.params.articleId}/#comment-form?err=${400}&name=${encodeURIComponent(request.body.name)}&comment=${encodeURIComponent(request.body.comment)}`);
+  if (!request.body.name || !request.body.comment || (request.body.comment && request.body.comment.length > 512) || (request.body.name && request.body.name.length > 128)) return response.redirect(302, `/blog/article/${request.params.articleId}/?err=${400}&name=${encodeURIComponent(request.body.name)}&comment=${encodeURIComponent(request.body.comment)}#comments`);
   let reCAPTCHAvalid = false;
 
-  await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${config.reCAPTCHAprivate}&response=${request.body['g-recaptcha-response']}`, {
+  /* console.log(await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${config.reCAPTCHAprivate}&response=${request.body['g-recaptcha-response']}`, {
     method: 'post',
-  }).then((result) => {
-    result.json();
-  }).then((googleResponse) => {
-    reCAPTCHAvalid = googleResponse;
+  })); */
+
+  await Request(`https://www.google.com/recaptcha/api/siteverify?secret=${config.reCAPTCHAprivate}&response=${request.body['g-recaptcha-response']}`, async (error, result, body) => {
+    reCAPTCHAvalid = JSON.parse(body).success;
+
+    if (!reCAPTCHAvalid) {
+      const url = `/blog/article/${request.params.articleId}/?err=${401}&name=${encodeURIComponent(request.body.name)}&comment=${encodeURIComponent(request.body.comment)}#comments`;
+      return response.redirect(302, url);
+    }
+
+    let article;
+    await crud.findDocument('articles', { id: request.params.articleId }).then((result2) => {
+      article = result2;
+    });
+
+    if (article === null) return response.render('errors/404', {});
+
+    if (request.session.identifier === undefined) {
+      request.session.identifier = Math.floor(Math.random() * 8999999) + 1000000;
+    }
+
+    article.comments.push({
+      identifier: await bcrypt.hash(request.session.identifier.toString(), bcryptSalt),
+      author: request.body.name,
+      message: request.body.comment,
+      time: Math.floor(Date.now() / 1000),
+    });
+    crud.updateDocument('articles', { id: request.params.articleId.toString() }, { comments: article.comments });
+
+    return response.redirect(302, `/blog/article/${request.params.articleId}/#comments`);
   });
-
-  if (!reCAPTCHAvalid) {
-    const url = `/blog/article/${request.params.articleId}/#comment-form?err=${401}${request.params.articleId}&name=${encodeURIComponent(request.body.name)}&comment=${encodeURIComponent(request.body.comment)}`;
-    return response.redirect(302, url);
-  }
-
-  let article;
-  await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
-    article = result;
-  });
-
-  if (article === null) return response.render('errors/404', {});
-
-  if (request.session.identifier === undefined) {
-    request.session.identifier = Math.floor(Math.random() * 8999999) + 1000000;
-  }
-
-  article.comments.push({
-    identifier: await bcrypt.hash(request.session.identifier.toString(), bcryptSalt),
-    author: request.body.name,
-    message: request.body.comment,
-    time: Math.floor(Date.now() / 1000),
-  });
-  crud.updateDocument('articles', { id: request.params.articleId.toString() }, { comments: article.comments });
-
-  return response.redirect(302, `/blog/article/${request.params.articleId}/#comment-form`);
 });
 
 // Projects homepage
@@ -381,9 +381,7 @@ app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, res
 // Redirects
 app.get('/projects/learnclef/*', async (request, response) => response.redirect(301, '/projects/learn-clef/'));
 
-app.use((request, response) => {
-  return response.render('errors/404', {});
-});
+app.use((request, response) => response.render('errors/404', {}));
 
 // Listen on port from config.json
 app.listen(config.port, () => {
