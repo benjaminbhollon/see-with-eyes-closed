@@ -108,14 +108,11 @@ input, textarea, label {
 
 label {
   font-weight: bold;
+    padding: initial
 }
 
 input, textarea {
   padding: 1em;
-}
-
-label {
-  padding: initial
 }
 
 input[type="checkbox"] {
