@@ -1,5 +1,5 @@
 /* Main styles */
-* {
+body, body * {
   box-sizing: border-box;
 }
 
@@ -67,6 +67,7 @@ blockquote {
   padding-left: 40px;
   position: relative;
 }
+
 blockquote:before {
   content: '';
   border: 2px solid navajowhite;

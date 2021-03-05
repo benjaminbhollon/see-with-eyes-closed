@@ -233,6 +233,7 @@ body {
 #code__result {
   border: none;
   bottom: 0;
+  left: 0;
 }
 
 #code__skip {
@@ -258,5 +259,6 @@ body {
   #code__result {
     right: 0;
     border: none;
+    left: initial;
   }
 }
