@@ -59,7 +59,7 @@ block content
       label: "Banner Image",
       placeholder: "/writing/attack-dread-spud-king/banner.jpg (optional)",
       name: "image",
-      value: work.image
+      value: (work.image ? work.image : "")
     },
     {
       label: "Excerpt",
@@ -73,7 +73,7 @@ block content
       type: "textarea",
       name: "content",
       placeholder: "[INSERT SCARIEST THING YOU CAN THINK OF HERE] (only if published on website)",
-      value: (work.content ? work.excerpt : "")
+      value: (work.content ? work.content : "")
     },
     {
       label: "Published",
