@@ -16,6 +16,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  line-height: 1.5;
 }
 
 a {
@@ -142,6 +143,7 @@ input[type="checkbox"] {
   font-size: 1.1em;
   border-bottom: 2px solid #000;
   background-color: rgba(255, 255, 255, 0.7);
+  line-height: 1;
   z-index: 10;
   transition: top 0.5s ease-in-out;
 }
