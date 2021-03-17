@@ -84,6 +84,7 @@ bcrypt.genSalt(3, (err, salt) => {
 
 // Admin router
 const adminRouter = require('./routers/admin');
+
 app.use('/admin/', adminRouter);
 
 // Blog homepage
@@ -405,7 +406,7 @@ app.get('/feed/', async (request, response) => {
   let articles = [];
 
   await crud.findMultipleDocuments('articles', {}).then((result) => {
-    articles = result.filter(value => new Date(value.date) <= new Date());
+    articles = result.filter((value) => new Date(value.date) <= new Date());
   });
 
   articles.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -417,7 +418,7 @@ app.get('/feed/', async (request, response) => {
       <link>//${request.hostname}/blog/article/${article.id}/</link>
       <guid>${article._id.toString()}</guid>
       <pubDate>${weekDaysShort[date.getDay()]}, ${date.getDate()} ${monthsShort[date.getMonth()]} ${date.getFullYear()}</pubDate>
-      <description>${article.summary.replace('&nbsp;', ' ').replace( /(<([^>]+)>)/ig, '')}</description>
+      <description>${article.summary.replace('&nbsp;', ' ').replace(/(<([^>]+)>)/ig, '')}</description>
     </item>`;
   });
 
@@ -438,7 +439,7 @@ app.get('/feed/', async (request, response) => {
   );
 });
 
-//Errors
+// Errors
 app.use((request, response) => response.render('errors/404', {}));
 
 // Listen on port from config.json
