@@ -13,6 +13,26 @@ const MarkdownIt = require('markdown-it');
 
 const md = new MarkdownIt({ html: true });
 
+const weekDaysShort = ['Sun',
+  'Mon',
+  'Tue',
+  'Wed',
+  'Thu',
+  'Fri',
+  'Sat'];
+const monthsShort = ['Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'];
+
 // Import emails, messages, and policies
 const policies = require('./src/policies.json');
 
@@ -64,7 +84,6 @@ bcrypt.genSalt(3, (err, salt) => {
 
 // Admin router
 const adminRouter = require('./routers/admin');
-
 app.use('/admin/', adminRouter);
 
 // Blog homepage
@@ -381,6 +400,45 @@ app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, res
 // Redirects
 app.get('/projects/learnclef/*', async (request, response) => response.redirect(301, '/projects/learn-clef/'));
 
+// RSS Feed
+app.get('/feed/', async (request, response) => {
+  let articles = [];
+
+  await crud.findMultipleDocuments('articles', {}).then((result) => {
+    articles = result.filter(value => new Date(value.date) <= new Date());
+  });
+
+  articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  const feed = articles.slice(0, 15).map((article) => {
+    const date = new Date(article.date);
+    return date > new Date() ? 'JJJ' : `<item>
+      <title>${article.title}</title>
+      <link>//${request.hostname}/blog/article/${article.id}/</link>
+      <guid>${article._id.toString()}</guid>
+      <pubDate>${weekDaysShort[date.getDay()]}, ${date.getDate()} ${monthsShort[date.getMonth()]} ${date.getFullYear()}</pubDate>
+      <description>${article.summary.replace('&nbsp;', ' ').replace( /(<([^>]+)>)/ig, '')}</description>
+    </item>`;
+  });
+
+  response.type('xml');
+  response.send(
+    `<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+  <title>See With Eyes Closed</title>
+  <description>A blog by Benjamin Hollon.</description>
+  <language>en-us</language>
+  <copyright>© Benjamin Hollon ${(new Date()).getFullYear()}. All rights reserved.</copyright>
+  <link>//${request.hostname}</link>${
+  feed.join('')
+}
+  </channel>
+  </rss>`,
+  );
+});
+
+//Errors
 app.use((request, response) => response.render('errors/404', {}));
 
 // Listen on port from config.json
