@@ -3,10 +3,15 @@ extends layout.pug
 block variables
   - title = "Contact Me"
   - metaDescription = "Need my input on something? Drop me a quick message and I'll be back to you ASAP."
+
+block append resources
+  script(src="https://www.google.com/recaptcha/api.js",defer,async)
   
 block content
   if parameters.success === "true"
     .success Your message is on its way! I'll get back to you ASAP.
+  else if parameters.err === "401"
+    .failure Please fill out the reCAPTCHA.
   h1 Contact Me
   +form("POST", "/contact/send", [
     {
@@ -15,20 +20,27 @@ block content
       placeholder: "What's it all about?",
       maxlength: 256,
       required: true,
-      autofocus: true
+      autofocus: true,
+      value: parameters.subject
     },
     {
       label: "Your Email",
       type: "email",
       name: "email",
       placeholder: "you@somewhere.com",
-      required: true
+      required: true,
+      value: parameters.email
     },
     {
       label: "Message",
       type: "textarea",
       name: "message",
       placeholder: "Tell me all about it.",
-      required: true
+      required: true,
+      value: parameters.message
+    },
+    {
+      type: "recaptcha",
+      sitekey: config.reCAPTCHApublic
     }
   ], "Send")

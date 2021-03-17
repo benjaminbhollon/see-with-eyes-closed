@@ -222,10 +222,6 @@ app.post('/blog/article/:articleId/comment', async (request, response) => {
   if (!request.body.name || !request.body.comment || (request.body.comment && request.body.comment.length > 512) || (request.body.name && request.body.name.length > 128)) return response.redirect(302, `/blog/article/${request.params.articleId}/?err=${400}&name=${encodeURIComponent(request.body.name)}&comment=${encodeURIComponent(request.body.comment)}#comments`);
   let reCAPTCHAvalid = false;
 
-  /* console.log(await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${config.reCAPTCHAprivate}&response=${request.body['g-recaptcha-response']}`, {
-    method: 'post',
-  })); */
-
   await Request(`https://www.google.com/recaptcha/api/siteverify?secret=${config.reCAPTCHAprivate}&response=${request.body['g-recaptcha-response']}`, async (error, result, body) => {
     reCAPTCHAvalid = JSON.parse(body).success;
 
@@ -310,9 +306,20 @@ app.post('/contact/send/', async (request, response) => {
     subject: request.body.subject.toString(),
     text: `Message from ${request.body.email.toString()}:${request.body.message.toString()}`,
   };
-  await sendmail(message);
+  let reCAPTCHAvalid = false;
 
-  return response.redirect(302, '/contact/?success=true');
+  await Request(`https://www.google.com/recaptcha/api/siteverify?secret=${config.reCAPTCHAprivate}&response=${request.body['g-recaptcha-response']}`, async (error, result, body) => {
+    reCAPTCHAvalid = JSON.parse(body).success;
+
+    if (!reCAPTCHAvalid) {
+      const url = `/contact/?err=${401}&subject=${encodeURIComponent(request.body.subject)}&email=${encodeURIComponent(request.body.email)}&message=${encodeURIComponent(request.body.message)}`;
+      return response.redirect(302, url);
+    }
+
+    await sendmail(message);
+
+    return response.redirect(302, '/contact/?success=true');
+  });
 });
 
 // Policies
