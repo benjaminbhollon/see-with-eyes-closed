@@ -132,6 +132,10 @@ input[type="checkbox"] {
   background-color:red;
 }
 
+img {
+  max-width: 100%;
+}
+
 
 /* Main navbar */
 .main-nav {
