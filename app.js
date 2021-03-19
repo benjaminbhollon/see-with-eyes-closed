@@ -70,7 +70,7 @@ app.use(express.json());
 app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
 app.use((request, response, next) => {
   if (directory[request.path] !== undefined && request.method.toUpperCase() === 'GET') {
-    return response.render(directory[request.path], { parameters: request.query, config });
+    return response.render(directory[request.path], { parameters: request.query, config, cookies: request.cookies });
   }
 
   return next();
@@ -107,6 +107,7 @@ app.get('/blog/', async (request, response) => {
     popular: popularHTML,
     parameters: request.query,
     md,
+    cookies: request.cookies,
     subscribed: request.cookies.subscribed,
   });
 });
@@ -117,7 +118,7 @@ app.get('/blog/article/:articleId/', async (request, response) => {
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
     article = result;
   });
-  if (article === null) return response.render('errors/404', {});
+  if (article === null) return response.render('errors/404', { cookies: request.cookies });
 
   // Similar Articles
   let related = [];
@@ -213,6 +214,7 @@ app.get('/blog/article/:articleId/', async (request, response) => {
     siteKey: config.reCAPTCHApublic,
     parameters: request.query,
     md,
+    cookies: request.cookies,
     subscribed: request.cookies.subscribed,
   });
 });
@@ -235,7 +237,7 @@ app.post('/blog/article/:articleId/comment', async (request, response) => {
       article = result2;
     });
 
-    if (article === null) return response.render('errors/404', {});
+    if (article === null) return response.render('errors/404', {cookies: request.cookies});
 
     if (request.session.identifier === undefined) {
       request.session.identifier = Math.floor(Math.random() * 8999999) + 1000000;
@@ -259,7 +261,7 @@ app.get('/projects/', async (request, response) => {
   await crud.findMultipleDocuments('projects', {}).then((result) => {
     projects = result;
   });
-  response.render('projectsmain', { projects, md });
+  response.render('projectsmain', { projects, md, cookies: request.cookies });
 });
 
 // Writing homepage
@@ -276,7 +278,7 @@ app.get('/writing/', async (request, response) => {
     return -1;
   });
 
-  return response.render('writingmain', { writing, md });
+  return response.render('writingmain', { writing, md, cookies: request.cookies });
 });
 
 // Literary work display page
@@ -287,13 +289,14 @@ app.get('/writing/:workId/', async (request, response) => {
   });
 
   if (work === null || work.published === false || work.published.website !== true) {
-    return response.render('errors/404', {});
+    return response.render('errors/404', {cookies: request.cookies});
   }
 
   return response.render('writingwork', {
     work,
     title: work.title,
     metaDescription: md.render(work.synopsis.split('\n\n')[0]).replace(/(<([^>]+)>)/ig, ''),
+    cookies: request.cookies,
     md,
   });
 });
@@ -373,7 +376,7 @@ app.get('/policies/:policy/', async (request, response) => {
   };
 
   if (policyPages[request.params.policy] === undefined) return response.status(204).end();
-  return response.render('policy', { policy: policyPages[request.params.policy], md });
+  return response.render('policy', { policy: policyPages[request.params.policy], md, cookies: request.cookies });
 });
 
 // Gamified Reading Reading Bingo
@@ -447,7 +450,7 @@ app.get('/feed/', async (request, response) => {
 });
 
 // Errors
-app.use((request, response) => response.render('errors/404', {}));
+app.use((request, response) => response.render('errors/404', {cookies: request.cookies}));
 
 // Listen on port from config.json
 app.listen(config.port, () => {

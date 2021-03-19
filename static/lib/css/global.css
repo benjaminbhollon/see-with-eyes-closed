@@ -220,6 +220,57 @@ body[data-scrolled="down"] .main-nav {
   font-size: 10vmin;
 }
 
+#colorThemeToggle {
+  position: relative;
+  width: 2em;
+  height: 1em;
+  display: inline-block;
+  margin: 0 0.35em;
+}
+
+#colorThemeToggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+#colorThemeToggle span {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 2em;
+  transition: background-color .4s;
+}
+
+#colorThemeToggle span::before {
+  position: absolute;
+  content: '';
+  height: 0.7em;
+  width: 0.7em;
+  left: 0.15em;
+  bottom: 0.15em;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform .4s;
+}
+
+#colorThemeToggle input:checked + span {
+  background-color: #000;
+}
+
+#colorThemeToggle input:focus + span {
+  box-shadow: 0 0 1px #000;
+}
+
+#colorThemeToggle input:checked + span::before {
+  -ms-transform: translateX(1.05em);
+  transform: translateX(1.05em);
+}
+
 /* Footer */
 footer {
   background-color: #000;

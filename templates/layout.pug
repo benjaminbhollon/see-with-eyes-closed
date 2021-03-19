@@ -31,6 +31,9 @@ html(lang='en')
           a(href="/blog/") Blog
           a(href="/projects/") Projects
           a(href="/writing/") Writing
+          label(id="colorThemeToggle")
+            input(type="checkbox" onclick="toggleTheme()" checked=(cookies.theme !== 'dark'))
+            span
     #content
       block content
         if (content)
