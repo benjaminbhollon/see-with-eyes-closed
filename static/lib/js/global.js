@@ -26,9 +26,9 @@ const getCSSCustomProp = (propKey, element = document.documentElement, castAs = 
   return response;
 };
 function toggleTheme() {
-  const newTheme = (document.querySelector('#colorThemeToggle input').checked ? 'dark' : 'light')
+  const newTheme = (document.querySelector('#colorThemeToggle input').checked ? 'dark' : 'light');
   document.documentElement.dataset.theme = newTheme;
-  $.post('/theme/set/' + newTheme);
+  $.post(`/theme/set/${newTheme}`);
 }
 if (getCSSCustomProp('--background-color') === '#333') document.querySelector('#colorThemeToggle input').checked = true;
 

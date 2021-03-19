@@ -237,7 +237,7 @@ app.post('/blog/article/:articleId/comment', async (request, response) => {
       article = result2;
     });
 
-    if (article === null) return response.render('errors/404', {cookies: request.cookies});
+    if (article === null) return response.render('errors/404', { cookies: request.cookies });
 
     if (request.session.identifier === undefined) {
       request.session.identifier = Math.floor(Math.random() * 8999999) + 1000000;
@@ -289,7 +289,7 @@ app.get('/writing/:workId/', async (request, response) => {
   });
 
   if (work === null || work.published === false || work.published.website !== true) {
-    return response.render('errors/404', {cookies: request.cookies});
+    return response.render('errors/404', { cookies: request.cookies });
   }
 
   return response.render('writingwork', {
@@ -457,7 +457,7 @@ app.get('/feed/', async (request, response) => {
 });
 
 // Errors
-app.use((request, response) => response.render('errors/404', {cookies: request.cookies}));
+app.use((request, response) => response.render('errors/404', { cookies: request.cookies }));
 
 // Listen on port from config.json
 app.listen(config.port, () => {
