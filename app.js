@@ -411,6 +411,12 @@ app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, res
 // Redirects
 app.get('/projects/learnclef/*', async (request, response) => response.redirect(301, '/projects/learn-clef/'));
 
+// Change color theme
+app.post('/theme/set/:theme', async (request, response) => {
+
+  return response.status(204).end();
+});
+
 // RSS Feed
 app.get('/feed/', async (request, response) => {
   let articles = [];

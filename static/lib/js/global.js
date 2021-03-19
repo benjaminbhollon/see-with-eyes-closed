@@ -1,6 +1,13 @@
 // Initialize Variables
 let prevScrollpos = window.pageYOffset;
 
+// Color theme
+function toggleTheme() {
+  const newTheme = (document.querySelector('#colorThemeToggle input').checked ? 'light' : 'dark')
+
+  $.post('/theme/set/' + newTheme);
+}
+
 // Scroll function
 document.addEventListener('scroll', () => {
   const currentScrollPos = window.pageYOffset;
