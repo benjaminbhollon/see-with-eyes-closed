@@ -20,7 +20,7 @@ router.get('/manage/articles/', async (request, response) => {
   });
   articles.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  response.render('admin/managearticles', { articles });
+  response.render('admin/managearticles', { articles, cookies: request.cookies });
 });
 
 router.get('/manage/articles/:articleId/', async (request, response) => {
@@ -30,7 +30,7 @@ router.get('/manage/articles/:articleId/', async (request, response) => {
   });
   if (article === null) return response.render('errors/404', {});
 
-  response.render('admin/editarticle', { article });
+  response.render('admin/editarticle', { article, cookies: request.cookies });
 });
 
 router.post('/manage/articles/:articleId/', async (request, response) => {
@@ -100,7 +100,7 @@ router.get('/manage/writing/', async (request, response) => {
     if (result !== null) writing = result;
   });
 
-  response.render('admin/managewriting', { writing });
+  response.render('admin/managewriting', { writing, cookies: request.cookies });
 });
 
 router.get('/manage/writing/:workId/', async (request, response) => {
@@ -108,7 +108,7 @@ router.get('/manage/writing/:workId/', async (request, response) => {
   await crud.findDocument('writing', { id: request.params.workId }).then((result) => {
     work = result;
   });
-  if (work === null) return response.render('errors/404', {});
+  if (work === null) return response.render('errors/404', { cookies: request.cookies });
 
   response.render('admin/editwriting', { work });
 });
