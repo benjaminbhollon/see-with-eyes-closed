@@ -4,6 +4,7 @@
   --background-color: #fff;
   --transparent-background-color: #fffa;
   --color: #000;
+  --light-color: #777;
 }
 
 :root[data-theme='dark'] {
@@ -11,6 +12,7 @@
   --background-color: #333;
   --transparent-background-color: #333a;
   --color: #fff;
+  --light-color: #d7d7d7;
 }
 
 @media screen and (prefers-color-scheme: dark) {

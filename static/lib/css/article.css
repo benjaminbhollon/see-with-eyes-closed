@@ -81,7 +81,7 @@
   text-align: center;
   margin: 0;
   margin-bottom: 0.5em;
-  color: #777
+  color: var(--light-color)
 }
 
 .article__banner, .recent__article .tag {
