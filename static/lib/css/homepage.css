@@ -42,8 +42,8 @@ body {
 }
 
 .scroll-down {
-  border-right: 0.1em solid #000;
-  border-bottom: 0.1em solid #000;
+  border-right: 0.1em solid var(--color);
+  border-bottom: 0.1em solid var(--color);
   width: 2em;
   height: 2em;
   display: inline-block;
@@ -62,13 +62,13 @@ body {
   width: 90vmin;
   height: 90vmin;
   grid-gap:0.5em;
-  border: 0.35em solid #000;
+  border: 0.35em solid var(--color);
   transform: translateX(-50%);
 }
 
 .shelf {
   height: 30vmin;
-  border: 0.35em solid #000;
+  border-bottom: 0.35em solid var(--color);
   position: relative;
 }
 
@@ -120,7 +120,7 @@ body {
   height: calc(100% - 1em);
   max-width: 750px;
   max-height: 750px;
-  background-color: #fff;
+  background-color: var(--background-color);
   border-top-left-radius: 0.3em;
   border-top-right-radius: 0.3em;
   transform: translateX(-50%);

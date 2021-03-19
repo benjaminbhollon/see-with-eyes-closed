@@ -47,7 +47,7 @@
 }
 
 .listing__modal {
-  background-color: #fff;
+  background-color: var(--background-color);
   border-radius: .5em;
   position: fixed;
   width: 90%;

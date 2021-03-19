@@ -1,11 +1,12 @@
 doctype html
-html(lang='en')
+html(lang='en' data-theme=cookies.theme)
   head
     block head
       - metaImage = "https://seewitheyesclosed.com/lib/images/homepage/2.jpg"
       block variables
       block resources
         link(rel="stylesheet" href="/lib/css/global.css")
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" async)
         script(src="/lib/js/global.js" async)
       block meta
         meta(charset="UTF-8")
@@ -31,6 +32,9 @@ html(lang='en')
           a(href="/blog/") Blog
           a(href="/projects/") Projects
           a(href="/writing/") Writing
+          label(id="colorThemeToggle")
+            input(type="checkbox" onclick="toggleTheme()" checked=(cookies.theme === 'dark'))
+            span
     #content
       block content
         if (content)

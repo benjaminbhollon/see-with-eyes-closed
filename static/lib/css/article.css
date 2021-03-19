@@ -11,7 +11,7 @@
 }
 
 .comments > div {
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid;
 }
 
 .comments > div:empty {
@@ -19,7 +19,7 @@
 }
 
 .comment {
-  border: 1px solid #000;
+  border: 1px solid;
   padding: 1em;
   border-bottom: 0;
   text-align: left;
@@ -124,7 +124,7 @@ body[data-scrolled="up"] .popular__sticky {
   width: 100%;
   max-width: 100%;
   border: 0;
-  border-bottom: 2px solid #000;
+  border-bottom: 2px solid;
   font-size: 1em;
   padding: 1em;
 }
@@ -138,7 +138,7 @@ body[data-scrolled="up"] .popular__sticky {
   .recent__center {
     margin: 1.75em;
     display: inline-block;
-    border: 2px solid #000;
+    border: 2px solid;
     max-width: 700px;
   }
 
