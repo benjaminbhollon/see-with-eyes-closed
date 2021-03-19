@@ -413,6 +413,7 @@ app.get('/projects/learnclef/*', async (request, response) => response.redirect(
 
 // Change color theme
 app.post('/theme/set/:theme', async (request, response) => {
+  response.cookie('theme', request.params.theme.toString());
 
   return response.status(204).end();
 });

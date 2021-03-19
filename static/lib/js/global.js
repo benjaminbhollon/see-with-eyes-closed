@@ -3,8 +3,8 @@ let prevScrollpos = window.pageYOffset;
 
 // Color theme
 function toggleTheme() {
-  const newTheme = (document.querySelector('#colorThemeToggle input').checked ? 'light' : 'dark')
-
+  const newTheme = (document.querySelector('#colorThemeToggle input').checked ? 'dark' : 'light')
+  document.documentElement.dataset.theme = newTheme;
   $.post('/theme/set/' + newTheme);
 }
 
