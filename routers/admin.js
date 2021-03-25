@@ -110,7 +110,7 @@ router.get('/manage/writing/:workId/', async (request, response) => {
   });
   if (work === null) return response.render('errors/404', { cookies: request.cookies });
 
-  response.render('admin/editwriting', { work });
+  response.render('admin/editwriting', { work, cookies: request.cookies });
 });
 
 router.post('/manage/writing/:workId/', async (request, response) => {
