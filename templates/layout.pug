@@ -22,6 +22,7 @@ html(lang='en' data-theme=cookies.theme)
   body
     block mixins
       include mixins/form.pug
+      include mixins/verse.pug
     block navbar
       nav.main-nav
         a.main-nav__title(href="/") See With Eyes Closed
@@ -41,7 +42,7 @@ html(lang='en' data-theme=cookies.theme)
           != md.render(content)
     block footer
       footer
-        p © #{(new Date()).getFullYear()} Benjamin Hollon. All rights reserved.
+        +verse
         p
           a(href="/contact/") Contact Me
           |  | 
