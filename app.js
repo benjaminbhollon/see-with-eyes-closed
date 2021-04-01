@@ -259,6 +259,22 @@ app.post('/blog/article/:articleId/comment', async (request, response) => {
   });
 });
 
+//Add reaction
+app.post('/blog/article/:articleId/react/:reaction/:action', async (request, response) => {
+  // TECH DEBT: Integrate special updates into mongdb-crud
+  let article = null;
+  await crud.findDocument('articles', {id: request.params.articleId}).then((result) => {
+    article = result;
+  });
+  const reaction = article.reactions.find(r => r.name === request.params.reaction);
+  if (article === null || !reaction) return response.status(404).end();
+  let set = {};
+  let reactions = article.reactions;
+  reactions[reactions.indexOf(reaction)].count = reaction.count + (request.params.action === 'remove' ? -1 : 1);
+  await crud.updateDocument('articles', {id: article.id}, {reactions: reactions});
+  response.status(204).end();
+});
+
 // Projects homepage
 app.get('/projects/', async (request, response) => {
   let projects = [];
