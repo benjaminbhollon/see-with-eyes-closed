@@ -40,7 +40,6 @@ const policies = require('./src/policies.json');
 const config = require('./config.json');
 const directory = require('./directory.json');
 
-// Import local modules
 const crud = require('@bibliobone/mongodb-crud').bind(config.mongodbURI, 'swec-core');
 
 const app = express();
