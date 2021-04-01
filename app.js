@@ -69,7 +69,12 @@ app.use(express.json());
 app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
 app.use((request, response, next) => {
   if (directory[request.path] !== undefined && request.method.toUpperCase() === 'GET') {
-    return response.render(directory[request.path], { parameters: request.query, config, cookies: request.cookies });
+    return response.render(directory[request.path], {
+      parameters: request.query,
+      config,
+      cookies:
+      request.cookies,
+    });
   }
 
   return next();
