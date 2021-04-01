@@ -8,13 +8,13 @@ function react(reaction) {
   reactionsObject[reaction] = state;
   localStorage.setItem(`${articleId}-reactions`, JSON.stringify(reactionsObject));
 
-  const counter = document.querySelector(`.reactions__button[data-reaction=${reaction}] .reactions__count`)
-  let count = parseInt(counter.innerText) ? parseInt(counter.innerText) : 0
-  if (state) count++;
-  else count--;
+  const counter = document.querySelector(`.reactions__button[data-reaction=${reaction}] .reactions__count`);
+  let count = parseInt(counter.innerText, 10) ? parseInt(counter.innerText, 10) : 0;
+  if (state) count += 1;
+  else count -= 1;
   if (count >= 0) $.post(`/blog/article/${articleId}/react/${reaction}/${state ? 'add' : 'remove'}`);
   count = count > 0 ? count : 0;
-  counter.innerText = count ? count : '';
+  counter.innerText = count || '';
 }
 
 if (!localStorage.getItem(`${articleId}-reactions`)) {
