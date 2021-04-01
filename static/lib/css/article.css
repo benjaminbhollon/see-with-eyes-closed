@@ -171,4 +171,12 @@ figcaption {
   border: 2px solid;
   border-radius: 0.3em;
   display: inline-block;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.reactions.clickable .reactions__button {
+  cursor: pointer
 }

@@ -25,6 +25,11 @@ block content
         em #{Math.ceil(article.content.split(" ").length / 250)} minute read
     .article__content!= md.render(article.content).replace("<a", "<a target='_blank' rel='noopener'").replace("<img", "<img loading='lazy'").replace("<iframe", "<iframe loading='lazy'")
   br
+  .article__reactions
+    h3 What did you think?
+    include ./mixins/reactions.pug
+    +reactions(article.reactions, true)
+  br
   .subscribe
     h2 Like the content?
     p I send out a weekly digest of new posts, projects, things I'm currently working on. If you'd like to be a part of that, subscribe below. Can't wait to see you there!
