@@ -29,14 +29,15 @@ block content
     h2 Like the content?
     p I send out a weekly digest of new posts, projects, things I'm currently working on. If you'd like to be a part of that, subscribe below. Can't wait to see you there!
     a.button--red(href="https://digest.seewitheyesclosed.com" target="_blank" rel="noopener") Subscribe for updates!
-  br
-  .related
-    h2 Related Articles
-    each listing in related
-      a.related__article(href="../" + listing.id + "/")
-        strong #{listing.title}
-        br
-        em #{listing.date} by #{listing.author}
+  if related.length
+    br
+    .related
+      h2 Related Articles
+      each listing in related
+        a.related__article(href="../" + listing.id + "/")
+          strong #{listing.title}
+          br
+          em #{listing.date} by #{listing.author}
   br
   .tags
     h2 Tags
