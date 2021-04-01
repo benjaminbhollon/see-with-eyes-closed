@@ -1,4 +1,4 @@
-.article, .related, .tags, .comments, .subscribe {
+.article, .related, .tags, .comments, .subscribe, .article__reactions {
   width: 90%;
   max-width: 700px;
   display: inline-block;
@@ -157,4 +157,32 @@ figcaption {
   .popular {
     display: block;
   }
+}
+
+/* Reactions */
+
+.reactions {
+  color: #f69b13;
+}
+
+.reactions__button {
+  margin: 0.25em;
+  padding: 0.25em;
+  border: 2px solid #f69b13;
+  border-radius: 0.3em;
+  display: inline-block;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.reactions.clickable .reactions__button {
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.reactions__button.checked {
+  background-color: #f69b1388;
+  color: var(--color);
 }

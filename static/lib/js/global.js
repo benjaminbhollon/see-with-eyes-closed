@@ -7,7 +7,7 @@ const getCSSCustomProp = (propKey, element = document.documentElement, castAs = 
 
   // Tidy up the string if there's something to work with
   if (response.length) {
-    response = response.replace(/\'|"/g, '').trim();
+    response = response.replace(/'|"/g, '').trim();
   }
 
   // Convert the response into a whatever type we wanted
@@ -20,10 +20,9 @@ const getCSSCustomProp = (propKey, element = document.documentElement, castAs = 
     case 'boolean':
     case 'bool':
       return response === 'true' || response === '1';
+    default:
+      return response;
   }
-
-  // Return the string response by default
-  return response;
 };
 function toggleTheme() {
   const newTheme = (document.querySelector('#colorThemeToggle input').checked ? 'dark' : 'light');

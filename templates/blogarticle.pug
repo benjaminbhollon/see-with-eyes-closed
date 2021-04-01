@@ -11,9 +11,11 @@ block append meta
   
 block append resources
   link(rel="stylesheet" href="/lib/css/article.css")
-  script(src="https://www.google.com/recaptcha/api.js",defer,async)
+  script(src="/lib/js/article.js" async)
+  script(src="https://www.google.com/recaptcha/api.js" defer async)
   
 block content
+  #articleId.hidden #{article.id}
   article.article
     header
       if article.image !== ""
@@ -24,6 +26,11 @@ block content
         br
         em #{Math.ceil(article.content.split(" ").length / 250)} minute read
     .article__content!= md.render(article.content).replace("<a", "<a target='_blank' rel='noopener'").replace("<img", "<img loading='lazy'").replace("<iframe", "<iframe loading='lazy'")
+  br
+  .article__reactions
+    h2 What did you think?
+    include ./mixins/reactions.pug
+    +reactions(article.reactions, true)
   br
   .subscribe
     h2 Like the content?

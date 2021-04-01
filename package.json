@@ -1,6 +1,6 @@
 {
   "name": "see-with-eyes-closed",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "The code for the See With Eyes Closed blog.",
   "main": "app.js",
   "dependencies": {
@@ -27,7 +27,8 @@
     "lint": "eslint . --fix",
     "logs": "pm2 logs SWEC",
     "restart": "pm2 restart SWEC",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "update:reactions": "node ./updates/reactions.js"
   },
   "author": "Benjamin Hollon",
   "license": "GPL-3.0",

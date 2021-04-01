@@ -40,7 +40,6 @@ const policies = require('./src/policies.json');
 const config = require('./config.json');
 const directory = require('./directory.json');
 
-// Import local modules
 const crud = require('@bibliobone/mongodb-crud').bind(config.mongodbURI, 'swec-core');
 
 const app = express();
@@ -70,7 +69,12 @@ app.use(express.json());
 app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
 app.use((request, response, next) => {
   if (directory[request.path] !== undefined && request.method.toUpperCase() === 'GET') {
-    return response.render(directory[request.path], { parameters: request.query, config, cookies: request.cookies });
+    return response.render(directory[request.path], {
+      parameters: request.query,
+      config,
+      cookies:
+      request.cookies,
+    });
   }
 
   return next();
@@ -253,6 +257,22 @@ app.post('/blog/article/:articleId/comment', async (request, response) => {
 
     return response.redirect(302, `/blog/article/${request.params.articleId}/#comments`);
   });
+});
+
+// Add reaction
+app.post('/blog/article/:articleId/react/:reaction/:action', async (request, response) => {
+  // TECH DEBT: Integrate special updates into mongdb-crud
+  let article = null;
+  await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
+    article = result;
+  });
+  const reaction = article.reactions.find((r) => r.name === request.params.reaction);
+  if (article === null || !reaction) return response.status(404).end();
+  const set = {};
+  const { reactions } = article;
+  reactions[reactions.indexOf(reaction)].count = reaction.count + (request.params.action === 'remove' ? -1 : 1);
+  await crud.updateDocument('articles', { id: article.id }, { reactions });
+  response.status(204).end();
 });
 
 // Projects homepage
