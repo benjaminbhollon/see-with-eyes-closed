@@ -1,6 +1,8 @@
 - reactionToEmoji = {"funny": "😂", "impressive": "👏", "hooray": "🎉", "silly": "😜", "avocado": "🥑"}
 
 mixin reactions(reactions, clickable)
+  if !clickable
+    - reactions.sort((a, b) => b.count - a.count)
   .reactions(class=(clickable === true ? 'clickable' : ''))
     each reaction in reactions
       if clickable === true
