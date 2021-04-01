@@ -17,6 +17,31 @@ block content
         span.accessibility Search Articles:
         input.searchbar#searchbar(type="search",oninput="searchArticles()",autocomplete="false",placeholder="Search articles...",value=(parameters.tag !== undefined ? "tag:" + parameters.tag : ""),style="display:inline-block")
         #typoWarning(style="display:none;padding:0.5em") Hmm... I don't see that article. Try looking around for something else. Make sure to check for typos! I hope to see you in the article you're looking for.
+        include ./mixins/reactions.pug
+        //-
+          +reactions([
+            {
+              name: "impressive",
+              count: 1
+            },
+            {
+              name: "funny",
+              count: 2,
+              checked: true
+            },
+            {
+              name: "hooray",
+              count: 1
+            },
+            {
+              name: "silly",
+              count: 1
+            },
+            {
+              name: "avocado",
+              count: 0
+            }
+          ])
         each post in recent
           if ((new Date(post.date)).getTime() <= Date.now())
             article.recent__article
@@ -27,8 +52,14 @@ block content
               p.article__details #{post.date} by #{post.author}
                 br
                 | #{Math.ceil(post.content.split(" ").length / 250)} minute read
+              
               != md.render(post.summary).replace("<a", "<a target='_blank' rel='noopener'")
               p: a(href="./article/" + post.id + "/") Read the full article
+              
+              if (post.reactions.filter(r => r.count).length)
+                h4 What people thought:
+                +reactions(post.reactions)
+                
               p!= post.tags.map(tag => "<a href='./?tag=" + tag + "#top' class='tag' data-id='" + tag + "'>" + tag + "</a>").join(" ")
     .popular
       .popular__sticky

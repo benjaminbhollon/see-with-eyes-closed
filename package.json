@@ -27,7 +27,8 @@
     "lint": "eslint . --fix",
     "logs": "pm2 logs SWEC",
     "restart": "pm2 restart SWEC",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "update:reactions": "node ./updates/reactions.js"
   },
   "author": "Benjamin Hollon",
   "license": "GPL-3.0",
