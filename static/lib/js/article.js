@@ -12,6 +12,7 @@ function react(reaction) {
   let count = parseInt(counter.innerText) ? parseInt(counter.innerText) : 0
   if (state) count++;
   else count--;
+  if (count >= 0) $.post(`/blog/article/${articleId}/react/${reaction}/${state ? 'add' : 'remove'}`);
   count = count > 0 ? count : 0;
   counter.innerText = count ? count : '';
 }
