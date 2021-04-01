@@ -1,0 +1,16 @@
+- reactionToEmoji = {"funny": "😂", "impressive": "👏", "hooray": "🎉", "silly": "😜", "avocado": "🥑"}
+
+mixin reactions(reactions, clickable)
+  .reactions
+    each reaction in reactions
+      if clickable === true
+        span.reactions__button(class=(reaction.checked === true ? 'checked' : '') + (clickable === true ? 'clickable' : ''))
+          if reaction.count
+            b.reactions__count #{reaction.count}
+          | #{reactionToEmoji[reaction.name] + reaction.name[0].toUpperCase() + reaction.name.slice(1)}
+      else if clickable !== true && reaction.count
+        span.reactions__button(class=(reaction.checked === true ? 'checked' : '') + (clickable === true ? 'clickable' : ''))
+          b.reactions__count #{reaction.count}
+          | #{reactionToEmoji[reaction.name]}
+    if !reactions.length
+      p: em No reactions yet.

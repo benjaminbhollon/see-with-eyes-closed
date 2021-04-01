@@ -158,3 +158,17 @@ figcaption {
     display: block;
   }
 }
+
+/* Reactions */
+
+.reactions {
+  color: orange;
+}
+
+.reactions__button {
+  margin: 0.25em;
+  padding: 0.25em;
+  border: 2px solid;
+  border-radius: 0.3em;
+  display: inline-block;
+}
