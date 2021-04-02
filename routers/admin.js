@@ -87,6 +87,28 @@ router.post('/post/article/', async (request, response) => {
     tags: request.body.tags.split(',').map((tag) => tag.trim()),
     comments: (request.body.comments ? [] : false),
     hits: 0,
+    reactions: [
+      {
+        name: 'impressive',
+        count: 0,
+      },
+      {
+        name: 'funny',
+        count: 0,
+      },
+      {
+        name: 'hooray',
+        count: 0,
+      },
+      {
+        name: 'silly',
+        count: 0,
+      },
+      {
+        name: 'avocado',
+        count: 0,
+      },
+    ],
   };
 
   await crud.insertDocument('articles', article);

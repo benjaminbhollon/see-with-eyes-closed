@@ -4,7 +4,6 @@
     <title>Astronaut Counter</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" async></script>
     <style>
       * {
         box-sizing: border-box;
@@ -54,6 +53,7 @@
       <p><b id="now">0</b> are currently in space</p>
       <p style="text-align:center;font-size:0.7em">Based on data from <a href="https://en.wikipedia.org/wiki/List_of_space_travelers_by_name" target="_blank" rel="noopener">Wikipedia</a></p>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
       //var data = JSON.parse(document.getElementById("data").innerText)['query']['pages']['9021683']['revisions'][0]["*"].split("{{compact ToC|side=yes|top=yes|num=yes}} __NOTOC__\n\n==A==")[1].split("\n*");
       $.getJSON("https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&titles=List%20of%20space%20travelers%20by%20name&format=json&origin=*", function(response){
