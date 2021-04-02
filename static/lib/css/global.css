@@ -250,10 +250,17 @@ body[data-scrolled="down"] .main-nav {
   width: 100%;
 }
 
-#nav-collapse:checked ~ .main-nav__collapsible a {
+#nav-collapse:checked ~ .main-nav__collapsible a, #nav-collapse:checked ~ .main-nav__collapsible label {
   display: block;
-  line-height: 25vh;
+  line-height: 20vh;
   font-size: 10vmin;
+}
+
+#nav-collapse:checked ~ .main-nav__collapsible label {
+  margin-left: 50%;
+  margin-top: 10vh;
+  transform: translate(-50%, -75%);
+  -ms-transform: translate(-50%, -75%);
 }
 
 #colorThemeToggle {
