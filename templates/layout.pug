@@ -2,12 +2,12 @@ doctype html
 html(lang='en' data-theme=cookies.theme)
   head
     block head
-      - metaImage = "https://seewitheyesclosed.com/lib/images/homepage/2.jpg"
+      - metaImage = "https://seewitheyesclosed.com/assets/images/homepage/2.jpg"
       block variables
       block resources
-        link(rel="stylesheet" href="/lib/css/global.css")
+        link(rel="stylesheet" href="/assets/css/global.css")
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" async)
-        script(src="/lib/js/global.js" async)
+        script(src="/assets/js/global.js" async)
       block meta
         meta(charset="UTF-8")
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
@@ -18,7 +18,7 @@ html(lang='en' data-theme=cookies.theme)
         meta(property="og:image" content=metaImage)
       block title
         title #{title} | See With Eyes Closed
-      link(rel="shortcut icon" type="image/x-icon" href="/lib/images/favicon.ico")
+      link(rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.ico")
   body
     block mixins
       include mixins/form.pug
