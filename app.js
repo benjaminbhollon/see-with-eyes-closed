@@ -206,12 +206,13 @@ app.get('/blog/article/:articleId/', async (request, response) => {
   }
 
   // Comment time ago
-  article.comments = article.comments.map((comment) => {
-    const newComment = { ...comment };
-    newComment.time = `${timeSince(newComment.time * 1000)} ago`;
-    return newComment;
-  });
-
+  if (article.comments) {
+    article.comments = article.comments.map((comment) => {
+      const newComment = { ...comment };
+      newComment.time = `${timeSince(newComment.time * 1000)} ago`;
+      return newComment;
+    });
+  }
   return response.render('blogarticle', {
     article,
     related,

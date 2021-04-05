@@ -44,9 +44,9 @@ router.post('/manage/articles/:articleId/', async (request, response) => {
     tags: request.body.tags.split(',').map((tag) => tag.trim()),
   };
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
-    if ((result.comments !== false) !== request.body.comments) {
-      article.comments = (request.body.comments ? [] : false);
-    }
+    article.comments = (request.body.comments === 'on' ? true : false);
+    if (article.comments && result.comments) article.comments = result.comments;
+    else article.comments = false;
   });
 
   await crud.updateDocument('articles', { id: request.params.articleId }, article);
@@ -95,13 +95,17 @@ router.get('/manage/comments/', async (request, response) => {
     return `${Math.floor(seconds)} seconds`;
   }
   articles.map((a) => {
-    const article = a;
-    article.comments = article.comments.map((comment) => {
-      const newComment = { ...comment };
-      newComment.time = `${timeSince(newComment.time * 1000)} ago`;
-      return newComment;
-    });
-    return article;
+    if (a.comments) {
+      const article = a;
+      article.comments = article.comments.map((comment) => {
+        const newComment = { ...comment };
+        newComment.time = `${timeSince(newComment.time * 1000)} ago`;
+        return newComment;
+      });
+      return article;
+    } else {
+      return false;
+    }
   });
 
   response.render('admin/managecomments', { articles, cookies: request.cookies });
