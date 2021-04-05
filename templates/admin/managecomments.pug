@@ -1,0 +1,26 @@
+extends admin.pug
+
+block variables
+  - title = "Manage Articles"
+  
+block append resources
+  link(rel="stylesheet" href="/assets/css/article.css")
+
+block content
+  h1 #{title}
+  each article in articles
+    if article.comments !== false && article.comments.length > 0
+      h3 #{article.title}
+      .comments
+          h2(style="text-align:left") #{article.comments.length} comments
+          div
+            - c = 0
+            each comment in article.comments
+              .comment
+                p
+                  img(src="https://api.hello-avatar.com/adorables/30/" + encodeURIComponent(comment.identifier),alt="Avatar")
+                  strong #{comment.author}&nbsp;&nbsp;
+                  span #{comment.time}
+                div #{comment.message}
+                p: a(style="color:red" href="./" + article.id + "." + c + "/delete") Delete
+              - c++

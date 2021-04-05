@@ -60,6 +60,67 @@ router.get('/manage/articles/:articleId/delete', async (request, response) => {
   response.redirect(302, '/admin/manage/articles');
 });
 
+router.get('/manage/comments/', async (request, response) => {
+  let articles = [];
+  await crud.findMultipleDocuments('articles', {}).then((result) => {
+    if (result !== null) articles = result;
+  });
+  articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  // Comments time ago
+  function timeSince(date) {
+    const seconds = Math.floor((new Date() - date) / 1000);
+
+    let interval = seconds / 31536000;
+
+    if (interval > 1) {
+      return `${Math.floor(interval)} years`;
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+      return `${Math.floor(interval)} months`;
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+      return `${Math.floor(interval)} days`;
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+      return `${Math.floor(interval)} hours`;
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+      return `${Math.floor(interval)} minutes`;
+    }
+    return `${Math.floor(seconds)} seconds`;
+  }
+  articles.map((a) => {
+    const article = a;
+    article.comments = article.comments.map((comment) => {
+      const newComment = { ...comment };
+      newComment.time = `${timeSince(newComment.time * 1000)} ago`;
+      return newComment;
+    });
+    return article;
+  });
+
+  response.render('admin/managecomments', { articles, cookies: request.cookies });
+});
+
+router.get('/manage/comments/:articleId.:index/delete', async (request, response) => {
+  let article = {};
+  await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
+    article = result;
+  });
+
+  if (article === null) return response.render('errors/404', {});
+
+  article.comments.splice(request.params.index, 1);
+
+  await crud.updateDocument('articles', { id: request.params.articleId }, { comments: article.comments });
+  response.redirect(302, '/admin/manage/comments/');
+});
+
 router.post('/post/article/', async (request, response) => {
   const today = new Date();
   const months = [
