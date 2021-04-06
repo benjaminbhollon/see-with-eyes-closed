@@ -6,6 +6,10 @@
   border-bottom: 1px solid #ccc;
 }
 
+.comments {
+  border-bottom: 0;
+}
+
 .article {
   text-align: left;
 }

@@ -45,21 +45,22 @@ block content
           strong #{listing.title}
           br
           em #{listing.date} by #{listing.author}
-  br
-  .comments#comments
-    if article.comments !== false
-      h2(style="text-align:left") #{article.comments.length} comments
-      div
-        if article.comments.length === 0
-          p There aren't any comments yet. Be the first!
-        each comment in article.comments
-          .comment
-            p
-              img(src="https://api.hello-avatar.com/adorables/30/" + encodeURIComponent(comment.identifier),alt="Avatar")
-              strong #{comment.author}&nbsp;&nbsp;
-              span #{comment.time}
-            div #{comment.message}
-      h3 Post a Comment
+  if article.comments !== false
+    br
+    .comments#comments
+      if article.comments.length === 0
+        p There aren't any comments yet. Be the first!
+      else if article.comments.length
+        h2(style="text-align:left") #{article.comments.length} comments
+        div
+          each comment in article.comments
+            .comment
+              p
+                img(src="https://api.hello-avatar.com/adorables/30/" + encodeURIComponent(comment.identifier),alt="Avatar")
+                strong #{comment.author}&nbsp;&nbsp;
+                span #{comment.time}
+              div #{comment.message}
+        h3 Post a Comment
       +form("POST", `/blog/article/${article.id}/comment`, [
         {
           label: "Your Name",
@@ -86,8 +87,6 @@ block content
           p.failure Please fill out the recaptcha.
         else if parameters.err == 400
           p.failure Please fill out all the fields.
-    else if (article.comments === false)
-      p Comments have been disabled on this article.
   style.
     #g-recaptcha-response {
       display: block !important;
