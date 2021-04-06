@@ -20,6 +20,7 @@ html(lang='en' data-theme=cookies.theme)
         title #{title} | See With Eyes Closed
       link(rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.ico")
   body
+    a.sr-only(href="#content") Skip to Content
     block mixins
       include mixins/form.pug
       include mixins/verse.pug
@@ -33,8 +34,8 @@ html(lang='en' data-theme=cookies.theme)
           a(href="/blog/") Blog
           a(href="/projects/") Projects
           a(href="/writing/") Writing
-          label(id="colorThemeToggle")
-            input(type="checkbox" onclick="toggleTheme()" checked=(cookies.theme === 'dark'))
+          label(id="colorThemeToggle" aria-hidden="true")
+            input(type="checkbox" onclick="toggleTheme()" checked=(cookies.theme === 'dark') aria-hidden="true")
             span
     #content
       block content

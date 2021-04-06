@@ -42,6 +42,6 @@ npm run dev
 
 This will start a nodemon script which will automatically reload the server whenever there are changes to the code. It will stop when you close the command line window.
 
-One last thing: before contributing changes, always run `npm run lint`. This will alert you to any semantic problems in your code. The one issue you can ignore: `no-unused-vars` when referring to a function that is run from an HTML page. In that case it's wrong. Anything else, fix or ask about.
+One last thing: before contributing changes, always run `npm run lint`. This will alert you to any semantic problems in your code. The one issue you can ignore: `no-unused-vars` or `no-undef` when referring to a function that exists, but is used in a different file. In that case it's wrong. Anything else, fix or ask about.
 
 Enjoy! This has been tested and verified to work properly on Windows 10, CentOS 8, and Ubuntu 20.

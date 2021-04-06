@@ -12,7 +12,7 @@ function react(reaction) {
   let count = parseInt(counter.innerText, 10) ? parseInt(counter.innerText, 10) : 0;
   if (state) count += 1;
   else count -= 1;
-  if (count >= 0) $.post(`/blog/article/${articleId}/react/${reaction}/${state ? 'add' : 'remove'}`);
+  if (count >= 0) simplePost(`/blog/article/${articleId}/react/${reaction}/${state ? 'add' : 'remove'}`);
   count = count > 0 ? count : 0;
   counter.innerText = count || '';
 }

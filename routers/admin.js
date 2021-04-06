@@ -44,7 +44,7 @@ router.post('/manage/articles/:articleId/', async (request, response) => {
     tags: request.body.tags.split(',').map((tag) => tag.trim()),
   };
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
-    article.comments = (request.body.comments === 'on' ? true : false);
+    article.comments = (request.body.comments === 'on');
     if (article.comments && result.comments) article.comments = result.comments;
     else article.comments = false;
   });
@@ -103,9 +103,8 @@ router.get('/manage/comments/', async (request, response) => {
         return newComment;
       });
       return article;
-    } else {
-      return false;
     }
+    return false;
   });
 
   response.render('admin/managecomments', { articles, cookies: request.cookies });

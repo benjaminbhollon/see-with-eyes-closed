@@ -15,24 +15,30 @@ block content
     .fullpage__center
       h1 I'm Benjamin Hollon.
       noscript#occupations-noscript
+        style.
+          #occupations-noscript + .sr-only, #occupations-noscript + .sr-only + p {
+            display: none;
+          }
         p Human Being, Avid Reader, Writer, Trombonist, Composer, Actor, Christian, and Part-Time Polymath
-      p#occupations-typewriter(data-occupations="Human Being|Avid Reader|Writer|Trombonist|Composer|Actor|Christian|Avocado Advocate|Part-Time Polymath")
+      p.sr-only Human Being, Avid Reader, Writer, Trombonist, Composer, Actor, Christian, and Part-Time Polymath
+      p(aria-label="Human Being, Avid Reader, Writer, Trombonist, Composer, Actor, Christian, and Part-Time Polymath"): span#occupations-typewriter(data-occupations="Human Being|Avid Reader|Writer|Trombonist|Composer|Actor|Christian|Avocado Advocate|Part-Time Polymath" aria-hidden="true")
       p
         a.scroll-down(href="#panel-2") Scroll Down
   .fullpage#panel-2
-    pre#code__editor
-    iframe#code__result(title="Live-coded avocado")
+    pre#code__editor(aria-hidden="true")
+    iframe#code__result(title="Live-coded avocado" aria-hidden="true")
     #code__skip Skip to end
     .fullpage__center--fill
       h2 I code things that make me smile.
       a.github-button(href="https://github.com/benjaminbhollon" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-size="large" data-show-count="true" aria-label="Follow @benjaminbhollon on GitHub") Follow @benjaminbhollon
   .fullpage#panel-3
+    a.sr-only(href="#reading-heading") Skip Bookshelf
     #bookshelf
       .shelf
       .shelf
       .shelf
     .fullpage__center--fill
-      h2 I read books that expand my horizons.
+      h2#reading-heading I read books that expand my horizons.
       a(href="https://www.goodreads.com/user/show/80839667-benjamin-hollon" title="Benjamin Hollon's book recommendations, liked quotes, book clubs, book trivia, book lists" target="_blank" rel="nofollow noopener")
         img(alt="Benjamin Hollon's book recommendations, liked quotes, book clubs, book trivia, book lists" src="https://s.gr-assets.com/images/widget/widget_logo.gif" style="border-radius: 5px")
     #gr_custom_widget_1610423899
@@ -47,11 +53,7 @@ block content
     
     .fullpage__center--fill
       h2 I write stories that ask thought-provoking questions.
-      p: a.--inline-block.button--red View Writing
-  //-
-    .fullpage#panel-5
-      .fullpage__center--fill
-        h2 I make music to bring joy.
+      p: a.--inline-block.button--red(href="/writing/") View Writing
   .fullpage#panel-6
     .fullpage__center
       h2 More from me

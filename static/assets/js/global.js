@@ -1,6 +1,18 @@
 // Initialize Variables
 let prevScrollpos = window.pageYOffset;
 
+// AJAX POST
+async function simplePost(url, callback) {
+  const request = new XMLHttpRequest();
+  request.onreadystatechange = () => {
+    if (this.readyState === 4 && this.status === 200) {
+      if (callback) callback();
+    }
+  };
+  request.open('POST', url, true);
+  request.send();
+}
+
 // Color theme
 const getCSSCustomProp = (propKey, element = document.documentElement, castAs = 'string') => {
   let response = getComputedStyle(element).getPropertyValue(propKey);
@@ -27,7 +39,7 @@ const getCSSCustomProp = (propKey, element = document.documentElement, castAs = 
 function toggleTheme() {
   const newTheme = (document.querySelector('#colorThemeToggle input').checked ? 'dark' : 'light');
   document.documentElement.dataset.theme = newTheme;
-  $.post(`/theme/set/${newTheme}`);
+  simplePost(`/theme/set/${newTheme}`);
 }
 if (getCSSCustomProp('--background-color') === '#333') document.querySelector('#colorThemeToggle input').checked = true;
 
