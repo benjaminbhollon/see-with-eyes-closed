@@ -31,11 +31,13 @@ block content
     h2 What did you think?
     include ./mixins/reactions.pug
     +reactions(article.reactions, true)
-  br
-  .subscribe
-    h2 Like the content?
-    p I send out a weekly digest of new posts, projects, things I'm currently working on. If you'd like to be a part of that, subscribe below. Can't wait to see you there!
-    a.button--red(href="https://digest.seewitheyesclosed.com" target="_blank" rel="noopener") Subscribe for updates!
+  if !cookies.subscribed
+    br
+    .subscribe
+      h2 Like the content?
+      p I send out a weekly digest of new posts, projects, things I'm currently working on. If you'd like to be a part of that, subscribe below. Can't wait to see you there!
+      a.button--red(href="https://digest.seewitheyesclosed.com" target="_blank" rel="noopener") Subscribe for updates!
+      a.nope(onclick="simplePost('/subscribe/nope');document.querySelector('.subscribe').innerHTML = `<p>👍 We won't ask you again. <a href='//digest.seewitheyesclosed.com' target='_blank' rel='noopener'>You can still subscribe if you like</a>, though!</p>`") Nah, I'm good.
   if related.length
     br
     .related

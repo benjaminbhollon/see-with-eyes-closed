@@ -172,6 +172,11 @@ img {
   display: none;
 }
 
+.nope {
+  color: var(--light-color);
+  cursor: pointer;
+}
+
 /* Accessibility */
 .sr-only {
   position:absolute;

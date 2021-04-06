@@ -122,7 +122,10 @@ app.get('/blog/article/:articleId/', async (request, response) => {
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
     article = result;
   });
-  if (article === null) return response.render('errors/404', { cookies: request.cookies });
+  if (article === null) {
+    response.status(404);
+    return response.render('errors/404', { cookies: request.cookies });
+  }
 
   // Similar Articles
   let related = [];
@@ -274,6 +277,13 @@ app.post('/blog/article/:articleId/react/:reaction/:action', async (request, res
   reactions[reactions.indexOf(reaction)].count = reaction.count + (request.params.action === 'remove' ? -1 : 1);
   await crud.updateDocument('articles', { id: article.id }, { reactions });
   response.status(204).end();
+});
+
+// Subscribe actions
+app.post('/subscribe/nope', async (request, response) => {
+  response.cookie('subscribed', true);
+
+  return response.status(204).end();
 });
 
 // Projects homepage
@@ -478,7 +488,10 @@ app.get('/feed/', async (request, response) => {
 });
 
 // Errors
-app.use((request, response) => response.render('errors/404', { cookies: request.cookies }));
+app.use((request, response) => {
+  response.status(404);
+  response.render('errors/404', { cookies: request.cookies });
+});
 
 // Listen on port from config.json
 app.listen(config.port, () => {
