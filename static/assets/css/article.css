@@ -1,4 +1,4 @@
-.article, .related, .tags, .comments, .subscribe, .article__reactions {
+.article, .related, .comments, .subscribe, .article__reactions {
   width: 90%;
   max-width: 700px;
   display: inline-block;
