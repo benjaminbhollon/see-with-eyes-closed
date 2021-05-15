@@ -11,7 +11,7 @@ const Request = require('request');
 const SitemapGenerator = require('sitemap-generator');
 const MarkdownIt = require('markdown-it');
 
-const md = new MarkdownIt({ html: true });
+const md = new MarkdownIt({ html: true, typographer: true, linkify: true });
 
 const weekDaysShort = ['Sun',
   'Mon',
