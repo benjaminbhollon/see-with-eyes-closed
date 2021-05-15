@@ -1,8 +1,8 @@
 {
-  "/": "homepage.pug",
-  "/contact/": "contact.pug",
-  "/admin/": "admin/admin.pug",
-  "/admin/post/article/": "admin/postarticle.pug",
-  "/admin/post/writing/": "admin/postwriting.pug",
-  "/blog/subscribe/": "subscribe.pug"
+  "/": "homepage",
+  "/contact/": "contact",
+  "/admin/": "admin/admin",
+  "/admin/post/article/": "admin/postarticle",
+  "/admin/post/writing/": "admin/postwriting",
+  "/blog/subscribe/": "subscribe"
 }

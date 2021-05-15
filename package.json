@@ -19,8 +19,7 @@
     "pug": "^3.0.2",
     "request": "^2.88.2",
     "sendmail": "^1.6.1",
-    "sitemap-generator": "^8.5.1",
-    "vocado": "^0.5.1"
+    "sitemap-generator": "^8.5.1"
   },
   "scripts": {
     "start": "pm2 start app.js --name SWEC",
