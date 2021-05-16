@@ -1,14 +1,11 @@
 // Import modules
-const express = require('express');
+const vocado = require('vocado');
 const sendmail = require('sendmail')();
 const bcrypt = require('bcryptjs');
-const session = require('express-session');
-const compression = require('compression');
+//const session = require('express-session');
 const basicAuth = require('express-basic-auth');
-const cookieParser = require('cookie-parser');
-const minify = require('express-minify');
 const Request = require('request');
-const SitemapGenerator = require('sitemap-generator');
+//const SitemapGenerator = require('sitemap-generator');
 const MarkdownIt = require('markdown-it');
 
 const md = new MarkdownIt({ html: true, typographer: true, linkify: true });
@@ -42,10 +39,10 @@ const directory = require('./directory.json');
 
 const crud = require('@bibliobone/mongodb-crud').bind(config.mongodbURI, 'swec-core');
 
-const app = express();
+const app = vocado();
 
 // Crawl site once per day
-const generator = SitemapGenerator('https://seewitheyesclosed.com', {
+/*const generator = SitemapGenerator('https://seewitheyesclosed.com', {
   stripQuerystring: true,
   filepath: './static/sitemap.xml',
   userAgent: 'verbGuac 1.0',
@@ -56,17 +53,14 @@ const generator = SitemapGenerator('https://seewitheyesclosed.com', {
 generator.on('done', () => {
   console.log('Sitemap for seewitheyesclosed.com created.');
 });
-setInterval(generator.start, 1000 * 60 * 60 * 24);
+setInterval(generator.start, 1000 * 60 * 60 * 24);*/
 
 // Set up middleware
-app.use(cookieParser());
-app.use(compression());
-app.use(minify());
-app.use(express.static('static'));
-app.use(session({ secret: config.sessionSecret, resave: false, saveUninitialized: false }));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+//app.use(cookieParser());
+//app.use(compression());
 app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
+app.static('./static/');
+//app.use(session({ secret: config.sessionSecret, resave: false, saveUninitialized: false }));
 app.use((request, response, next) => {
   if (directory[request.path] !== undefined && request.method.toUpperCase() === 'GET') {
     return response.render(directory[request.path], {
@@ -79,8 +73,7 @@ app.use((request, response, next) => {
 
   return next();
 });
-app.set('view engine', 'pug');
-app.set('views', './templates');
+app.templates('pug', './templates/');
 let bcryptSalt;
 bcrypt.genSalt(3, (err, salt) => {
   bcryptSalt = salt;
@@ -106,7 +99,7 @@ app.get('/blog/', async (request, response) => {
 
   const popularHTML = JSON.parse(JSON.stringify(articles.slice(0, 5)));
 
-  return response.render('blogmain', {
+  return response.render('blogmain.pug', {
     recent: recentHTML,
     popular: popularHTML,
     parameters: request.query,
@@ -124,7 +117,7 @@ app.get('/blog/article/:articleId/', async (request, response) => {
   });
   if (article === null) {
     response.status(404);
-    return response.render('errors/404', { cookies: request.cookies });
+    return response.render('errors/404.pug', { cookies: request.cookies });
   }
 
   // Similar Articles
@@ -175,11 +168,11 @@ app.get('/blog/article/:articleId/', async (request, response) => {
     related = result;
   });
 
-  if (!request.session.viewed && request.headers['user-agent'] !== 'verbGuac 1.0') {
+  //if (!request.session.viewed && request.headers['user-agent'] !== 'verbGuac 1.0') {
     article.hits += 1;
     crud.updateDocument('articles', { id: new RegExp(`^${request.params.articleId}$`, 'i') }, { hits: article.hits });
-    request.session.viewed = true;
-  }
+    //request.session.viewed = true;
+  //}
 
   function timeSince(date) {
     const seconds = Math.floor((new Date() - date) / 1000);
@@ -216,7 +209,7 @@ app.get('/blog/article/:articleId/', async (request, response) => {
       return newComment;
     });
   }
-  return response.render('blogarticle', {
+  return response.render('blogarticle.pug', {
     article,
     related,
     siteKey: config.reCAPTCHApublic,
@@ -245,7 +238,7 @@ app.post('/blog/article/:articleId/comment', async (request, response) => {
       article = result2;
     });
 
-    if (article === null) return response.render('errors/404', { cookies: request.cookies });
+    if (article === null) return response.render('errors/404.pug', { cookies: request.cookies });
 
     if (request.session.identifier === undefined) {
       request.session.identifier = Math.floor(Math.random() * 8999999) + 1000000;
@@ -292,7 +285,7 @@ app.get('/projects/', async (request, response) => {
   await crud.findMultipleDocuments('projects', {}).then((result) => {
     projects = result;
   });
-  response.render('projectsmain', { projects, md, cookies: request.cookies });
+  response.render('projectsmain.pug', { projects, md, cookies: request.cookies });
 });
 
 // Writing homepage
@@ -309,7 +302,7 @@ app.get('/writing/', async (request, response) => {
     return -1;
   });
 
-  return response.render('writingmain', { writing, md, cookies: request.cookies });
+  return response.render('writingmain.pug', { writing, md, cookies: request.cookies });
 });
 
 // Literary work display page
@@ -320,10 +313,10 @@ app.get('/writing/:workId/', async (request, response) => {
   });
 
   if (work === null || work.published === false || work.published.website !== true) {
-    return response.render('errors/404', { cookies: request.cookies });
+    return response.render('errors/404.pug', { cookies: request.cookies });
   }
 
-  return response.render('writingwork', {
+  return response.render('writingwork.pug', {
     work,
     title: work.title,
     metaDescription: md.render(work.synopsis.split('\n\n')[0]).replace(/(<([^>]+)>)/ig, ''),
@@ -407,7 +400,7 @@ app.get('/policies/:policy/', async (request, response) => {
   };
 
   if (policyPages[request.params.policy] === undefined) return response.status(204).end();
-  return response.render('policy', { policy: policyPages[request.params.policy], md, cookies: request.cookies });
+  return response.render('policy.pug', { policy: policyPages[request.params.policy], md, cookies: request.cookies });
 });
 
 // Gamified Reading Reading Bingo
@@ -490,7 +483,7 @@ app.get('/feed/', async (request, response) => {
 // Errors
 app.use((request, response) => {
   response.status(404);
-  response.render('errors/404', { cookies: request.cookies });
+  response.render('errors/404.pug', { cookies: request.cookies });
 });
 
 // Listen on port from config.json

@@ -1,16 +1,16 @@
 // Require modules
-const express = require('express');
-const bodyParser = require('body-parser');
+const vocado = require('vocado');
+//const bodyParser = require('body-parser');
 
 // Local modules
 const config = require('../config.json');
 const crud = require('@bibliobone/mongodb-crud').bind(config.mongodbURI, 'swec-core');
 
-const router = express.Router();
+const router = vocado.Router();
 
 // Middleware
-router.use(express.json());
-router.use(bodyParser.json());
+//router.use(express.json());
+//router.use(bodyParser.json());
 
 // Routes
 router.get('/manage/articles/', async (request, response) => {
@@ -20,7 +20,7 @@ router.get('/manage/articles/', async (request, response) => {
   });
   articles.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  response.render('admin/managearticles', { articles, cookies: request.cookies });
+  response.render('admin/managearticles.pug', { articles, cookies: request.cookies });
 });
 
 router.get('/manage/articles/:articleId/', async (request, response) => {
@@ -28,9 +28,9 @@ router.get('/manage/articles/:articleId/', async (request, response) => {
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
     article = result;
   });
-  if (article === null) return response.render('errors/404', {});
+  if (article === null) return response.render('errors/404.pug', {});
 
-  response.render('admin/editarticle', { article, cookies: request.cookies });
+  response.render('admin/editarticle.pug', { article, cookies: request.cookies });
 });
 
 router.post('/manage/articles/:articleId/', async (request, response) => {
@@ -107,16 +107,16 @@ router.get('/manage/comments/', async (request, response) => {
     return false;
   });
 
-  response.render('admin/managecomments', { articles, cookies: request.cookies });
+  response.render('admin/managecomments.pug', { articles, cookies: request.cookies });
 });
 
-router.get('/manage/comments/:articleId.:index/delete', async (request, response) => {
+router.get('/manage/comments/:articleId/:index/delete', async (request, response) => {
   let article = {};
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
     article = result;
   });
 
-  if (article === null) return response.render('errors/404', {});
+  if (article === null) return response.render('errors/404.pug', {});
 
   article.comments.splice(request.params.index, 1);
 
@@ -186,7 +186,7 @@ router.get('/manage/writing/', async (request, response) => {
     if (result !== null) writing = result;
   });
 
-  response.render('admin/managewriting', { writing, cookies: request.cookies });
+  response.render('admin/managewriting.pug', { writing, cookies: request.cookies });
 });
 
 router.get('/manage/writing/:workId/', async (request, response) => {
@@ -194,9 +194,9 @@ router.get('/manage/writing/:workId/', async (request, response) => {
   await crud.findDocument('writing', { id: request.params.workId }).then((result) => {
     work = result;
   });
-  if (work === null) return response.render('errors/404', { cookies: request.cookies });
+  if (work === null) return response.render('errors/404.pug', { cookies: request.cookies });
 
-  response.render('admin/editwriting', { work, cookies: request.cookies });
+  response.render('admin/editwriting.pug', { work, cookies: request.cookies });
 });
 
 router.post('/manage/writing/:workId/', async (request, response) => {
