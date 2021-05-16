@@ -6,9 +6,8 @@ const bcrypt = require('bcryptjs');
 //const compression = require('compression');
 const basicAuth = require('express-basic-auth');
 //const cookieParser = require('cookie-parser');
-//const minify = require('express-minify');
 const Request = require('request');
-const SitemapGenerator = require('sitemap-generator');
+//const SitemapGenerator = require('sitemap-generator');
 const MarkdownIt = require('markdown-it');
 
 const md = new MarkdownIt({ html: true, typographer: true, linkify: true });
@@ -61,7 +60,6 @@ setInterval(generator.start, 1000 * 60 * 60 * 24);*/
 // Set up middleware
 //app.use(cookieParser());
 //app.use(compression());
-//app.use(minify());
 app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
 app.static('./static/');
 //app.use(session({ secret: config.sessionSecret, resave: false, saveUninitialized: false }));
