@@ -4,7 +4,7 @@ const sendmail = require('sendmail')();
 const bcrypt = require('bcryptjs');
 //const session = require('express-session');
 //const compression = require('compression');
-//const basicAuth = require('express-basic-auth');
+const basicAuth = require('express-basic-auth');
 //const cookieParser = require('cookie-parser');
 //const minify = require('express-minify');
 const Request = require('request');
@@ -62,7 +62,7 @@ setInterval(generator.start, 1000 * 60 * 60 * 24);*/
 //app.use(cookieParser());
 //app.use(compression());
 //app.use(minify());
-//app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
+app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
 app.static('./static/');
 //app.use(session({ secret: config.sessionSecret, resave: false, saveUninitialized: false }));
 app.use((request, response, next) => {
