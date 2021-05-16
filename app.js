@@ -45,7 +45,7 @@ const crud = require('@bibliobone/mongodb-crud').bind(config.mongodbURI, 'swec-c
 const app = vocado();
 
 // Crawl site once per day
-const generator = SitemapGenerator('https://seewitheyesclosed.com', {
+/*const generator = SitemapGenerator('https://seewitheyesclosed.com', {
   stripQuerystring: true,
   filepath: './static/sitemap.xml',
   userAgent: 'verbGuac 1.0',
@@ -56,15 +56,15 @@ const generator = SitemapGenerator('https://seewitheyesclosed.com', {
 generator.on('done', () => {
   console.log('Sitemap for seewitheyesclosed.com created.');
 });
-setInterval(generator.start, 1000 * 60 * 60 * 24);
+setInterval(generator.start, 1000 * 60 * 60 * 24);*/
 
 // Set up middleware
 //app.use(cookieParser());
 //app.use(compression());
 //app.use(minify());
+//app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
 app.static('./static/');
 //app.use(session({ secret: config.sessionSecret, resave: false, saveUninitialized: false }));
-//app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
 app.use((request, response, next) => {
   if (directory[request.path] !== undefined && request.method.toUpperCase() === 'GET') {
     return response.render(directory[request.path], {

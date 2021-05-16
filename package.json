@@ -20,7 +20,7 @@
     "request": "^2.88.2",
     "sendmail": "^1.6.1",
     "sitemap-generator": "^8.5.1",
-    "vocado": "^0.5.1"
+    "vocado": "^0.6.6"
   },
   "scripts": {
     "start": "pm2 start app.js --name SWEC",
@@ -45,7 +45,7 @@
   "devDependencies": {
     "eslint": "^7.26.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.23.0",
+    "eslint-plugin-import": "^2.23.2",
     "nodemon": "^2.0.7"
   }
 }
