@@ -272,6 +272,25 @@ app.post('/blog/article/:articleId/react/:reaction/:action', async (request, res
   response.status(204).end();
 });
 
+// Sign article
+app.post('/blog/article/:articleId/sign', async (request, response) => {
+  let article = null;
+  await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
+    article = result;
+  });
+  if (article === null || article.content.slice(-14) !== '[[signatures]]') return response.status(404).end();
+
+  if (typeof article.signedBy === 'undefined') article.signedBy = [];
+
+  if (request.body.name.length > 64) return response.redirect(302, `/blog/article/${request.params.articleId}/?err=a400`);
+
+  article.signedBy.push(String(request.body.name));
+
+  await crud.updateDocument('articles', { id: request.params.articleId }, { signedBy: article.signedBy });
+
+  return response.redirect(302, `/blog/article/${request.params.articleId}/`);
+});
+
 // Subscribe actions
 app.post('/subscribe/nope', async (request, response) => {
   response.cookie('subscribed', true);

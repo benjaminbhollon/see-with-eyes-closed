@@ -3,8 +3,14 @@ extends layout.pug
 block variables
   - metaDescription = md.render(article.summary).replace( /(<([^>]+)>)/ig, '')
   - title = article.title
+  - signable = false
   if article.image
     - metaImage = article.image
+  if article.content.slice(-14) === '[[signatures]]'
+    - article.content = article.content.slice(0, -14)
+    - signable = true
+    if typeof article.signedBy === 'undefined'
+      - article.signedBy = []
 
 block append meta
   link(rel="canonical" href="https://seewitheyesclosed.com/blog/article/" + article.id + "/")
@@ -17,6 +23,8 @@ block append resources
 block content
   #articleId.hidden #{article.id}
   article.article
+    if parameters.err && parameters.err == 'a401'
+      p.failure The name you chose is too long.
     header
       if article.image !== ""
         img.article__banner(src=article.image alt="Banner Image")
@@ -25,7 +33,21 @@ block content
         | #{article.date} by #{article.author}
         br
         em #{Math.ceil(article.content.split(" ").length / 250)} minute read
-    .article__content!= md.render(article.content).replace("<a", "<a target='_blank' rel='noopener'").replace("<img", "<img loading='lazy'").replace("<iframe", "<iframe loading='lazy'")
+    .article__content!= md.render(article.content).replace(/<a/g, "<a target='_blank' rel='noopener'").replace(/<img/g, "<img loading='lazy'").replace("<iframe", "<iframe loading='lazy'")
+    if signable
+      .article__sign
+        p The people who have signed their names below hereby resolve to adhere to the guidelines above to their utmost ability.
+        p Signed,
+        each signatory in article.signedBy
+          p(style='text-indent:0.25in') #{signatory}
+        .article__sign__form
+          +form('POST', `/blog/article/${article.id}/sign`, [
+            {
+              label: 'Add your name',
+              name: 'name',
+              placeholder: 'Joe Cool'
+            }
+          ], 'Sign')
   br
   .article__reactions
     h2 What did you think?

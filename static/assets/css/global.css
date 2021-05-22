@@ -137,7 +137,7 @@ input, textarea, label {
 }
 
 input::placeholder, textarea::placeholder {
-  color: var(--color);
+  color: var(--light-color);
 }
 
 label {

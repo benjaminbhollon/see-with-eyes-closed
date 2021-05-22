@@ -1,6 +1,6 @@
 {
   "name": "see-with-eyes-closed",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "The code for the See With Eyes Closed blog.",
   "main": "app.js",
   "dependencies": {
