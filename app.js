@@ -511,4 +511,4 @@ app.listen(config.port, () => {
 });
 
 // Generate sitemap
-if (process.env.NODE_ENV === 'production') setTimeout(() => generator.start(), 0);
+//if (process.env.NODE_ENV === 'production') setTimeout(() => generator.start(), 0);
