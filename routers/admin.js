@@ -33,7 +33,7 @@ router.get('/manage/articles/:articleId/', async (request, response) => {
   response.render('admin/editarticle.pug', { article, cookies: request.cookies });
 });
 
-router.post('/manage/articles/:articleId/', async (request, response) => {
+router.post('/manage/articles/:articleId/edit', async (request, response) => {
   const article = {
     title: request.body.title,
     author: request.body.author,
@@ -199,7 +199,7 @@ router.get('/manage/writing/:workId/', async (request, response) => {
   response.render('admin/editwriting.pug', { work, cookies: request.cookies });
 });
 
-router.post('/manage/writing/:workId/', async (request, response) => {
+router.post('/manage/writing/:workId/edit', async (request, response) => {
   const story = {
     title: request.body.title,
     author: request.body.author,
