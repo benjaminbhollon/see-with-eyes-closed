@@ -9,16 +9,17 @@ block append head
   script(async src="https://buttons.github.io/buttons.js")
   script(async src="https://www.goodreads.com/review/custom_widget/80839667.Recently%20read%20books?cover_position=left&cover_size=small&num_books=50&order=d&shelf=read&show_author=0&show_cover=0&show_rating=0&show_review=0&show_tags=0&show_title=1&sort=date_read&widget_bg_color=FFFFFF&widget_bg_transparent=true&widget_border_width=1&widget_id=1610423899&widget_text_color=000000&widget_title_size=medium&widget_width=medium")
   script(async src="/assets/js/homepage.js")
+  noscript
+    style.
+      #occupations-noscript + .sr-only, #occupations-noscript + .sr-only + p {
+        display: none;
+      }
 
 block content
   .fullpage#panel-1
     .fullpage__center
       h1 I'm Benjamin Hollon.
       noscript#occupations-noscript
-        style.
-          #occupations-noscript + .sr-only, #occupations-noscript + .sr-only + p {
-            display: none;
-          }
         p Human Being, Avid Reader, Writer, Trombonist, Composer, Actor, Christian, and Part-Time Polymath
       p.sr-only Human Being, Avid Reader, Writer, Trombonist, Composer, Actor, Christian, and Part-Time Polymath
       p(aria-label="Human Being, Avid Reader, Writer, Trombonist, Composer, Actor, Christian, and Part-Time Polymath"): span#occupations-typewriter(data-occupations="Human Being|Avid Reader|Writer|Trombonist|Composer|Actor|Christian|Avocado Advocate|Part-Time Polymath" aria-hidden="true")
