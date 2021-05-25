@@ -15,7 +15,7 @@
     "request": "^2.88.2",
     "sendmail": "^1.6.1",
     "sitemap-generator": "^8.5.1",
-    "vocado": "^0.6.7"
+    "vocado": "^0.7.0"
   },
   "scripts": {
     "start": "pm2 start app.js --name SWEC",
