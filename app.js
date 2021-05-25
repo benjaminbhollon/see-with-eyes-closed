@@ -40,6 +40,11 @@ const directory = require('./directory.json');
 const crud = require('@bibliobone/mongodb-crud').bind(config.mongodbURI, 'swec-core');
 
 const app = vocado();
+const sslOptions = (config.ssl === false ? false : {
+  key: fs.readFileSync(config.ssl.key),
+  cert: fs.readFileSync(config.ssl.cert)
+});
+app.ssl(sslOptions)
 
 // Crawl site once per day
 /*const generator = SitemapGenerator('https://seewitheyesclosed.com', {
