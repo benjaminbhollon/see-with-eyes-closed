@@ -2,6 +2,7 @@
 const vocado = require('vocado');
 const sendmail = require('sendmail')();
 const bcrypt = require('bcryptjs');
+const fs = require('fs');
 //const session = require('express-session');
 const basicAuth = require('express-basic-auth');
 const Request = require('request');
