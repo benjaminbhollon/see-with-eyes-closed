@@ -3,5 +3,6 @@
   "/contact/": "contact.pug",
   "/admin/": "admin/admin.pug",
   "/admin/post/article/": "admin/postarticle.pug",
-  "/admin/post/writing/": "admin/postwriting.pug"
+  "/admin/post/writing/": "admin/postwriting.pug",
+  "/admin/post/project/": "admin/postproject.pug"
 }

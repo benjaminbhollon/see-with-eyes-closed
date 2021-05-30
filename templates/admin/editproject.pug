@@ -1,0 +1,51 @@
+extends admin.pug
+
+block variables
+  - title = "Edit " + project.name
+
+block content
+  h1 #{title}
+  +form("POST", "./edit", [
+    {
+      label: "Name",
+      placeholder: "Sibling Subordinator",
+      name: "name",
+      required: true,
+      value: project.name
+    },
+    {
+      label: "ID",
+      placeholder: "sibling-subordinator (unique)",
+      name: "id",
+      value: project.id,
+      required: true
+    },
+    {
+      label: "Banner Image",
+      placeholder: "/projects/sibling-subordinator/banner.jpg (optional)",
+      name: "image",
+      value: project.image
+    },
+    {
+      label: "Summary",
+      type: "textarea",
+      placeholder: "A project to hold your puny siblings in thrall and bid them do your nefarious will.",
+      name: "summary",
+      required: true,
+      value: project.summary
+    },
+    {
+      label: "Link to Code",
+      type: "url",
+      placeholder: "https://github.com/benjaminbhollon/sibling-subordinator (optional)",
+      name: "code",
+      value: project.code
+    },
+    {
+      label: "Link to Final Version",
+      name: "link",
+      placeholder: "/projects/sibling-subordinator/",
+      required: true,
+      value: project.link
+    }
+  ])

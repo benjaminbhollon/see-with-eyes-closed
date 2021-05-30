@@ -1,16 +1,11 @@
 // Require modules
 const vocado = require('vocado');
-//const bodyParser = require('body-parser');
 
 // Local modules
 const config = require('../config.json');
 const crud = require('@bibliobone/mongodb-crud').bind(config.mongodbURI, 'swec-core');
 
 const router = vocado.Router();
-
-// Middleware
-//router.use(express.json());
-//router.use(bodyParser.json());
 
 // Routes
 router.get('/manage/articles/', async (request, response) => {
@@ -245,6 +240,55 @@ router.post('/post/writing/', async (request, response) => {
   await crud.insertDocument('writing', story);
 
   response.redirect(302, '/writing/');
+});
+
+router.get('/manage/projects/', async (request, response) => {
+  let projects = [];
+  await crud.findMultipleDocuments('projects', {}).then((result) => {
+    if (result !== null) projects = result;
+  });
+
+  response.render('admin/manageprojects.pug', { projects, cookies: request.cookies });
+});
+
+router.get('/manage/projects/:projectId/', async (request, response) => {
+  let project = {};
+  await crud.findDocument('projects', { id: request.params.projectId }).then((result) => {
+    project = result;
+  });
+  if (project === null) return response.render('errors/404.pug', { cookies: request.cookies });
+
+  response.render('admin/editproject.pug', { project, cookies: request.cookies });
+});
+
+router.post('/post/project/', async (request, response) => {
+  const project = {
+    id: request.body.id,
+    name: request.body.name,
+    type: request.body.type,
+    summary: request.body.summary,
+    code: (request.body.code ? request.body.code : false),
+    link: request.body.link
+  };
+
+  await crud.insertDocument('projects', project);
+
+  response.redirect(302, '/projects/');
+});
+
+router.post('/manage/projects/:projectId/edit', async (request, response) => {
+  const project = {
+    id: request.body.id,
+    name: request.body.name,
+    type: request.body.type,
+    summary: request.body.summary,
+    code: (request.body.code ? request.body.code : false),
+    link: request.body.link
+  };
+
+  await crud.updateDocument('projects', { id: request.params.projectId }, project);
+
+  response.redirect(302, '/admin/manage/projects/');
 });
 
 // Export
