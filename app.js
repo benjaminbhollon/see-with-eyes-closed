@@ -2,11 +2,10 @@
 const vocado = require('vocado');
 const sendmail = require('sendmail')();
 const bcrypt = require('bcryptjs');
-const fs = require('fs');
-//const session = require('express-session');
+// const session = require('express-session');
 const basicAuth = require('express-basic-auth');
 const Request = require('request');
-//const SitemapGenerator = require('sitemap-generator');
+// const SitemapGenerator = require('sitemap-generator');
 const MarkdownIt = require('markdown-it');
 
 const md = new MarkdownIt({ html: true, typographer: true, linkify: true });
@@ -43,7 +42,7 @@ const crud = require('@bibliobone/mongodb-crud').bind(config.mongodbURI, 'swec-c
 const app = vocado();
 
 // Crawl site once per day
-/*const generator = SitemapGenerator('https://seewitheyesclosed.com', {
+/* const generator = SitemapGenerator('https://seewitheyesclosed.com', {
   stripQuerystring: true,
   filepath: './static/sitemap.xml',
   userAgent: 'verbGuac 1.0',
@@ -54,14 +53,14 @@ const app = vocado();
 generator.on('done', () => {
   console.log('Sitemap for seewitheyesclosed.com created.');
 });
-setInterval(generator.start, 1000 * 60 * 60 * 24);*/
+setInterval(generator.start, 1000 * 60 * 60 * 24); */
 
 // Set up middleware
-//app.use(cookieParser());
-//app.use(compression());
+// app.use(cookieParser());
+// app.use(compression());
 app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
 app.static('./static/');
-//app.use(session({ secret: config.sessionSecret, resave: false, saveUninitialized: false }));
+// app.use(session({ secret: config.sessionSecret, resave: false, saveUninitialized: false }));
 app.use((request, response, next) => {
   if (directory[request.path] !== undefined && request.method.toUpperCase() === 'GET') {
     return response.render(directory[request.path], {
@@ -169,11 +168,11 @@ app.get('/blog/article/:articleId/', async (request, response) => {
     related = result;
   });
 
-  //if (!request.session.viewed && request.headers['user-agent'] !== 'verbGuac 1.0') {
-    article.hits += 1;
-    crud.updateDocument('articles', { id: new RegExp(`^${request.params.articleId}$`, 'i') }, { hits: article.hits });
-    //request.session.viewed = true;
-  //}
+  // if (!request.session.viewed && request.headers['user-agent'] !== 'verbGuac 1.0') {
+  article.hits += 1;
+  crud.updateDocument('articles', { id: new RegExp(`^${request.params.articleId}$`, 'i') }, { hits: article.hits });
+  // request.session.viewed = true;
+  // }
 
   function timeSince(date) {
     const seconds = Math.floor((new Date() - date) / 1000);
@@ -266,7 +265,6 @@ app.post('/blog/article/:articleId/react/:reaction/:action', async (request, res
   });
   const reaction = article.reactions.find((r) => r.name === request.params.reaction);
   if (article === null || !reaction) return response.status(404).end();
-  const set = {};
   const { reactions } = article;
   reactions[reactions.indexOf(reaction)].count = reaction.count + (request.params.action === 'remove' ? -1 : 1);
   await crud.updateDocument('articles', { id: article.id }, { reactions });
@@ -512,4 +510,4 @@ app.listen(config.port, () => {
 });
 
 // Generate sitemap
-//if (process.env.NODE_ENV === 'production') setTimeout(() => generator.start(), 0);
+// if (process.env.NODE_ENV === 'production') setTimeout(() => generator.start(), 0);

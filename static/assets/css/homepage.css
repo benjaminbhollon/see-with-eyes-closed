@@ -16,6 +16,7 @@ body {
   max-width: 600px;
   padding: 1em;
   transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
 }
 
 .fullpage__center--fill {
@@ -48,6 +49,7 @@ body {
   height: 2em;
   display: inline-block;
   transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
   color: transparent;
 }
 
@@ -64,6 +66,7 @@ body {
   grid-gap:0.5em;
   border: 0.35em solid var(--color);
   transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
 }
 
 .shelf {
@@ -80,6 +83,8 @@ body {
   left: calc(var(--no) * 5vmin);
   transform-origin: 2.5vmin 50%;
   transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -ms-transform-origin: rotate(-90deg);
   text-decoration: none;
   transition: transform 0.4s ease, filter 0.4s ease;
 }
@@ -94,10 +99,12 @@ body {
   text-overflow: ellipsis;
   padding: 0 0.5em;
   transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
 }
 
 .book:hover {
   transform: scale(1.05) rotate(-90deg);
+  -ms-transform: scale(1.05) rotate(-90deg);
   z-index: 2;
 }
 
@@ -124,6 +131,7 @@ body {
   border-top-left-radius: 0.3em;
   border-top-right-radius: 0.3em;
   transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
   overflow: hidden;
 }
 

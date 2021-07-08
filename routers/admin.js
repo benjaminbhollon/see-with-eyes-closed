@@ -268,7 +268,7 @@ router.post('/post/project/', async (request, response) => {
     type: request.body.type,
     summary: request.body.summary,
     code: (request.body.code ? request.body.code : false),
-    link: request.body.link
+    link: request.body.link,
   };
 
   await crud.insertDocument('projects', project);
@@ -283,7 +283,7 @@ router.post('/manage/projects/:projectId/edit', async (request, response) => {
     type: request.body.type,
     summary: request.body.summary,
     code: (request.body.code ? request.body.code : false),
-    link: request.body.link
+    link: request.body.link,
   };
 
   await crud.updateDocument('projects', { id: request.params.projectId }, project);
