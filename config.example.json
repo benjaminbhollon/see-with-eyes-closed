@@ -7,7 +7,6 @@
   "admins": {
     "admin": "letmein"
   },
-  "ssl": false,
   "defaultAuthor": "",
   "sessionSecret": "some_random_string_here"
 }
