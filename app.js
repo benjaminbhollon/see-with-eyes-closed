@@ -474,14 +474,14 @@ app.get('/feed/', async (request, response) => {
     const date = new Date(article.date);
     return date > new Date() ? 'JJJ' : `<item>
       <title>${article.title}</title>
-      <link>//${request.hostname}/blog/article/${article.id}/</link>
-      <guid>${article._id.toString()}</guid>
-      <pubDate>${weekDaysShort[date.getDay()]}, ${date.getDate()} ${monthsShort[date.getMonth()]} ${date.getFullYear()}</pubDate>
+      <link>https://${request.hostname}/blog/article/${article.id}/</link>
+      <guid ispermalink="false">${article._id.toString()}</guid>
+      <pubDate>${(new Date(date)).toUTCString()}</pubDate>
       <description>${article.summary.replace('&nbsp;', ' ').replace(/(<([^>]+)>)/ig, '')}</description>
     </item>`;
   });
 
-  response.setHeader('Content-type', 'xml');
+  response.setHeader('Content-type', 'application/rss+xml');
   response.send(
     `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
@@ -489,8 +489,8 @@ app.get('/feed/', async (request, response) => {
   <title>See With Eyes Closed</title>
   <description>A blog by Benjamin Hollon.</description>
   <language>en-us</language>
-  <copyright>© Benjamin Hollon ${(new Date()).getFullYear()}. All rights reserved.</copyright>
-  <link>//${request.hostname}</link>${
+  <copyright>© Benjamin Hollon ${(new Date()).getFullYear()}. Content licensed under CC BY-NC 4.0.</copyright>
+  <link>https://${request.hostname}/</link>${
   feed.join('')
 }
   </channel>
