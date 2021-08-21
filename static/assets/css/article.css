@@ -131,6 +131,7 @@ body[data-scrolled="up"] .popular__sticky {
   border-bottom: 2px solid;
   font-size: 1em;
   padding: 1em;
+  display:inline-block
 }
 
 figure p {

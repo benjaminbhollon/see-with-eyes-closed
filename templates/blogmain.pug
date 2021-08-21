@@ -8,6 +8,16 @@ block variables
 block append resources
   link(rel="stylesheet" href="/assets/css/article.css")
     
+block append head
+  noscript
+    style.
+      #searchbar {
+        display: none;
+      }
+      .tag {
+        cursor: default;
+      }
+    
 block content
   header
     h1 See With Eyes Closed
@@ -15,7 +25,7 @@ block content
   #split
     .recent: .recent__center
         span.accessibility Search Articles:
-        input.searchbar#searchbar(type="search",oninput="searchArticles()",autocomplete="false",placeholder="Search articles...",value=(parameters.tag !== undefined ? "tag:" + parameters.tag : ""),style="display:inline-block")
+        input.searchbar#searchbar(type="search" oninput="searchArticles()" autocomplete="false" placeholder="Search articles..." value=(parameters.tag !== undefined ? "tag:" + parameters.tag : ""))
         #typoWarning(style="display:none;padding:0.5em") Hmm... I don't see that article. Try looking around for something else. Make sure to check for typos! I hope to see you in the article you're looking for.
         include ./mixins/reactions.pug
         each post in recent

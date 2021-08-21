@@ -18,6 +18,11 @@ html(lang='en' data-theme=cookies.theme)
       block title
         title #{title} | See With Eyes Closed
       link(rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.ico")
+      noscript
+        style.
+          #colorThemeToggle {
+            display: none;
+          }
   body
     a.sr-only(href="#content") Skip to Content
     block mixins

@@ -19,6 +19,16 @@ block append resources
   link(rel="stylesheet" href="/assets/css/article.css")
   script(src="/assets/js/article.js" async)
   script(src="https://www.google.com/recaptcha/api.js" defer async)
+
+block append head
+  noscript
+    style.
+      .reactions.clickable .reactions__button {
+        cursor: default;
+      }
+      .nope, #comments h3, #comments form, .bethefirst {
+        display: none;
+      }
   
 block content
   #articleId.hidden #{article.id}
@@ -73,7 +83,10 @@ block content
     br
     .comments#comments
       if article.comments.length === 0
-        p There aren't any comments yet. Be the first!
+        p There aren't any comments yet.
+          |
+          |
+          span.bethefirst Be the first!
       else if article.comments.length
         h2(style="text-align:left") #{article.comments.length} comments
         div
