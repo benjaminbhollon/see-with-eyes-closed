@@ -1,48 +1,34 @@
-/* Color Schemes */
-:root, :root[data-theme='light'] {
+/* Fonts */
+@font-face {
+  font-family: 'Chomsky';
+  /* Chomsky is generously licensed under the S.I.L Open Font License v1.1 by Frederick R. Brennan */
+  src: url('/assets/fonts/Chomsky.woff2') format('woff2'),
+       url('/assets/fonts/Chomsky.woff') format('woff');
+}
+
+/* Groundwork for future color schemes */
+:root {
   color-scheme: light;
   --background-color: #fff;
-  --transparent-background-color: #fffa;
   --color: #000;
   --light-color: #777;
+  --font-family: serif;
 }
 
-:root[data-theme='dark'] {
-  color-scheme: dark;
-  --background-color: #333;
-  --transparent-background-color: #333a;
-  --color: #fff;
-  --light-color: #d7d7d7;
-}
-
-@media screen and (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --background-color: #333;
-    --transparent-background-color: #333a;
-    --color: #fff;
-    --light-color: #d7d7d7;
-  }
-}
-
-/* Main styles */
+/* Main Styles */
 body, body * {
   box-sizing: border-box;
 }
 
 body, html {
-  text-align: center;
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'Trebuchet MS', Calibri, sans-serif;
+  text-align: center;
+  font-family: var(--font-family);
   margin: 0;
   font-size: 1.3em;
-  padding-top: 75px;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
   line-height: 1.5;
   background-color: var(--background-color);
   color: var(--color);
@@ -52,133 +38,40 @@ a {
   color: inherit;
 }
 
-.button, .button--red, .button--blue, .button--black {
-  text-decoration: none;
-  padding: 0.5em;
-  display: block;
-  cursor: pointer;
-  transition: box-shadow 0.5s, filter 0.5s, transform 0.5s;
-  margin: 0.5em;
-  background-color: #000;
-  color: #fff;
-  border-radius: .5em;
+img, .grayscale, .article__content > * {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+  transition: filter 0.4s;
 }
 
-.button:hover, .button--red:not(.listing__card.listing__unpublished > .button--red):hover, .button--blue:hover, .button--black:hover {
-  box-shadow: 0 0 0.5em #888;
-  filter: hue-rotate(30deg);
-  transform: scale(1.02);
-  -ms-transform: scale(1.02);
+img:hover, .grayscale:hover, .article__content > :hover {
+  -webkit-filter: none;
+  filter: none;
 }
 
-.button--red {
-  background-color: maroon;
+h1:not(article h1) {
+  font-family: 'Chomsky';
+  margin: 0.25em 0;
+  font-size: 2.5em;
 }
 
-.button--blue {
-  background-color: #1565C0;
-}
-
-.--inline-block {
-  display: inline-block;
-}
-
-h1 {
-  text-align: center;
-}
-
-ul {
-  max-width: 750px;
-  display: inline-block;
-  text-align: left;
-}
-
-blockquote {
-  margin-left: 0;
-  padding-left: 40px;
-  position: relative;
-}
-
-blockquote:before {
-  content: '';
-  border: 2px solid navajowhite;
-  border-radius: 1em;
-  display: inline-block;
-  margin-left: -20px;
-  position: absolute;
-  top: 0;
-  bottom: 0;
+article h1, h2, h3, h4, h5, h6 {
+  font-variant: small-caps;
 }
 
 #content {
-  flex: 1 0 auto;
-}
-
-.accessibility {
-  font-size: 0;
-}
-
-article {
+  padding: 0 0.5em;
   display: inline-block;
+  max-width: 61ch;
   width: 100%;
-  max-width: 700px;
-}
-
-form {
   text-align: left;
-  display: inline-block;
-  width: 100%;
-  max-width: 500px;
 }
 
-input, textarea, label {
-  margin: 0.5em 0;
-  width: 100%;
-  display: block;
-  box-sizing: border-box;
-}
-
-input::placeholder, textarea::placeholder {
-  color: var(--light-color);
-}
-
-label {
-  font-weight: bold;
-  padding: initial;
-}
-
-input, textarea {
-  padding: 1em;
-  background-color: transparent;
-  color: inherit;
-}
-
-input[type="checkbox"] {
-  display: inline;
-  width: auto;
-}
-
-.success, .failure {
-  background-color:green;
-  padding:1em;
-  color:white;
-}
-
-.failure {
-  background-color:red;
-}
-
-img {
-  max-width: 100%;
-}
-
-.hidden {
-  display: none;
-}
-
-.nope {
-  color: var(--light-color);
-  cursor: pointer;
+@media (min-width: 600px) {
+  #content {
+    text-align: justify;
+    text-justify: inter-character;
+  }
 }
 
 /* Accessibility */
@@ -199,179 +92,95 @@ img {
   overflow: initial;
 }
 
-
-/* Main navbar */
-.main-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  padding: 0.75em;
-  font-size: 1.1em;
-  border-bottom: 2px solid var(--color);
-  background-color: var(--transparent-background-color);
-  line-height: 1;
-  z-index: 10;
-  transition: top 0.5s ease-in-out;
-}
-
-body[data-scrolled="down"] .main-nav {
-  top: -75px;
-}
-
-.main-nav a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.main-nav__title {
-  float: left;
-}
-
-.main-nav__collapse {
-  cursor: pointer;
-  right: 0.75em;
-  position: absolute;
-  z-index: 11;
-  margin: 0;
-  width: min-content;
-}
-
-.main-nav__collapsible, #nav-collapse {
-  float: right;
+.hidden {
   display: none;
 }
 
-@keyframes expand {
-  0% {
-    height: 0%;
-  }
-  100% {
-    height: 100%;
-  }
-}
-
-#nav-collapse:checked ~ .main-nav__collapsible {
-  animation: expand 0.75s;
-  overflow: hidden;
-  display: block;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: var(--background-color);
-  border-bottom: 2px solid var(--color);
-}
-
-.main-nav__collapsible a {
+/* Forms */
+form {
+  text-align: left;
   display: inline-block;
-  padding: 0 0.35em;
+  width: 100%;
+  max-width: 500px;
 }
 
-.main-nav__collapsible a:focus {
-  outline: none
+input, textarea, label {
+  margin: 0.5em 0;
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  border-color: inherit;
 }
 
-.main-nav__collapsible a:hover::after, .main-nav__collapsible a:focus::after {
+input::placeholder, textarea::placeholder {
+  color: var(--light-color);
+}
+
+label {
+  font-weight: bold;
+  padding: initial;
+}
+
+input, textarea {
+  padding: 1em;
+  background-color: transparent;
+  color: inherit;
+  border-style: solid;
+}
+
+input[type="checkbox"] {
+  display: inline;
+  width: auto;
+}
+
+/* Header */
+header {
+  text-align: center;
+}
+
+/* Navbar */
+.main-nav {
+  position: sticky;
+  top: -0.125em;
+  text-align: center;
+  border-width: 0.125em 0;
+  border-style: solid;
+  padding: 0.25em;
+  background-color: var(--background-color);
+  z-index: 100;
+}
+
+.main-nav a {
+  text-transform: uppercase;
+  margin: 0 0.25em;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.main-nav a::after {
+  content: '';
+  width: 0px;
+  height: 2px;
+  display: block;
+  background: var(--color);
+  transition: 150ms;
+}
+
+.main-nav a:hover::after, .main-nav a:focus::after {
   width: 100%;
 }
 
-#nav-collapse:checked ~ .main-nav__collapsible a, #nav-collapse:checked ~ .main-nav__collapsible label {
-  display: block;
-  line-height: 20vh;
-  font-size: 10vmin;
-}
-
-#nav-collapse:checked ~ .main-nav__collapsible label {
-  margin-left: 50%;
-  margin-top: 10vh;
-  transform: translate(-50%, -75%);
-  -ms-transform: translate(-50%, -75%);
-}
-
-#colorThemeToggle {
-  position: relative;
-  width: 2em;
-  height: 1em;
-  display: inline-block;
-  margin: 0 0.35em;
-}
-
-#colorThemeToggle input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-#colorThemeToggle span {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  border-radius: 2em;
-  transition: background-color .4s;
-}
-
-#colorThemeToggle span::before {
-  position: absolute;
-  content: '';
-  height: 0.7em;
-  width: 0.7em;
-  left: 0.15em;
-  bottom: 0.15em;
-  background-color: white;
-  border-radius: 50%;
-  transition: transform .4s;
-}
-
-#colorThemeToggle input:checked + span {
-  background-color: #222;
-}
-
-#colorThemeToggle input:focus + span {
-  box-shadow: 0 0 1px var(--color);
-}
-
-#colorThemeToggle input:checked + span::before {
-  -ms-transform: translateX(1.05em);
-  transform: translateX(1.05em);
+/* Typography */
+p:not(.article__details, blockquote p):first-child:not(.no-dropcap)::first-letter {
+  float: left;
+  font-size: 3em;
+  padding-top: 0.15em;
+  padding-right: 0.125em;
 }
 
 /* Footer */
 footer {
-  background-color: #000;
-  color: #fff;
-  margin: 0;
-  text-align: center;
-  padding: 0.5em;
   margin-top: 2em;
-}
-
-
-/* Media Queries */
-@media (min-width: 750px) {
-  .main-nav__collapse {
-    display: none;
-  }
-
-  .main-nav__collapsible {
-    display: block;
-  }
-
-  .main-nav__collapsible a::after {
-    content: '';
-    width: 0px;
-    height: 2px;
-    display: block;
-    background: var(--color);
-    transition: 150ms;
-  }
-
-  .projects {
-    grid-template-columns: 33% 33% 33%
-  }
+  border-top: 0.125em solid;
+  text-align: center;
 }

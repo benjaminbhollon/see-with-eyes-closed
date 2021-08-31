@@ -3,13 +3,13 @@
 mixin reactions(reactions, clickable)
   if !clickable
     - reactions.sort((a, b) => b.count - a.count)
-  .reactions(class=(clickable === true ? 'clickable' : ''))
+  .reactions.grayscale(class=(clickable === true ? 'clickable' : ''))
     each reaction in reactions
       if clickable === true
         span.reactions__button(class=(reaction.checked === true ? 'checked' : '') onclick="react('" + reaction.name + "')" data-reaction=reaction.name)
-          b.reactions__count #{reaction.count ? reaction.count : ''}
+          b.reactions__count #{reaction.count ? reaction.count : ''} 
           | #{reactionToEmoji[reaction.name]}&nbsp;#{reaction.name[0].toUpperCase() + reaction.name.slice(1)}
       else if clickable !== true && reaction.count
         span.reactions__button(class=(reaction.checked === true ? 'checked' : '') + (clickable === true ? 'clickable' : '') data-reaction=reaction.name)
           b.reactions__count #{reaction.count}
-          | #{reactionToEmoji[reaction.name]}
+          |  #{reactionToEmoji[reaction.name]}

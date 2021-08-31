@@ -29,19 +29,20 @@ block append head
       .nope, #comments h3, #comments form, .bethefirst {
         display: none;
       }
-      
-block header
-  h1.article__title #{article.title}
-  p.article__details
-    | #{article.date} by #{article.author}
-    br
-    em #{Math.ceil(article.content.split(" ").length / 250)} minute read
   
 block content
   #articleId.hidden #{article.id}
   article.article
     if parameters.err && parameters.err == 'a401'
       p.failure The name you chose is too long.
+    header
+      if article.image !== ""
+        img.article__banner(src=article.image alt="Banner Image")
+      h1.article__title #{article.title}
+      p.article__details
+        | #{article.date} by #{article.author}
+        br
+        em #{Math.ceil(article.content.split(" ").length / 250)} minute read
     .article__content!= md.render(article.content).replace(/<a/g, "<a target='_blank' rel='noopener'").replace(/<img/g, "<img loading='lazy'").replace("<iframe", "<iframe loading='lazy'")
     if signable
       .article__sign
@@ -67,8 +68,8 @@ block content
     .subscribe
       h2 Like the content?
       p I send out a weekly digest of new posts, projects, things I'm currently working on. If you'd like to be a part of that, subscribe below. Can't wait to see you there!
-      p: a(href="https://digest.seewitheyesclosed.com" target="_blank" rel="noopener") Subscribe for updates!
-      p: a(href="#" onclick="simplePost('/subscribe/nope');document.querySelector('.subscribe').innerHTML = `<p>👍 We won't ask you again. <a href='//digest.seewitheyesclosed.com' target='_blank' rel='noopener'>You can still subscribe if you like</a>, though!</p>`") Nah, I'm good.
+      a.button--red(href="https://digest.seewitheyesclosed.com" target="_blank" rel="noopener") Subscribe for updates!
+      a.nope(onclick="simplePost('/subscribe/nope');document.querySelector('.subscribe').innerHTML = `<p>👍 We won't ask you again. <a href='//digest.seewitheyesclosed.com' target='_blank' rel='noopener'>You can still subscribe if you like</a>, though!</p>`") Nah, I'm good.
   if related.length
     br
     .related
@@ -82,7 +83,7 @@ block content
     br
     .comments#comments
       if article.comments.length === 0
-        p.no-dropcap There aren't any comments yet.
+        p There aren't any comments yet.
           |
           |
           span.bethefirst Be the first!
@@ -112,6 +113,10 @@ block content
           name: 'comment',
           value: parameters.comment,
           placeholder: 'What did you think?'
+        },
+        {
+          type: 'recaptcha',
+          sitekey: siteKey
         }
       ], "Go!")
       if parameters.err
@@ -129,3 +134,11 @@ block content
       z-index: -999999;
       opacity: 0;
     }
+  script.
+    window.onload = function() {
+      var $recaptcha = document.querySelector('#g-recaptcha-response');
+  
+      if($recaptcha) {
+        $recaptcha.setAttribute("required", "required");
+      }
+    };
