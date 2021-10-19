@@ -1,11 +1,11 @@
 // Require modules
-const vocado = require('vocado');
+const express = require('express');
 
 // Local modules
 const config = require('../config.json');
 const crud = require('@bibliobone/mongodb-crud').bind(config.mongodbURI, 'swec-core');
 
-const router = vocado.Router();
+const router = express.Router();
 
 // Routes
 router.get('/manage/articles/', async (request, response) => {

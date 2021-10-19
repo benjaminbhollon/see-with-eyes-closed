@@ -20,24 +20,24 @@ html(lang='en-us' data-theme=cookies.theme)
       link(rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.ico")
       noscript
         style.
-          #colorThemeToggle {
+          .--hide-noscript {
             display: none;
           }
   body
     block mixins
       include mixins/form.pug
       include mixins/verse.pug
-    #content
-      p.no-dropcap: a.sr-only(href="#content__beginning") Skip to Content
+    main
+      //-p.no-dropcap: a.sr-only(href="#content__beginning") Skip to Content
       header
         block header
+          h1= title || hardTitle
       block navbar
         nav.main-nav
           a(href="/") Home
           a(href="/blog/") Blog
           a(href="/projects/") Projects
           a(href="/writing/") Writing
-      span#content__beginning.hidden
       block content
         if (content)
           != md.render(content)

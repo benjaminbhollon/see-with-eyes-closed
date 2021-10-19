@@ -15,9 +15,6 @@ block append head
       #searchbar {
         display: none;
       }
-      /*.tag {
-        cursor: default;
-      }*/
 block header
   h1 See With Eyes Closed: A Blog
 
@@ -25,12 +22,15 @@ block append mixins
   include ./mixins/reactions.pug
     
 block content
-  each post in recent
-    .article
-      h1: a(href="./article/" + post.id + "/")= post.title
-      p.article__details #{post.date} by #{post.author}
-      != md.render(post.summary)
-      if (post.reactions.filter(r => r.count).length)
-        h4 What people thought:
-        +reactions(post.reactions)
-      p.readMore: a(href="./article/" + post.id + "/") Read the full article
+  if recent.length
+    each post in recent
+      .article
+        h2: a(href="./article/" + post.id + "/")= post.title
+        p.article__details #{post.date} by #{post.author}
+        != md.render(post.summary)
+        if (post.reactions.filter(r => r.count).length)
+          h4 What people thought:
+          +reactions(post.reactions)
+        p.readMore: a(href="./article/" + post.id + "/") Read the full article
+  else
+    p.--center No articles have been published yet. Check back later!

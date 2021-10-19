@@ -24,7 +24,7 @@ html(lang='en' data-theme=cookies.theme)
             display: none;
           }
   body
-    a.sr-only(href="#content") Skip to Content
+    a.sr-only(href="main") Skip to Content
     block mixins
       include mixins/form.pug
       include mixins/verse.pug
@@ -41,7 +41,7 @@ html(lang='en' data-theme=cookies.theme)
           label(id="colorThemeToggle" aria-hidden="true")
             input(type="checkbox" onclick="toggleTheme()" checked=(cookies.theme === 'dark') aria-hidden="true")
             span
-    #content
+    main
       block content
         if (content)
           != md.render(content)

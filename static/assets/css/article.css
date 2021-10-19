@@ -2,13 +2,13 @@
   border-bottom: 1px solid;
 }
 
-.article h1 {
-  font-size: 2.5em;
+.article h2 {
+  font-size: 1.5em;
   margin-bottom: 0;
   text-align: center;
 }
 
-.article h1 a {
+.article h2 a {
   text-decoration: none;
 }
 
@@ -82,4 +82,16 @@
 .reactions__button.checked {
   background-color: #f69b1388;
   color: var(--color);
+}
+
+/* Images */
+figure p {
+  margin: 0;
+}
+
+figcaption {
+  margin-top: 0.25em;
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.8;
 }

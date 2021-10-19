@@ -1,11 +1,12 @@
 // Import modules
-const vocado = require('vocado');
+const express = require('express');
 const sendmail = require('sendmail')();
 const bcrypt = require('bcryptjs');
-// const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const compression = require('compression');
+const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
 const Request = require('request');
-// const SitemapGenerator = require('sitemap-generator');
 const MarkdownIt = require('markdown-it');
 
 const md = new MarkdownIt({ html: true, typographer: true, linkify: true });
@@ -39,7 +40,7 @@ const directory = require('./directory.json');
 
 const crud = require('@bibliobone/mongodb-crud').bind(config.mongodbURI, 'swec-core');
 
-const app = vocado();
+const app = express();
 
 // Crawl site once per day
 /* const generator = SitemapGenerator('https://seewitheyesclosed.com', {
@@ -56,11 +57,13 @@ generator.on('done', () => {
 setInterval(generator.start, 1000 * 60 * 60 * 24); */
 
 // Set up middleware
-// app.use(cookieParser());
-// app.use(compression());
+app.use(cookieParser());
+app.use(compression());
 app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
-app.static('./static/');
-// app.use(session({ secret: config.sessionSecret, resave: false, saveUninitialized: false }));
+app.use(express.static('static'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(bodyParser.json());
 app.use((request, response, next) => {
   if (directory[request.path] !== undefined && request.method.toUpperCase() === 'GET') {
     return response.render(directory[request.path], {
@@ -73,7 +76,8 @@ app.use((request, response, next) => {
 
   return next();
 });
-app.templates('pug', './templates/');
+app.set('view engine', 'pug');
+app.set('views', './templates');
 let bcryptSalt;
 bcrypt.genSalt(3, (err, salt) => {
   bcryptSalt = salt;
@@ -508,6 +512,3 @@ app.use((request, response) => {
 app.listen(config.port, () => {
   console.log(`Server running on port ${config.port}`);
 });
-
-// Generate sitemap
-// if (process.env.NODE_ENV === 'production') setTimeout(() => generator.start(), 0);

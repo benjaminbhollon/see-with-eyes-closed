@@ -28,7 +28,7 @@ body {
   text-align: center;
   font-family: var(--font-family);
   margin: 0;
-  font-size: 1.3em;
+  font-size: 1.1em;
   line-height: 1.5;
   background-color: var(--background-color);
   color: var(--color);
@@ -38,28 +38,29 @@ a {
   color: inherit;
 }
 
-img, .grayscale, .article__content > * {
+.grayscale,
+blockquote {
   -webkit-filter: grayscale(1);
   filter: grayscale(1);
   transition: filter 0.4s;
 }
 
-img:hover, .grayscale:hover, .article__content > :hover {
+.grayscale:hover, blockquote:hover {
   -webkit-filter: none;
   filter: none;
 }
 
-h1:not(article h1) {
+header h1 {
   font-family: 'Chomsky';
   margin: 0.25em 0;
-  font-size: 2.5em;
+  font-size: 2.75em;
 }
 
 article h1, h2, h3, h4, h5, h6 {
   font-variant: small-caps;
 }
 
-#content {
+main {
   padding: 0 0.5em;
   display: inline-block;
   max-width: 61ch;
@@ -68,10 +69,35 @@ article h1, h2, h3, h4, h5, h6 {
 }
 
 @media (min-width: 600px) {
-  #content {
+  main {
     text-align: justify;
     text-justify: inter-character;
   }
+}
+
+.--center {
+  text-align: center;
+}
+
+blockquote {
+  margin-left: 0;
+  padding-left: 40px;
+  position: relative;
+}
+
+blockquote:before {
+  content: '';
+  border: 2px solid navajowhite;
+  border-radius: 1em;
+  display: inline-block;
+  margin-left: -20px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+img {
+  max-width: 100%;
 }
 
 /* Accessibility */

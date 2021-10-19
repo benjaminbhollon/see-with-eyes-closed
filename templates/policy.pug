@@ -1,0 +1,8 @@
+extends layout.pug
+
+block variables
+  - title = policy.title
+  - metaDescription = policy.description
+
+block content
+  article!= md.render(policy.markdown)

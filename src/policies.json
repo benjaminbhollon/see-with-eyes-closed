@@ -3,7 +3,6 @@
     "title": "Privacy Policy",
     "description": "The privacy policy for the See With Eyes Closed website and blog.",
     "markdown": [
-      "# Privacy Policy",
       "I care about your privacy. I promise that no matter what you do on this website, I will be doing the most I possibly can to ensure your safety.",
       "",
       "I only collect information you give me with the understanding that I will store it and only use it for the reason you give it to me. I don't use any creepy trackers or analytics programs to gather information about you. The only information I gather without explicit user input is how many people visit each article. I don't even keep track of who it is that visits them.",
@@ -21,8 +20,6 @@
     "title": "Cookie Policy",
     "description": "The cookie policy for the See With Eyes Closed website and blog.",
     "markdown": [
-      "# Cookie Policy",
-      "",
       "### What Are Cookies?",
       "Cookies are small text files that websites store on your computer to help remember information about you (usually to make your experience better). For example, if you ever click \"remember me\" on a login page, the website uses a cookie to remember you.",
       "",
@@ -50,7 +47,6 @@
     "title": "Terms of Use",
     "description": "The terms of use for the See With Eyes Closed website and blog.",
     "markdown": [
-      "# Terms of Use",
       "### License",
       "",
       "All content on this website, unless specified otherwise, is released under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). You may use it for any **non-commercial purposes** you wish as long as you give me, Benjamin Hollon, **appropriate credit** as the author. I would appreciate a link back, but just referencing my name is enough.",
