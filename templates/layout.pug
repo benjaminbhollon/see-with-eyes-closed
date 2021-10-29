@@ -4,9 +4,6 @@ html(lang='en-us' data-theme=cookies.theme)
     block head
       //- metaImage = "https://seewitheyesclosed.com/assets/images/homepage/2.jpg"
       block variables
-      block resources
-        link(rel="stylesheet" href="/assets/css/global.css")
-        script(src="/assets/js/global.js" async)
       block meta
         meta(charset="UTF-8")
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
@@ -15,6 +12,12 @@ html(lang='en-us' data-theme=cookies.theme)
         meta(property="og:type" content="website")
         meta(property="og:description" content=metaDescription)
         //-meta(property="og:image" content=metaImage)
+      block resources
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"> 
+        link(rel="stylesheet" href="/assets/css/global.css")
+        script(src="/assets/js/global.js" async)
       block title
         title #{title} | See With Eyes Closed
       link(rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.ico")
@@ -27,7 +30,7 @@ html(lang='en-us' data-theme=cookies.theme)
     block mixins
       include mixins/form.pug
       include mixins/verse.pug
-    main
+    #content
       //-p.no-dropcap: a.sr-only(href="#content__beginning") Skip to Content
       header
         block header
@@ -36,17 +39,30 @@ html(lang='en-us' data-theme=cookies.theme)
         nav.main-nav
           a(href="/") Home
           a(href="/blog/") Blog
+          //-a(href="/subscribe/") Subscribe
           a(href="/projects/") Projects
           a(href="/writing/") Writing
-      block content
-        if (content)
-          != md.render(content)
+          //-a(href="https://benjaminhollon.com" target="_blank" rel="noopener") More
+      main
+        block content
+          if (content)
+            != md.render(content)
+          else
+            p This page does not seem to have any content. Check back later!
       block footer
-        footer
-          +verse
-          p
+        footer          
+          p.no-dropcap
             a(href="/contact/") Contact Me
             |  | 
+            a(href="/feed/") RSS
+            |  | 
+            a(href="https://digest.seewitheyesclosed.com" target="_blank" rel="noopener") Digest
+            |  | 
+            a(href="https://github.com/benjaminhollon/see-with-eyes-closed" target="_blank" rel="noopener") Code
+            
+          +verse
+          
+          p
             a(href="/policies/privacy/") Privacy Policy
             |  | 
             a(href="/policies/cookies/") Cookie Policy

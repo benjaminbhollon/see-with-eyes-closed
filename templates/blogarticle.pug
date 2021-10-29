@@ -33,7 +33,7 @@ block append head
 block header
   h1.article__title #{article.title}
   p.article__details
-    | #{article.date} by #{article.author}
+    | <time datetime="#{new Date(article.date).toISOString().split('T')[0]}">#{article.date}</time> by #{article.author}
     br
     em #{Math.ceil(article.content.split(" ").length / 250)} minute read
   
@@ -57,30 +57,26 @@ block content
               placeholder: 'Joe Cool'
             }
           ], 'Sign')
-  br
-  .article__reactions
+  aside.article__reactions
     h2 What did you think?
     include ./mixins/reactions.pug
     +reactions(article.reactions, true)
   if !cookies.subscribed
-    br
-    .subscribe
+    aside.subscribe
       h2 Like the content?
       p I send out a weekly digest of new posts, projects, things I'm currently working on. If you'd like to be a part of that, subscribe below. Can't wait to see you there!
       p: a(href="https://digest.seewitheyesclosed.com" target="_blank" rel="noopener") Subscribe for updates!
-      p: a(href="#" onclick="simplePost('/subscribe/nope');document.querySelector('.subscribe').innerHTML = `<p>👍 We won't ask you again. <a href='//digest.seewitheyesclosed.com' target='_blank' rel='noopener'>You can still subscribe if you like</a>, though!</p>`") Nah, I'm good.
+      p: a(href="javascript:simplePost('/subscribe/nope');document.querySelector('.subscribe').innerHTML = `<p>👍 We won't ask you again. <a href='//digest.seewitheyesclosed.com' target='_blank' rel='noopener'>You can still subscribe if you like</a>, though!</p>`") Nah, I'm good.
   if related.length
-    br
-    .related
+    aside.related
       h2 Related Articles
       each listing in related
-        a.related__article(href="../" + listing.id + "/")
+        div: a.related__article(href="../" + listing.id + "/")
           strong #{listing.title}
           br
           em #{listing.date} by #{listing.author}
   if article.comments !== false
-    br
-    .comments#comments
+    aside.comments#comments
       if article.comments.length === 0
         p.no-dropcap There aren't any comments yet.
           |

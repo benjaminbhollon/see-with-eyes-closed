@@ -3,7 +3,6 @@
 }
 
 .article h2 {
-  font-size: 1.5em;
   margin-bottom: 0;
   text-align: center;
 }
@@ -12,9 +11,17 @@
   text-decoration: none;
 }
 
+.article h2 a:hover {
+  text-decoration: underline;
+}
+
 .article__details {
   text-align: center;
   margin-top: 0;
+}
+
+header .article__details {
+  margin-bottom: 0.5em;
 }
 
 .article__content {
@@ -76,7 +83,6 @@
 
 .reactions.clickable .reactions__button {
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
 }
 
 .reactions__button.checked {
@@ -89,9 +95,14 @@ figure p {
   margin: 0;
 }
 
+figure img {
+  width: 100%;
+}
+
 figcaption {
+  font-style: italic;
   margin-top: 0.25em;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   opacity: 0.8;
 }

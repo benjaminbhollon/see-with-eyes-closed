@@ -11,26 +11,6 @@ const MarkdownIt = require('markdown-it');
 
 const md = new MarkdownIt({ html: true, typographer: true, linkify: true });
 
-const weekDaysShort = ['Sun',
-  'Mon',
-  'Tue',
-  'Wed',
-  'Thu',
-  'Fri',
-  'Sat'];
-const monthsShort = ['Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec'];
-
 // Import emails, messages, and policies
 const policies = require('./src/policies.json');
 

@@ -8,13 +8,7 @@ block variables
 block append resources
   link(rel="stylesheet" href="/assets/css/article.css")
   script(src="/assets/js/article.js" async)
-    
-block append head
-  noscript
-    style.
-      #searchbar {
-        display: none;
-      }
+
 block header
   h1 See With Eyes Closed: A Blog
 
@@ -26,10 +20,9 @@ block content
     each post in recent
       .article
         h2: a(href="./article/" + post.id + "/")= post.title
-        p.article__details #{post.date} by #{post.author}
+        p.article__details <time datetime="#{new Date(post.date).toISOString().split('T')[0]}">#{post.date}</time> by #{post.author}
         != md.render(post.summary)
         if (post.reactions.filter(r => r.count).length)
-          h4 What people thought:
           +reactions(post.reactions)
         p.readMore: a(href="./article/" + post.id + "/") Read the full article
   else

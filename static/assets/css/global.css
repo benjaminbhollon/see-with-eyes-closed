@@ -9,10 +9,14 @@
 /* Groundwork for future color schemes */
 :root {
   color-scheme: light;
-  --background-color: #fff;
+  --background-color: snow;
   --color: #000;
   --light-color: #777;
-  --font-family: serif;
+  --font-family: 'Libre Baskerville', serif;
+
+  font-family: var(--font-family);
+  line-height: 1.5;
+  font-size: 1.1em;
 }
 
 /* Main Styles */
@@ -20,18 +24,16 @@ body, body * {
   box-sizing: border-box;
 }
 
-body, html {
-  scroll-behavior: smooth;
-}
-
 body {
+  scroll-behavior: smooth;
   text-align: center;
-  font-family: var(--font-family);
   margin: 0;
-  font-size: 1.1em;
-  line-height: 1.5;
   background-color: var(--background-color);
   color: var(--color);
+}
+
+p, h1, h2, h3, h4, h5, h6, figure, blockquote {
+  margin: 1.5rem 0;
 }
 
 a {
@@ -42,7 +44,7 @@ a {
 blockquote {
   -webkit-filter: grayscale(1);
   filter: grayscale(1);
-  transition: filter 0.4s;
+  transition: filter 0.4s, -webkit-filter 0.4s;
 }
 
 .grayscale:hover, blockquote:hover {
@@ -52,24 +54,29 @@ blockquote {
 
 header h1 {
   font-family: 'Chomsky';
-  margin: 0.25em 0;
-  font-size: 2.75em;
+  margin: 0;
+  font-size: 3em;
+  font-weight: unset;
+}
+
+header {
+  padding: 0.75rem 0;
 }
 
 article h1, h2, h3, h4, h5, h6 {
   font-variant: small-caps;
 }
 
-main {
+#content {
   padding: 0 0.5em;
   display: inline-block;
-  max-width: 61ch;
+  max-width: 750px;
   width: 100%;
   text-align: left;
 }
 
-@media (min-width: 600px) {
-  main {
+@media (min-width: 70ch) {
+  #content {
     text-align: justify;
     text-justify: inter-character;
   }
@@ -194,14 +201,6 @@ header {
 
 .main-nav a:hover::after, .main-nav a:focus::after {
   width: 100%;
-}
-
-/* Typography */
-p:not(.article__details, blockquote p):first-child:not(.no-dropcap)::first-letter {
-  float: left;
-  font-size: 3em;
-  padding-top: 0.15em;
-  padding-right: 0.125em;
 }
 
 /* Footer */
