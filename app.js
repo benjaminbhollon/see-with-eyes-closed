@@ -8,11 +8,18 @@ const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
 const Request = require('request');
 const MarkdownIt = require('markdown-it');
+const marked = require('marked').parse;
+const frontMatter = require('front-matter');
+const fs = require('fs');
 
 const md = new MarkdownIt({ html: true, typographer: true, linkify: true });
 
 // Import emails, messages, and policies
-const policies = require('./src/policies.json');
+const policies = {
+  privacy: false,
+  cookies: false,
+  terms: false
+};
 
 // Import config
 const config = require('./config.json');
@@ -21,20 +28,6 @@ const directory = require('./directory.json');
 const crud = require('@bibliobone/mongodb-crud').bind(config.mongodbURI, 'swec-core');
 
 const app = express();
-
-// Crawl site once per day
-/* const generator = SitemapGenerator('https://seewitheyesclosed.com', {
-  stripQuerystring: true,
-  filepath: './static/sitemap.xml',
-  userAgent: 'verbGuac 1.0',
-  priorityMap: [1.0,
-    0.9,
-    0.8],
-});
-generator.on('done', () => {
-  console.log('Sitemap for seewitheyesclosed.com created.');
-});
-setInterval(generator.start, 1000 * 60 * 60 * 24); */
 
 // Set up middleware
 app.use(cookieParser());
@@ -352,57 +345,25 @@ app.post('/contact/send/', async (request, response) => {
 });
 
 // Policies
-app.get('/policies/:policy/', async (request, response) => {
-  const policyPages = {
-    privacy: {
-      title: policies.privacy.title,
-      description: policies.privacy.description,
-      markdown: policies.privacy.markdown.join('\n'),
-      related: [
-        {
-          name: 'Cookie Policy',
-          link: '/policies/cookies/',
-        },
-        {
-          name: 'Terms of Use',
-          link: '/policies/terms/',
-        },
-      ],
-    },
-    cookies: {
-      title: policies.cookies.title,
-      description: policies.cookies.description,
-      markdown: policies.cookies.markdown.join('\n'),
-      related: [
-        {
-          name: 'Privacy Policy',
-          link: '/policies/privacy/',
-        },
-        {
-          name: 'Terms of Use',
-          link: '/policies/terms/',
-        },
-      ],
-    },
-    terms: {
-      title: policies.terms.title,
-      description: policies.terms.description,
-      markdown: policies.terms.markdown.join('\n'),
-      related: [
-        {
-          name: 'Privacy Policy',
-          link: '/policies/privacy/',
-        },
-        {
-          name: 'Cookie Policy',
-          link: '/policies/cookies/',
-        },
-      ],
-    },
-  };
+app.get('/policies/:policy/', async (request, response, next) => {
+  if (policies[request.params.policy] === undefined) return next();
+  if (policies[request.params.policy] === false) {
+    const raw = fs.readFileSync(
+      './src/policies/' + request.params.policy + '.md',
+      'utf8'
+    );
+    policies[request.params.policy] = {
+      metadata: frontMatter(raw).attributes,
+      body: marked(frontMatter(raw).body)
+    }
+  }
 
-  if (policyPages[request.params.policy] === undefined) return response.status(204).end();
-  return response.render('policy.pug', { policy: policyPages[request.params.policy], md, cookies: request.cookies });
+  return response.render('policy.pug', {
+    metadata: policies[request.params.policy].metadata,
+    body: policies[request.params.policy].body,
+    md,
+    cookies: request.cookies
+  });
 });
 
 // Gamified Reading Reading Bingo

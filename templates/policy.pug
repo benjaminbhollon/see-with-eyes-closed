@@ -1,8 +1,8 @@
 extends layout.pug
 
 block variables
-  - title = policy.title
-  - metaDescription = policy.description
+  - title = metadata.title
+  - metaDescription = metadata.description
 
 block content
-  article!= md.render(policy.markdown)
+  article!= body
