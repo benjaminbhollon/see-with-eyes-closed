@@ -25,8 +25,6 @@ Here are the third-party sites I know I use as of this writing:
 - Youtube
 - Cloudflare
 - reCAPTCHA
-- GitHub Buttons
-- Goodreads API
 
 I am actively working to decrease the number of third-party sites I use and will update this page when the situation changes.
 
