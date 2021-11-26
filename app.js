@@ -62,7 +62,7 @@ const adminRouter = require('./routers/admin');
 app.use('/admin/', adminRouter);
 
 // Blog homepage
-app.get('/blog/', async (request, response) => {
+app.get('/articles/', async (request, response) => {
   let articles = [];
   await crud.findMultipleDocuments('articles', {}).then((result) => {
     articles = result;
@@ -76,7 +76,7 @@ app.get('/blog/', async (request, response) => {
 
   const popularHTML = JSON.parse(JSON.stringify(articles.slice(0, 5)));
 
-  return response.render('blogmain.pug', {
+  return response.render('articles.pug', {
     recent: recentHTML,
     popular: popularHTML,
     parameters: request.query,
@@ -87,7 +87,7 @@ app.get('/blog/', async (request, response) => {
 });
 
 // Blog article
-app.get('/blog/article/:articleId/', async (request, response) => {
+app.get('/articles/:articleId/', async (request, response) => {
   let article = {};
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
     article = result;
@@ -186,7 +186,7 @@ app.get('/blog/article/:articleId/', async (request, response) => {
       return newComment;
     });
   }
-  return response.render('blogarticle.pug', {
+  return response.render('article.pug', {
     article,
     related,
     siteKey: config.reCAPTCHApublic,
@@ -198,7 +198,7 @@ app.get('/blog/article/:articleId/', async (request, response) => {
 });
 
 // Add comment
-app.post('/blog/article/:articleId/comment', async (request, response) => {
+app.post('/articles/:articleId/comment', async (request, response) => {
   if (!request.body.name || !request.body.comment || (request.body.comment && request.body.comment.length > 512) || (request.body.name && request.body.name.length > 128)) return response.redirect(302, `/blog/article/${request.params.articleId}/?err=${400}&name=${encodeURIComponent(request.body.name)}&comment=${encodeURIComponent(request.body.comment)}#comments`);
   let reCAPTCHAvalid = false;
 
@@ -234,7 +234,7 @@ app.post('/blog/article/:articleId/comment', async (request, response) => {
 });
 
 // Add reaction
-app.post('/blog/article/:articleId/react/:reaction/:action', async (request, response) => {
+app.post('/articles/:articleId/react/:reaction/:action', async (request, response) => {
   // TECH DEBT: Integrate special updates into mongdb-crud
   let article = null;
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
@@ -249,7 +249,7 @@ app.post('/blog/article/:articleId/react/:reaction/:action', async (request, res
 });
 
 // Sign article
-app.post('/blog/article/:articleId/sign', async (request, response) => {
+app.post('/articles/:articleId/sign', async (request, response) => {
   let article = null;
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
     article = result;
@@ -397,6 +397,12 @@ app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, res
 
 // Redirects
 app.get('/projects/learnclef/*', async (request, response) => response.redirect(301, '/projects/learn-clef/'));
+app.get('/blog/', async (request, response) => {
+  return response.redirect(301, `/articles/`);
+});
+app.get('/blog/article/:articleId/', async (request, response) => {
+  return response.redirect(301, `/articles/${request.params.articleId}/`);
+});
 
 // Change color theme
 app.post('/theme/set/:theme', async (request, response) => {

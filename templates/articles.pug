@@ -2,15 +2,12 @@ extends layout.pug
 
 //- Define variables
 block variables
-  - title = "Blog"
+  - title = "Articles"
   - metaDescription = "Here is where I reflect every week or so on the world as I see it. Hopefully you'll be interested in some of the stuff I do. I'll release information about events going on in my life, analyze quotes, reflect on music and/or books, and generally have a fun time. I think about all of these things on my own, but the blog is a fun way for me to invite you to step into my mind and take a look around. It's a big place!"
   
 block append resources
   link(rel="stylesheet" href="/assets/css/article.css")
   script(src="/assets/js/article.js" async)
-
-block header
-  h1 See With Eyes Closed: A Blog
 
 block append mixins
   include ./mixins/reactions.pug
@@ -19,11 +16,11 @@ block content
   if recent.length
     each post in recent
       .article
-        h2: a(href="./article/" + post.id + "/")= post.title
+        h2: a(href="./" + post.id + "/")= post.title
         p.article__details <time datetime="#{new Date(post.date).toISOString().split('T')[0]}">#{post.date}</time> by #{post.author}
         != md.render(post.summary)
         if (post.reactions.filter(r => r.count).length)
           +reactions(post.reactions)
-        p.readMore: a(href="./article/" + post.id + "/") Read the full article
+        p.readMore: a(href="./" + post.id + "/") Read the full article
   else
     p.--center No articles have been published yet. Check back later!
