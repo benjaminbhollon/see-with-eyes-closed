@@ -61,7 +61,23 @@ const adminRouter = require('./routers/admin');
 
 app.use('/admin/', adminRouter);
 
+/* BLOG */
 // Blog homepage
+app.get('/', async (request, response) => {
+  let articles = [];
+  await crud.findMultipleDocuments('articles', {}).then((result) => {
+    articles = result;
+  });
+
+  articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  return response.render('homepage.pug', {
+    article: articles[0],
+    cookies: request.cookies,
+  });
+});
+
+// Articles
 app.get('/articles/', async (request, response) => {
   let articles = [];
   await crud.findMultipleDocuments('articles', {}).then((result) => {
@@ -280,7 +296,11 @@ app.get('/projects/', async (request, response) => {
   await crud.findMultipleDocuments('projects', {}).then((result) => {
     projects = result;
   });
-  response.render('projectsmain.pug', { projects, md, cookies: request.cookies });
+  response.render('projects.pug', {
+    projects,
+    md,
+    cookies: request.cookies
+  });
 });
 
 // Writing homepage
@@ -297,7 +317,7 @@ app.get('/writing/', async (request, response) => {
     return -1;
   });
 
-  return response.render('writingmain.pug', { writing, md, cookies: request.cookies });
+  return response.render('writing.pug', { writing, md, cookies: request.cookies });
 });
 
 // Literary work display page
@@ -394,6 +414,7 @@ app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, res
     .then(() => response.status(201).json({ success: true })); */
   response.status(500).end();
 });
+
 
 // Redirects
 app.get('/projects/learnclef/*', async (request, response) => response.redirect(301, '/projects/learn-clef/'));

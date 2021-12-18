@@ -67,16 +67,25 @@ article h1, h2, h3, h4, h5, h6 {
   font-variant: small-caps;
 }
 
-#content {
+.tab-only:not(:focus) {
+  position:absolute;
+  left:-10000px;
+  top:auto;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+}
+
+#column {
   padding: 0 0.5em;
   display: inline-block;
-  max-width: 750px;
+  max-width: 700px;
   width: 100%;
   text-align: left;
 }
 
 @media (min-width: 70ch) {
-  #content {
+  #column {
     text-align: justify;
     text-justify: inter-character;
   }
@@ -172,7 +181,7 @@ header {
 }
 
 /* Navbar */
-.main-nav {
+#main-nav {
   position: sticky;
   top: -0.125em;
   text-align: center;
@@ -183,14 +192,14 @@ header {
   z-index: 100;
 }
 
-.main-nav a {
+#main-nav a {
   text-transform: uppercase;
   margin: 0 0.25em;
   text-decoration: none;
   display: inline-block;
 }
 
-.main-nav a::after {
+#main-nav a::after {
   content: '';
   width: 0px;
   height: 2px;
@@ -199,7 +208,7 @@ header {
   transition: 150ms;
 }
 
-.main-nav a:hover::after, .main-nav a:focus::after {
+#main-nav a:hover::after, #main-nav a:focus::after {
   width: 100%;
 }
 

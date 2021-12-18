@@ -1,5 +1,4 @@
 {
-  "/": "homepage.pug",
   "/contact/": "contact.pug",
   "/admin/": "admin/admin.pug",
   "/admin/post/article/": "admin/postarticle.pug",

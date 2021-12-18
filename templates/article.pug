@@ -50,7 +50,7 @@ block content
         each signatory in article.signedBy
           p(style='text-indent:0.25in') #{signatory}
         .article__sign__form
-          +form('POST', `/blog/article/${article.id}/sign`, [
+          +form('POST', `./sign`, [
             {
               label: 'Add your name',
               name: 'name',
@@ -93,7 +93,7 @@ block content
                 span #{comment.time}
               div #{comment.message}
         h3 Post a Comment
-      +form("POST", `/blog/article/${article.id}/comment`, [
+      +form("POST", `./comment`, [
         {
           label: "Your Name",
           name: 'name',

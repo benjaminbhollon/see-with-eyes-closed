@@ -8,7 +8,7 @@ html(lang='en-us' data-theme=cookies.theme)
         meta(charset="UTF-8")
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
         meta(name="description" content=metaDescription)
-        meta(property="og:title" content=title + " | See With Eyes Closed")
+        meta(property="og:title" content=(hardTitle || (title + " | See With Eyes Closed")))
         meta(property="og:type" content="website")
         meta(property="og:description" content=metaDescription)
         //-meta(property="og:image" content=metaImage)
@@ -16,7 +16,7 @@ html(lang='en-us' data-theme=cookies.theme)
         link(rel="stylesheet" href="/assets/css/global.css")
         script(src="/assets/js/global.js" async)
       block title
-        title #{title} | See With Eyes Closed
+        title= hardTitle || (title + " | See With Eyes Closed")
       link(rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.ico")
       noscript
         style.
@@ -27,20 +27,21 @@ html(lang='en-us' data-theme=cookies.theme)
     block mixins
       include mixins/form.pug
       include mixins/verse.pug
-    #content
+    #column
       //-p.no-dropcap: a.sr-only(href="#content__beginning") Skip to Content
       header
         block header
           h1= title || hardTitle
-      block navbar
-        nav.main-nav
+      nav#main-nav
+        a.tab-only(href="#content") Skip Navigation
+        block navbar
           a(href="/") Home
           a(href="/articles/") Articles
           //-a(href="/subscribe/") Subscribe
           a(href="/projects/") Projects
           a(href="/writing/") Writing
           //-a(href="https://benjaminhollon.com" target="_blank" rel="noopener") More
-      main
+      main#content(tabindex="-1")
         block content
           if (content)
             != md.render(content)
