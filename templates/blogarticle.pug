@@ -18,7 +18,7 @@ block append meta
 block append resources
   link(rel="stylesheet" href="/assets/css/article.css")
   script(src="/assets/js/article.js" async)
-  script(src="https://www.google.com/recaptcha/api.js" defer async)
+  //script(src="https://www.google.com/recaptcha/api.js" defer async)
 
 block append head
   noscript
@@ -83,10 +83,11 @@ block content
     br
     .comments#comments
       if article.comments.length === 0
-        p There aren't any comments yet.
-          |
-          |
-          span.bethefirst Be the first!
+        //
+          p There aren't any comments yet.
+            |
+            |
+            span.bethefirst Be the first!
       else if article.comments.length
         h2(style="text-align:left") #{article.comments.length} comments
         div
@@ -97,48 +98,52 @@ block content
                 strong #{comment.author}&nbsp;&nbsp;
                 span #{comment.time}
               div #{comment.message}
-        h3 Post a Comment
-      +form("POST", `/blog/article/${article.id}/comment`, [
-        {
-          label: "Your Name",
-          name: 'name',
-          placeholder: "John Doe",
-          value: parameters.name, 
-          maxlength: 128,
-          required: true
-        },
-        {
-          label: "Your Comment",
-          type: 'textarea',
-          name: 'comment',
-          value: parameters.comment,
-          placeholder: 'What did you think?'
-        },
-        {
-          type: 'recaptcha',
-          sitekey: siteKey
-        }
-      ], "Go!")
-      if parameters.err
-        if parameters.err == 401
-          p.failure Please fill out the recaptcha.
-        else if parameters.err == 400
-          p.failure Please fill out all the fields.
-  style.
-    #g-recaptcha-response {
-      display: block !important;
-      position: absolute;
-      margin: -78px 0 0 0 !important;
-      width: 302px !important;
-      height: 76px !important;
-      z-index: -999999;
-      opacity: 0;
-    }
-  script.
-    window.onload = function() {
-      var $recaptcha = document.querySelector('#g-recaptcha-response');
-  
-      if($recaptcha) {
-        $recaptcha.setAttribute("required", "required");
+      h3 Post a Comment
+      p Sorry, but new comments are disabled until the sitewide redesign is released in January 2022. Until then, you can shoot me a message at <a href="mailto:br3zls68l@mozmail.com">br3zls68l@mozmail.com</a>.
+      //
+        +form("POST", `/blog/article/${article.id}/comment`, [
+          {
+            label: "Your Name",
+            name: 'name',
+            placeholder: "John Doe",
+            value: parameters.name, 
+            maxlength: 128,
+            required: true
+          },
+          {
+            label: "Your Comment",
+            type: 'textarea',
+            name: 'comment',
+            value: parameters.comment,
+            placeholder: 'What did you think?'
+          },
+          {
+            type: 'recaptcha',
+            sitekey: siteKey
+          }
+        ], "Go!")
+        if parameters.err
+          if parameters.err == 401
+            p.failure Please fill out the recaptcha.
+          else if parameters.err == 400
+            p.failure Please fill out all the fields.
+  //  
+    style.
+      #g-recaptcha-response {
+        display: block !important;
+        position: absolute;
+        margin: -78px 0 0 0 !important;
+        width: 302px !important;
+        height: 76px !important;
+        z-index: -999999;
+        opacity: 0;
       }
-    };
+  //
+    script.
+      window.onload = function() {
+        var $recaptcha = document.querySelector('#g-recaptcha-response');
+    
+        if($recaptcha) {
+          $recaptcha.setAttribute("required", "required");
+        }
+      };

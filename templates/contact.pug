@@ -8,39 +8,43 @@ block append resources
   script(src="https://www.google.com/recaptcha/api.js",defer,async)
   
 block content
-  if parameters.success === "true"
-    .success Your message is on its way! I'll get back to you ASAP.
-  else if parameters.err === "401"
-    .failure Please fill out the reCAPTCHA.
   h1 Contact Me
-  +form("POST", "/contact/send", [
-    {
-      label: "Subject",
-      name: "subject",
-      placeholder: "What's it all about?",
-      maxlength: 256,
-      required: true,
-      autofocus: true,
-      value: parameters.subject
-    },
-    {
-      label: "Your Email",
-      type: "email",
-      name: "email",
-      placeholder: "you@somewhere.com",
-      required: true,
-      value: parameters.email
-    },
-    {
-      label: "Message",
-      type: "textarea",
-      name: "message",
-      placeholder: "Tell me all about it.",
-      required: true,
-      value: parameters.message
-    },
-    {
-      type: "recaptcha",
-      sitekey: config.reCAPTCHApublic
-    }
-  ], "Send")
+  article
+    p Sorry, but my contact form is currently broken. A fixed version should be coming with the redesign of my website in January 2022, but until then you can contact me via email at <a href="mailto:br3zls68l@mozmail.com">br3zls68l@mozmail.com</a>.
+  //-
+    if parameters.success === "true"
+      .success Your message is on its way! I'll get back to you ASAP.
+    else if parameters.err === "401"
+      .failure Please fill out the reCAPTCHA.
+    h1 Contact Me
+    +form("POST", "/contact/send", [
+      {
+        label: "Subject",
+        name: "subject",
+        placeholder: "What's it all about?",
+        maxlength: 256,
+        required: true,
+        autofocus: true,
+        value: parameters.subject
+      },
+      {
+        label: "Your Email",
+        type: "email",
+        name: "email",
+        placeholder: "you@somewhere.com",
+        required: true,
+        value: parameters.email
+      },
+      {
+        label: "Message",
+        type: "textarea",
+        name: "message",
+        placeholder: "Tell me all about it.",
+        required: true,
+        value: parameters.message
+      },
+      {
+        type: "recaptcha",
+        sitekey: config.reCAPTCHApublic
+      }
+    ], "Send")

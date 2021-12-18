@@ -47,6 +47,12 @@ html(lang='en' data-theme=cookies.theme)
           != md.render(content)
     block footer
       footer
+        p
+          a(rel="me noopener" href="https://fosstodon.org/@benjaminhollon" target="_blank") Mastodon
+          |  | 
+          a(href="https://github.com/benjaminbhollon/" target="_blank" rel="noopener") GitHub
+          |  | 
+          a(href="https://goodreads.com/bibliobone/" target="_blank" rel="noopener") Goodreads
         +verse
         p
           a(href="/contact/") Contact Me
@@ -56,5 +62,3 @@ html(lang='en' data-theme=cookies.theme)
           a(href="/policies/cookies/") Cookie Policy
           |  | 
           a(href="/policies/terms/") Terms of Use
-        div#wcb.carbonbadge.wcb-d
-      script(src="https://unpkg.com/website-carbon-badges@1.1.1/b.min.js" async)
