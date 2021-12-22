@@ -164,7 +164,7 @@ form {
   max-width: 500px;
 }
 
-input, textarea, label {
+input, textarea, label:not(#displaySettings__label *) {
   margin: 0.5em 0;
   width: 100%;
   display: block;
@@ -176,7 +176,7 @@ input::placeholder, textarea::placeholder {
   color: var(--light-color);
 }
 
-label {
+label:not(#displaySettings__label > *) {
   font-weight: bold;
   padding: initial;
 }
@@ -248,18 +248,22 @@ footer {
   border-width: 0.125em;
   background-color: inherit;
   margin: 0.5em;
-}
-
-#displaySettings > * {
-  display: none;
   list-style: none;
 }
 
-#displaySettings:hover > *, #displaySettings:focus > *, #displaySettings:focus-within > * {
+#displaySettings > li, #displaySettings > hr {
+  display: none;
+}
+
+#showDisplaySettings:checked ~ * {
   display: block;
 }
 
-#displaySettings__label {
-  cursor: default;
+#displaySettings__label, #displaySettings__label label {
+  cursor: pointer;
   display: block!important;
+}
+
+#showDisplaySettings {
+  display: none!important;
 }
