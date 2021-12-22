@@ -1,5 +1,5 @@
 doctype html
-html(lang='en-us' data-theme=cookies.theme)
+html(lang='en-us' data-theme=(cookies.theme || 'light') data-font-family=(cookies.fontFamily || 'serif'))
   head
     block head
       //- metaImage = "https://seewitheyesclosed.com/assets/images/homepage/2.jpg"
@@ -27,8 +27,8 @@ html(lang='en-us' data-theme=cookies.theme)
     block mixins
       include mixins/form.pug
       include mixins/verse.pug
+      include mixins/settings.pug
     #column
-      //-p.no-dropcap: a.sr-only(href="#content__beginning") Skip to Content
       header
         block header
           h1= title || hardTitle
@@ -48,8 +48,8 @@ html(lang='en-us' data-theme=cookies.theme)
           else
             p This page does not seem to have any content. Check back later!
       block footer
-        footer          
-          p.no-dropcap
+        footer
+          p
             a(href="/contact/") Contact Me
             |  | 
             a(href="/feed/") RSS
@@ -66,5 +66,4 @@ html(lang='en-us' data-theme=cookies.theme)
             a(href="/policies/cookies/") Cookie Policy
             |  | 
             a(href="/policies/terms/") Terms of Use
-            //-div#wcb.carbonbadge.wcb-d
-        //-script(src="https://unpkg.com/website-carbon-badges@1.1.1/b.min.js" async)
+    +displaySettings

@@ -6,14 +6,32 @@
        url('/assets/fonts/Chomsky.woff') format('woff');
 }
 
-/* Groundwork for future color schemes */
-:root {
+/* Fonts */
+html[data-font-family="serif"] {
+  --font-family: serif;
+}
+html[data-font-family="sans"] {
+  --font-family: sans-serif;
+}
+html[data-font-family="monospace"] {
+  --font-family: monospace;
+}
+
+/* Themes */
+html[data-theme="light"] {
   color-scheme: light;
   --background-color: snow;
   --color: #000;
   --light-color: #777;
-  --font-family: serif;
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --background-color: #333;
+  --color: #fff;
+  --light-color: #aaa;
+}
 
+:root {
   font-family: var(--font-family);
   line-height: 1.5;
   font-size: 1.1em;
@@ -217,4 +235,31 @@ footer {
   margin-top: 2em;
   border-top: 0.125em solid;
   text-align: center;
+}
+
+/* Display Settings */
+
+#displaySettings {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  padding: 0.5em;
+  border: 0 solid;
+  border-width: 0.125em;
+  background-color: inherit;
+  margin: 0.5em;
+}
+
+#displaySettings > * {
+  display: none;
+  list-style: none;
+}
+
+#displaySettings:hover > *, #displaySettings:focus > *, #displaySettings:focus-within > * {
+  display: block;
+}
+
+#displaySettings__label {
+  cursor: default;
+  display: block!important;
 }

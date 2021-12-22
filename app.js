@@ -34,6 +34,7 @@ app.use(cookieParser());
 app.use(compression());
 app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
 app.use(express.static('static'));
+app.use('/assets/', express.static('assets'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(bodyParser.json());
@@ -426,10 +427,23 @@ app.get('/blog/article/:articleId/', async (request, response) => {
 });
 
 // Change color theme
-app.post('/theme/set/:theme', async (request, response) => {
-  response.cookie('theme', request.params.theme.toString());
+const supportedThemes = ['dark', 'light'];
+app.get('/settings/theme/:theme', async (request, response) => {
+  if (supportedThemes.indexOf(request.params.theme) === -1) return response.status(404).end();
 
-  return response.status(204).end();
+  response.cookie('theme', request.params.theme);
+  if (request.query.refresh === 'false') return response.status(204).end();
+  else return response.redirect(302, request.headers['referer']);
+});
+
+// Change font family
+const supportedFontFamilies = ['serif', 'sans', 'monospace'];
+app.get('/settings/font/:fontFamily', async (request, response) => {
+  if (supportedFontFamilies.indexOf(request.params.fontFamily) === -1) return response.status(404).end();
+
+  response.cookie('fontFamily', request.params.fontFamily);
+  if (request.query.refresh === 'false') return response.status(204).end();
+  else return response.redirect(302, request.headers['referer']);
 });
 
 // RSS Feed

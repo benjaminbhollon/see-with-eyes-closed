@@ -16,7 +16,6 @@ Here are the third-party services I am aware of using at the time of this writin
 - Revue
 - Cloudflare
 - Youtube
-- Google reCAPTCHA
 
 I am actively working to reduce the number of third-party services I use and will do my best to update this list as information changes, though I make no guarantees of its accuracy.
 

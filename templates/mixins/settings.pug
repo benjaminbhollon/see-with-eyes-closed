@@ -1,0 +1,11 @@
+- fontFamilies = ['serif', 'sans', 'monospace']
+- themes = ['dark', 'light']
+- themeNames = {dark: 'Dark mode', light: 'Light mode'}
+- changeThemeTo = themes[(themes.indexOf(cookies.theme || 'light') + 1) % themes.length]
+
+mixin displaySettings
+  ol#displaySettings(reversed)
+    li#displaySettings__theme: a(href=("/settings/theme/" + changeThemeTo))= themeNames[changeThemeTo]
+    li#displaySettings__fontFamily: a(href=("/settings/font/" + fontFamilies[(fontFamilies.indexOf(cookies.fontFamily || 'serif') + 1) % fontFamilies.length])) Change font
+    hr
+    li#displaySettings__label Display Settings
