@@ -14,7 +14,27 @@ const fs = require('fs');
 
 const md = new MarkdownIt({ html: true, typographer: true, linkify: true });
 
-// Import emails, messages, and policies
+md.use(require('markdown-it-container'), 'aside', {
+
+  validate: function(params) {
+    return params.trim().match(/^aside\s+(.*)$/);
+  },
+
+  render: function (tokens, idx) {
+    var m = tokens[idx].info.trim().match(/^aside\s+(.*)$/);
+
+    if (tokens[idx].nesting === 1) {
+      // opening tag
+      return '<aside>' + md.utils.escapeHtml(m[1]) + '\n';
+
+    } else {
+      // closing tag
+      return '</aside>\n';
+    }
+  }
+});
+
+// Dummy policies
 const policies = {
   privacy: false,
   cookies: false,

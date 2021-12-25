@@ -8,8 +8,8 @@ html(lang='en-us' data-theme=(cookies.theme || 'light') data-font-family=(cookie
         meta(charset="UTF-8")
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
         meta(name="description" content=metaDescription)
-        meta(property="og:title" content=(hardTitle || (title + " | See With Eyes Closed")))
-        meta(property="og:type" content="website")
+        meta(property="og:title" content=(hardTitle || title))
+        meta(property="og:type" content=(metaType || 'website'))
         meta(property="og:description" content=metaDescription)
         //-meta(property="og:image" content=metaImage)
       block resources

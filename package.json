@@ -13,6 +13,7 @@
     "express-basic-auth": "^1.2.0",
     "front-matter": "^4.0.2",
     "markdown-it": "^12.1.0",
+    "markdown-it-container": "^3.0.0",
     "marked": "^4.0.5",
     "mongodb": "^4.2.0",
     "pm2": "^5.1.2",

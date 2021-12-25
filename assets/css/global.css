@@ -50,7 +50,7 @@ body {
   color: var(--color);
 }
 
-p, h1, h2, h3, h4, h5, h6, figure, blockquote {
+p, h1, h2, h3, h4, h5, h6, figure, blockquote, .article__content aside {
   margin: 1.5rem 0;
 }
 

@@ -11,9 +11,12 @@ block variables
     - signable = true
     if typeof article.signedBy === 'undefined'
       - article.signedBy = []
+      
+  - metaType = 'article'
 
 block append meta
-  link(rel="canonical" href="https://seewitheyesclosed.com/blog/article/" + article.id + "/")
+  meta(property="og:article:author" content=article.author)
+  link(rel="canonical" href="https://seewitheyesclosed.com/articles/" + article.id + "/")
   
 block append resources
   link(rel="stylesheet" href="/assets/css/article.css")
@@ -42,7 +45,7 @@ block content
   article.article
     if parameters.err && parameters.err == 'a401'
       p.failure The name you chose is too long.
-    .article__content!= md.render(article.content).replace(/<a/g, "<a target='_blank' rel='noopener'").replace(/<img/g, "<img loading='lazy'").replace("<iframe", "<iframe loading='lazy'")
+    .article__content!= md.render(article.content).replace(/<a\ /g, "<a target='_blank' rel='noopener' ").replace(/<img/g, "<img loading='lazy'").replace("<iframe", "<iframe loading='lazy'")
     if signable
       .article__sign
         p The people who have signed their names below hereby resolve to adhere to the guidelines above to their utmost ability.
