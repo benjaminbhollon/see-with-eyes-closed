@@ -1,6 +1,6 @@
 - reactionToEmoji = {"funny": "😂", "impressive": "👏", "hooray": "🎉", "silly": "😜", "avocado": "🥑"}
 
-mixin reactions(reactions, clickable)
+mixin reactions(reactions, clickable, commentsCount)
   if !clickable
     - reactions.sort((a, b) => b.count - a.count)
   .reactions.--center(class=(clickable === true ? 'clickable' : ''))
@@ -13,3 +13,7 @@ mixin reactions(reactions, clickable)
         span.reactions__button(class=(reaction.checked === true ? 'checked' : '') + (clickable === true ? 'clickable' : '') data-reaction=reaction.name title=`${reaction.count} ${reaction.count > 1 ? 'people' : 'person'} responded with "${reaction.name}"`)
           b.reactions__count #{reaction.count}
           |  #{reactionToEmoji[reaction.name]}
+    if (commentsCount)
+      span.reactions__button(class=(clickable === true ? 'clickable' : '') data-reaction='comment' title=`${commentsCount} ${commentsCount > 1 ? 'people' : 'person'} left comments`)
+        b.reactions__count #{commentsCount}
+        |  💬

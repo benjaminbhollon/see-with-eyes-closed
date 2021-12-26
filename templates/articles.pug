@@ -20,7 +20,7 @@ block content
         p.article__details <time datetime="#{new Date(post.date).toISOString().split('T')[0]}">#{post.date}</time> by #{post.author}
         != md.render(post.summary)
         if (post.reactions.filter(r => r.count).length)
-          +reactions(post.reactions)
+          +reactions(post.reactions, false, post.comments.length)
         p.readMore: a(href="./" + post.id + "/") Read the full article
   else
     p.--center No articles have been published yet. Check back later!
