@@ -70,9 +70,14 @@ block content
       p I send out a weekly digest of new posts, projects, and things I'm currently working on. If you'd like to be a part of that, subscribe below. Can't wait to see you there!
       p.--center
         a(href="https://digest.seewitheyesclosed.com" target="_blank" rel="noopener") Subscribe for updates!
-        |
-        |
-        a(href="javascript:simplePost('/subscribe/nope');document.querySelector('.subscribe').innerHTML = `<p>👍 We won't ask you again. <a href='//digest.seewitheyesclosed.com' target='_blank' rel='noopener'>You can still subscribe if you like</a>, though!</p>`") Nah, I'm good.
+      p There are other ways to subscribe too!
+      ul
+        li
+          a(href="/feed/") RSS
+          |
+          |
+          a(href="/what-is-rss/") (What is this?)
+        li: a(href="https://fosstodon.org/@benjaminhollon" rel="me noopener" target="_blank") Mastodon
   if related.length
     hr
     aside.related
@@ -96,7 +101,6 @@ block content
           each comment in article.comments
             .comment
               p
-                img(src="https://api.hello-avatar.com/adorables/30/" + encodeURIComponent(comment.identifier),alt="Avatar")
                 strong #{comment.author}&nbsp;&nbsp;
                 span #{comment.time}
               div #{comment.message}

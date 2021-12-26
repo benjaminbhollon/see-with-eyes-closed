@@ -40,6 +40,14 @@ const policies = {
   terms: false
 };
 
+// Dummy things
+const things = {};
+
+for (const thing of fs.readdirSync('./src/things/')
+  .map(t => t.split('.').slice(0, -1).join('.'))) {
+  things[thing] = false;
+}
+
 // Import config
 const config = require('./config.json');
 const directory = require('./directory.json');
@@ -401,6 +409,28 @@ app.get('/policies/:policy/', async (request, response, next) => {
   return response.render('policy.pug', {
     metadata: policies[request.params.policy].metadata,
     body: policies[request.params.policy].body,
+    md,
+    cookies: request.cookies
+  });
+});
+
+// What is...
+app.get('/what-is-:thing/', async (request, response, next) => {
+  if (things[request.params.thing] === undefined) return next();
+  if (things[request.params.thing] === false) {
+    const raw = fs.readFileSync(
+      './src/things/' + request.params.thing + '.md',
+      'utf8'
+    );
+    things[request.params.thing] = {
+      metadata: frontMatter(raw).attributes,
+      body: marked(frontMatter(raw).body).replace(/<a\ /g, "<a target='_blank' rel='noopener' ").replace(/<img/g, "<img loading='lazy'").replace("<iframe", "<iframe loading='lazy'")
+    }
+  }
+
+  return response.render('what-is.pug', {
+    metadata: things[request.params.thing].metadata,
+    body: things[request.params.thing].body,
     md,
     cookies: request.cookies
   });

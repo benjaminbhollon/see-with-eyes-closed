@@ -14,7 +14,7 @@ html[data-font-family="sans"] {
   --font-family: sans-serif;
 }
 html[data-font-family="monospace"] {
-  --font-family: monospace;
+  --font-family: 'Menlo', 'Consolas', 'Monaco', 'Liberation Mono', 'Lucida Console', monospace;
 }
 
 /* Themes */
@@ -215,6 +215,7 @@ header {
   text-transform: uppercase;
   text-decoration: none;
   display: inline-block;
+  margin: 0 0.125em;
 }
 
 #main-nav a::after {

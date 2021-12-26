@@ -37,10 +37,6 @@ header .article__details {
   border-bottom: 1px solid;
 }
 
-.comments > div:empty {
-  border-color: #ccc;
-}
-
 .comment {
   border: 1px solid;
   padding: 1em;
@@ -53,14 +49,6 @@ header .article__details {
   align-items: center;
   margin: 0;
   margin-bottom: 5px;
-}
-
-.comment img {
-  border-radius: 50%;
-}
-
-.comment strong {
-  padding-left: 1em;
 }
 
 /* Reactions */
