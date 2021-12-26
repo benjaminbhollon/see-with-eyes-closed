@@ -4,7 +4,7 @@
 - changeThemeTo = themes[(themes.indexOf(cookies.theme || 'light') + 1) % themes.length]
 
 mixin displaySettings
-  ol#displaySettings(reversed)
+  ol#displaySettings.--center(reversed)
     input#showDisplaySettings(type="checkbox" aria-hidden="true")
     li#displaySettings__theme: a(href=("/settings/theme/" + changeThemeTo))= themeNames[changeThemeTo]
     li#displaySettings__fontFamily: a(href=("/settings/font/" + fontFamilies[(fontFamilies.indexOf(cookies.fontFamily || 'serif') + 1) % fontFamilies.length])) Change font

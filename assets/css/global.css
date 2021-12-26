@@ -22,13 +22,13 @@ html[data-theme="light"] {
   color-scheme: light;
   --background-color: snow;
   --color: #000;
-  --light-color: #777;
+  --light-color: #222;
 }
 html[data-theme="dark"] {
   color-scheme: dark;
   --background-color: #333;
   --color: #fff;
-  --light-color: #aaa;
+  --light-color: #ddd;
 }
 
 :root {
@@ -186,6 +186,7 @@ input, textarea {
   background-color: transparent;
   color: inherit;
   border-style: solid;
+  font-family: inherit;
 }
 
 input[type="checkbox"] {
@@ -212,7 +213,6 @@ header {
 
 #main-nav a {
   text-transform: uppercase;
-  margin: 0 0.25em;
   text-decoration: none;
   display: inline-block;
 }

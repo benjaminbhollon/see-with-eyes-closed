@@ -36,9 +36,15 @@ html(lang='en-us' data-theme=(cookies.theme || 'light') data-font-family=(cookie
         a.tab-only(href="#content") Skip Navigation
         block navbar
           a(href="/") Home
+          |
+          |
           a(href="/articles/") Articles
+          |
+          |
           //-a(href="/subscribe/") Subscribe
           a(href="/projects/") Projects
+          |
+          |
           a(href="/writing/") Writing
           //-a(href="https://benjaminhollon.com" target="_blank" rel="noopener") More
       main#content(tabindex="-1")
@@ -47,6 +53,7 @@ html(lang='en-us' data-theme=(cookies.theme || 'light') data-font-family=(cookie
             != md.render(content)
           else
             p This page does not seem to have any content. Check back later!
+      +displaySettings
       block footer
         footer
           p
@@ -68,4 +75,3 @@ html(lang='en-us' data-theme=(cookies.theme || 'light') data-font-family=(cookie
             a(href="/policies/cookies/") Cookie Policy
             |  | 
             a(href="/policies/terms/") Terms of Use
-    +displaySettings

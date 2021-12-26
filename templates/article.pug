@@ -61,16 +61,20 @@ block content
             }
           ], 'Sign')
   aside.article__reactions
-    h2 What did you think?
+    h2.--center What did you think?
     include ./mixins/reactions.pug
     +reactions(article.reactions, true)
   if !cookies.subscribed
     aside.subscribe
-      h2 Like the content?
-      p I send out a weekly digest of new posts, projects, things I'm currently working on. If you'd like to be a part of that, subscribe below. Can't wait to see you there!
-      p: a(href="https://digest.seewitheyesclosed.com" target="_blank" rel="noopener") Subscribe for updates!
-      p: a(href="javascript:simplePost('/subscribe/nope');document.querySelector('.subscribe').innerHTML = `<p>👍 We won't ask you again. <a href='//digest.seewitheyesclosed.com' target='_blank' rel='noopener'>You can still subscribe if you like</a>, though!</p>`") Nah, I'm good.
+      h2.--center Like the content?
+      p I send out a weekly digest of new posts, projects, and things I'm currently working on. If you'd like to be a part of that, subscribe below. Can't wait to see you there!
+      p.--center
+        a(href="https://digest.seewitheyesclosed.com" target="_blank" rel="noopener") Subscribe for updates!
+        |
+        |
+        a(href="javascript:simplePost('/subscribe/nope');document.querySelector('.subscribe').innerHTML = `<p>👍 We won't ask you again. <a href='//digest.seewitheyesclosed.com' target='_blank' rel='noopener'>You can still subscribe if you like</a>, though!</p>`") Nah, I'm good.
   if related.length
+    hr
     aside.related
       h2 Related Articles
       each listing in related
@@ -79,9 +83,10 @@ block content
           br
           em #{listing.date} by #{listing.author}
   if article.comments !== false
+    hr
     aside.comments#comments
       if article.comments.length === 0
-        p.no-dropcap There aren't any comments yet.
+        p.--center There aren't any comments yet.
           |
           |
           span.bethefirst Be the first!
@@ -118,13 +123,3 @@ block content
           p.failure Please fill out the recaptcha.
         else if parameters.err == 400
           p.failure Please fill out all the fields.
-  style.
-    #g-recaptcha-response {
-      display: block !important;
-      position: absolute;
-      margin: -78px 0 0 0 !important;
-      width: 302px !important;
-      height: 76px !important;
-      z-index: -999999;
-      opacity: 0;
-    }

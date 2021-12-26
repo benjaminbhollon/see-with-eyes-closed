@@ -6,7 +6,6 @@ const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
-const Request = require('request');
 const MarkdownIt = require('markdown-it');
 const marked = require('marked').parse;
 const frontMatter = require('front-matter');
@@ -270,8 +269,8 @@ app.post('/articles/:articleId/comment', async (request, response) => {
   });
 });
 
-// Add reaction
-app.post('/articles/:articleId/react/:reaction/:action', async (request, response) => {
+// Add/remove reaction
+app.post('/articles/:articleId/reactions/:reaction/:action', async (request, response) => {
   // TECH DEBT: Integrate special updates into mongdb-crud
   let article = null;
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
