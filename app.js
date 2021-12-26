@@ -320,7 +320,7 @@ app.post('/subscribe/nope', async (request, response) => {
 });
 
 // Projects homepage
-app.get('/projects/', async (request, response) => {
+/*app.get('/projects/', async (request, response) => {
   let projects = [];
   await crud.findMultipleDocuments('projects', {}).then((result) => {
     projects = result;
@@ -331,9 +331,9 @@ app.get('/projects/', async (request, response) => {
     cookies: request.cookies
   });
 });
-
+*/
 // Writing homepage
-app.get('/writing/', async (request, response) => {
+/*app.get('/writing/', async (request, response) => {
   let writing = [];
   await crud.findMultipleDocuments('writing', {}).then((result) => {
     writing = result;
@@ -348,9 +348,9 @@ app.get('/writing/', async (request, response) => {
 
   return response.render('writing.pug', { writing, md, cookies: request.cookies });
 });
-
+*/
 // Literary work display page
-app.get('/writing/:workId/', async (request, response) => {
+/*app.get('/writing/:workId/', async (request, response) => {
   let work = {};
   await crud.findDocument('writing', { id: request.params.workId }).then((result) => {
     work = result;
@@ -368,7 +368,7 @@ app.get('/writing/:workId/', async (request, response) => {
     md,
   });
 });
-
+*/
 // Contact me
 app.post('/contact/send/', async (request, response) => {
   const message = {
@@ -469,6 +469,18 @@ app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, res
 
 // Redirects
 app.get('/projects/learnclef/*', async (request, response) => response.redirect(301, '/projects/learn-clef/'));
+app.get('/projects/:id/*', async (request, response) => {
+  return response.redirect(301, 'https://benjaminhollon.com/projects/' + request.params.id + '/');
+});
+app.get('/writing/:id/', async (request, response) => {
+  return response.redirect(301, 'https://benjaminhollon.com/writing/' + request.params.id + '/');
+});
+app.get('/writing/', async (request, response) => {
+  return response.redirect(301, 'https://benjaminhollon.com/writing/');
+});
+app.get('/projects/', async (request, response) => {
+  return response.redirect(301, 'https://benjaminhollon.com/projects/');
+});
 app.get('/blog/', async (request, response) => {
   return response.redirect(301, `/articles/`);
 });

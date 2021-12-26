@@ -35,18 +35,16 @@ html(lang='en-us' data-theme=(cookies.theme || 'light') data-font-family=(cookie
       nav#main-nav
         a.tab-only(href="#content") Skip Navigation
         block navbar
-          a(href="/") Home
+          span: a(href="/") Home
           |
           |
-          a(href="/articles/") Articles
+          span: a(href="/articles/") Articles
           |
           |
-          //-a(href="/subscribe/") Subscribe
-          a(href="/projects/") Projects
+          span: a(href="/subscribe/") Subscribe
           |
           |
-          a(href="/writing/") Writing
-          //-a(href="https://benjaminhollon.com" target="_blank" rel="noopener") More
+          span: a(href="https://benjaminhollon.com" target="_blank" rel="noopener") More
       main#content(tabindex="-1")
         block content
           if (content)

@@ -213,13 +213,20 @@ header {
   padding: 0.25em;
   background-color: var(--background-color);
   z-index: 100;
+  display: flex;
+  flex-flow: row wrap;
+
+}
+
+#main-nav > * {
+  flex-grow: 1;
+  margin: 0 0.25em;
 }
 
 #main-nav a {
   text-transform: uppercase;
   text-decoration: none;
   display: inline-block;
-  margin: 0 0.125em;
 }
 
 #main-nav a::after {
