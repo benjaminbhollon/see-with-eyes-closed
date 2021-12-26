@@ -2,3 +2,22 @@ extends layout.pug
 
 block variables
   - title = "Projects"
+  - metaDescription = "All my super-awesome, totally-random coding projects. Enjoy."
+  
+block append resources
+  link(rel="stylesheet",href="/assets/css/listings.css")
+  script(src="/assets/js/listings.js",async)
+  
+block content
+  p Here are some of the projects I've put together and decided were pretty good. Share and enjoy!
+  .listings
+    each project in projects
+      .listing
+        h2.--center #{project.name}
+        details
+          summary Project summary and links
+          != md.render(project.summary)
+          .listing__links.--center
+            p: a(href=project.link target="_blank" rel="noopener") Open Project
+            if project.code !== false
+              p: a(href=project.code target="_blank" rel="noopener") View Code

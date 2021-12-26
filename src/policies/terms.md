@@ -4,7 +4,7 @@ description: The terms of use for the See With Eyes Closed website and blog.
 ---
 
 ### License
-All content on this website, unless specified otherwise, is released under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). You may use it for any purpose you wish as long as you give me, Benjamin Hollon, **appropriate credit** as the author. In most cases, this means crediting me as author and linking back to the original resource. You also must share it under the same license (CC BY-SA 4.0).
+All content on this website, unless specified otherwise, is released under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). You may use it for any purpose you wish as long as you give me, Benjamin Hollon, **appropriate credit** as the author. In most cases, this means crediting me as author and linking back to the original resource. If you make changes you also must share them under the same license (CC BY-SA 4.0).
 
 The code is Free Software under [GPL-3.0](https://github.com/benjaminbhollon/see-with-eyes-closed/blob/main/LICENSE), and may be reused or adapted under those terms. You are also very welcome to [contribute code on Github](https://github.com/benjaminbhollon/see-with-eyes-closed).
 
