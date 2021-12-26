@@ -258,7 +258,7 @@ footer {
   padding: 0.5em;
   border: 0 solid;
   border-width: 0.125em;
-  background-color: inherit;
+  background-color: var(--background-color);
   margin: 0.5em;
   list-style: none;
 }
