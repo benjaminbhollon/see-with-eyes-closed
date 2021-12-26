@@ -7,6 +7,7 @@ const compression = require('compression');
 const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
 const MarkdownIt = require('markdown-it');
+const {encode} = require('html-entities');
 const marked = require('marked').parse;
 const frontMatter = require('front-matter');
 const fs = require('fs');
@@ -497,6 +498,10 @@ app.get('/settings/font/:fontFamily', async (request, response) => {
 
 // RSS Feed
 app.get('/feed/', async (request, response) => {
+  const appendComplete = `\n\n---\n\nThis article was first published on [the See With Eyes Closed website](https://${request.hostname}/), but the full article was generously provided to you via RSS. Please consider [visiting the article on the site](https://${request.hostname}/articles/[[ID]]/) to leave feedback or view similar See With Eyes Closed articles.`;
+
+  const appendSummary = `\n\n---\n\nThis article has elements in it that cannot be sent through RSS. You can [view the full article](https://${request.hostname}/articles/[[ID]]/) on [the See With Eyes Closed website](https://${request.hostname}/).`;
+
   let articles = [];
 
   await crud.findMultipleDocuments('articles', {}).then((result) => {
@@ -505,18 +510,32 @@ app.get('/feed/', async (request, response) => {
 
   articles.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  const feed = articles.slice(0, 15).map((article) => {
-    const date = new Date(article.date);
-    return date > new Date() ? 'JJJ' : `<item>
-      <title>${article.title}</title>
-      <link>https://${request.hostname}/blog/article/${article.id}/</link>
-      <guid ispermalink="false">${article._id.toString()}</guid>
-      <pubDate>${(new Date(date)).toUTCString()}</pubDate>
-      <description>${article.summary.replace('&nbsp;', ' ').replace(/(<([^>]+)>)/ig, '')}</description>
-    </item>`;
-  });
+  const feed = articles
+    .slice(0, 15)
+    .filter(article => new Date(article.date) <= Date.now())
+    .map((article) => {
+      const date = new Date(article.date);
+      if (article.content.indexOf('<script') === -1 && article.content.indexOf('<style') === -1) {
+        return `<item>
+          <title>${article.title}</title>
+          <link>https://${request.hostname}/articles/${article.id}/</link>
+          <guid ispermalink="false">${article._id.toString()}</guid>
+          <pubDate>${date.toUTCString()}</pubDate>
+          <description>${encode(md.render(article.content + appendComplete.replace('[[ID]]', article.id)), {mode: 'nonAsciiPrintable', level: 'xml'})}</description>
+        </item>`;
+      }
 
-  response.setHeader('Content-type', 'application/rss+xml');
+      console.log(article.id);
+      return `<item>
+        <title>${article.title}</title>
+        <link>https://${request.hostname}/articles/${article.id}/</link>
+        <guid ispermalink="false">${article._id.toString()}</guid>
+        <pubDate>${date.toUTCString()}</pubDate>
+        <description>${encode(md.render(article.summary + appendSummary.replace('[[ID]]', article.id)), {mode: 'nonAsciiPrintable', level: 'xml'})}</description>
+      </item>`;
+    });
+
+  response.setHeader('Content-type', 'application/xml+rss');
   response.send(
     `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">

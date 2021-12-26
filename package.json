@@ -12,6 +12,7 @@
     "express": "^4.17.1",
     "express-basic-auth": "^1.2.0",
     "front-matter": "^4.0.2",
+    "html-entities": "^2.3.2",
     "markdown-it": "^12.1.0",
     "markdown-it-container": "^3.0.0",
     "marked": "^4.0.5",
