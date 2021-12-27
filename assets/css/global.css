@@ -6,6 +6,12 @@
        url('/assets/fonts/Chomsky.woff') format('woff');
 }
 
+:root {
+  font-family: var(--font-family);
+  line-height: 1.5;
+  font-size: 1.1em;
+}
+
 /* Fonts */
 html[data-font-family="serif"] {
   --font-family: serif;
@@ -31,10 +37,21 @@ html[data-theme="dark"] {
   --light-color: #ddd;
 }
 
-:root {
-  font-family: var(--font-family);
-  line-height: 1.5;
+/* Size */
+html[data-size='1'] {
+  font-size: 0.9em;
+}
+html[data-size='2'] {
+  font-size: 1em;
+}
+html[data-size='3'] {
   font-size: 1.1em;
+}
+html[data-size='4'] {
+  font-size: 1.2em;
+}
+html[data-size='5'] {
+  font-size: 1.3em;
 }
 
 /* Main Styles */
@@ -101,7 +118,7 @@ article h1, h2, h3, h4, h5, h6 {
 #column {
   padding: 0 0.5em;
   display: inline-block;
-  max-width: 700px;
+  max-width: 40em;
   width: 100%;
   text-align: left;
 }

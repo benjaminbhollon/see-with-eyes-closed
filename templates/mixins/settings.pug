@@ -2,10 +2,15 @@
 - themes = ['dark', 'light']
 - themeNames = {dark: 'Dark mode', light: 'Light mode'}
 - changeThemeTo = themes[(themes.indexOf(cookies.theme || 'light') + 1) % themes.length]
+- size = parseInt(cookies.size) || 3
 
 mixin displaySettings
   ol#displaySettings.--center(reversed)
     input#showDisplaySettings(type="checkbox" aria-hidden="true")
+    if size !== 5
+      li: a(href="/settings/size/" + (size + 1)) Increase size
+    if size !== 1
+      li: a(href="/settings/size/" + (size - 1)) Decrease size
     li#displaySettings__theme: a(href=("/settings/theme/" + changeThemeTo))= themeNames[changeThemeTo]
     li#displaySettings__fontFamily: a(href=("/settings/font/" + fontFamilies[(fontFamilies.indexOf(cookies.fontFamily || 'serif') + 1) % fontFamilies.length])) Change font
     hr

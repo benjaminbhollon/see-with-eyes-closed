@@ -403,7 +403,7 @@ app.get('/policies/:policy/', async (request, response, next) => {
     );
     policies[request.params.policy] = {
       metadata: frontMatter(raw).attributes,
-      body: marked(frontMatter(raw).body)
+      body: marked.parse(frontMatter(raw).body)
     }
   }
 
@@ -425,7 +425,7 @@ app.get('/what-is-:thing/', async (request, response, next) => {
     );
     things[request.params.thing] = {
       metadata: frontMatter(raw).attributes,
-      body: marked(frontMatter(raw).body).replace(/<a\ /g, "<a target='_blank' rel='noopener' ").replace(/<img/g, "<img loading='lazy'").replace("<iframe", "<iframe loading='lazy'")
+      body: marked.parse(frontMatter(raw).body).replace(/<a\ /g, "<a target='_blank' rel='noopener' ").replace(/<img/g, "<img loading='lazy'").replace("<iframe", "<iframe loading='lazy'")
     }
   }
 
@@ -504,6 +504,16 @@ app.get('/settings/font/:fontFamily', async (request, response) => {
   if (supportedFontFamilies.indexOf(request.params.fontFamily) === -1) return response.status(404).end();
 
   response.cookie('fontFamily', request.params.fontFamily);
+  if (request.query.refresh === 'false') return response.status(204).end();
+  else return response.redirect(302, request.headers['referer']);
+});
+
+// Change size
+app.get('/settings/size/:size', async (request, response) => {
+  const size = parseInt(request.params.size);
+  if (size < 1 || size > 5) return response.status(404).end();
+
+  response.cookie('size', size);
   if (request.query.refresh === 'false') return response.status(204).end();
   else return response.redirect(302, request.headers['referer']);
 });
