@@ -1,6 +1,6 @@
 {
   "/contact/": "contact.pug",
-  "/admin/": "admin/admin.pug",
+  "/admin/": "admin/dashboard.pug",
   "/social/": "social.pug",
   "/subscribe/": "subscribe.pug",
   "/admin/articles/new": "admin/postarticle.pug",
