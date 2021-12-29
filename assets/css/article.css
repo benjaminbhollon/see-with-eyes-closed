@@ -95,10 +95,14 @@ figcaption {
   opacity: 0.8;
 }
 
-.article__content aside {
+.article__content aside, .failure {
   border: 2px solid;
   border-radius: 1rem;
   padding: 1rem;
   margin-left: 1em;
   margin-right: 1em;
+}
+
+.failure {
+  border-color: red;
 }

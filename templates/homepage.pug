@@ -15,7 +15,8 @@ block content
     p Our modern society revolves around technology, but technology should revolve around it. Rather than adjusting our lives to match what tech companies want, we should force technology to fit what <em>we</em> want.
     p Ability comes from understanding. To be able to shape technology, you must first understand it.
     p This year, I'm going to do my best to teach you how the technology you use every day works.
-    p Ready to get started? Jump right in with the most recent article, <a href="/articles/#{article.id}/">"#{article.title}"</a>.
+    if article
+      p Ready to get started? Jump right in with the most recent article, <a href="/articles/#{article.id}/">"#{article.title}"</a>.
 
     hr
       

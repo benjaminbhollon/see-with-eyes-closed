@@ -244,38 +244,26 @@ app.get('/articles/:articleId/', async (request, response) => {
 
 // Add comment
 app.post('/articles/:articleId/comment', async (request, response) => {
-  if (!request.body.name || !request.body.comment || (request.body.comment && request.body.comment.length > 512) || (request.body.name && request.body.name.length > 128)) return response.redirect(302, `/blog/article/${request.params.articleId}/?err=${400}&name=${encodeURIComponent(request.body.name)}&comment=${encodeURIComponent(request.body.comment)}#comments`);
-  let reCAPTCHAvalid = false;
+  if (!request.body.name || !request.body.comment || (request.body.comment && request.body.comment.length > 512) || (request.body.name && request.body.name.length > 128)) return response.redirect(302, `/articles/${request.params.articleId}/?err=${400}&name=${encodeURIComponent(request.body.name)}&comment=${encodeURIComponent(request.body.comment)}#comments`);
 
-  await Request(`https://www.google.com/recaptcha/api/siteverify?secret=${config.reCAPTCHAprivate}&response=${request.body['g-recaptcha-response']}`, async (error, result, body) => {
-    reCAPTCHAvalid = JSON.parse(body).success;
+  // Honeytrap
+  if (request.body.email.length) return response.redirect(302, `/articles/${request.params.articleId}/?err=honeytrap&name=${encodeURIComponent(request.body.name)}&comment=${encodeURIComponent(request.body.comment)}#comments`);
 
-    if (!reCAPTCHAvalid) {
-      const url = `/blog/article/${request.params.articleId}/?err=${401}&name=${encodeURIComponent(request.body.name)}&comment=${encodeURIComponent(request.body.comment)}#comments`;
-      return response.redirect(302, url);
-    }
-
-    let article;
-    await crud.findDocument('articles', { id: request.params.articleId }).then((result2) => {
-      article = result2;
-    });
-
-    if (article === null) return response.render('errors/404.pug', { cookies: request.cookies });
-
-    if (request.session.identifier === undefined) {
-      request.session.identifier = Math.floor(Math.random() * 8999999) + 1000000;
-    }
-
-    article.comments.push({
-      identifier: await bcrypt.hash(request.session.identifier.toString(), bcryptSalt),
-      author: request.body.name,
-      message: request.body.comment,
-      time: Math.floor(Date.now() / 1000),
-    });
-    crud.updateDocument('articles', { id: request.params.articleId.toString() }, { comments: article.comments });
-
-    return response.redirect(302, `/blog/article/${request.params.articleId}/#comments`);
+  let article;
+  await crud.findDocument('articles', { id: request.params.articleId }).then((result2) => {
+    article = result2;
   });
+
+  if (article === null) return response.render('errors/404.pug', { cookies: request.cookies });
+
+  article.comments.push({
+    author: request.body.name,
+    message: request.body.comment,
+    time: Math.floor(Date.now() / 1000),
+  });
+  crud.updateDocument('articles', { id: request.params.articleId.toString() }, { comments: article.comments });
+
+  return response.redirect(302, `/articles/${request.params.articleId}/#comments`);
 });
 
 // Add/remove reaction

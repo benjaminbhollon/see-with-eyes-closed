@@ -33,11 +33,12 @@ html(lang='en-us' data-size=(cookies.size || 3) data-theme=(cookies.theme || 'li
       header
         block header
           h1= title || hardTitle
+      block navbar
       nav#main-nav
         span: a.tab-only(href="#content") Skip Navigation
         |
         |
-        block navbar
+        block navbar-links
           span: a(href="/") Home
           |
           |

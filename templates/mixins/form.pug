@@ -15,7 +15,7 @@ mixin form(method, action, inputs, submitLabel, extra)
               div(style="text-align: center")
                 .g-recaptcha(style="display:inline-block" data-sitekey=input.sitekey)
             default
-              label #{input.label}
+              label(class=input.class) #{input.label}
                 input(type=input.type min=input.min max=input.max multiple=input.multiple pattern=input.pattern step=input.step height=input.height width=input.width placeholder=input.placeholder required=input.required name=input.name id=input.id class=input.class maxlength=input.maxlength autofocus=input.autofocus autocomplete = input.autocomplete value=input.value)
     if extra !== undefined
       div #[extra]

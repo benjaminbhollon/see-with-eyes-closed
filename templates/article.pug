@@ -124,10 +124,18 @@ block content
           name: 'comment',
           value: parameters.comment,
           placeholder: 'What did you think?'
+        },
+        {
+          label: "If you're not a robot, leave this blank",
+          placeholder: "Don't enter anything here.",
+          name: 'email',
+          type: 'email',
+          autocomplete: 'off',
+          class: 'sr-onlyy'
         }
       ], "Go!")
       if parameters.err
-        if parameters.err == 401
-          p.failure Please fill out the recaptcha.
+        if parameters.err === 'honeytrap'
+          p.failure Whoa, whoa, whoa. We said not to fill out that form field if you're a human. Try again, and this time, leave it blank.
         else if parameters.err == 400
           p.failure Please fill out all the fields.
