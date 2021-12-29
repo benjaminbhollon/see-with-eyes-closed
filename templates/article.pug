@@ -64,33 +64,6 @@ block content
     h2.--center What did you think?
     include ./mixins/reactions.pug
     +reactions(article.reactions, true)
-  if !cookies.subscribed
-    aside.subscribe
-      h2.--center Like the content?
-      p I send out a weekly digest of new posts, projects, and things I'm currently working on. If you'd like to be a part of that, subscribe below. Can't wait to see you there!
-      p.--center
-        a(href="https://digest.seewitheyesclosed.com" target="_blank" rel="noopener") Subscribe for updates!
-      p There are other ways to subscribe too!
-      ul
-        li
-          a(href="/feed/") RSS
-          |
-          |
-          a(href="/what-is-rss/") (What is this?)
-        li
-          a(href="https://fosstodon.org/@benjaminhollon" rel="me noopener" target="_blank") Mastodon
-          |
-          |
-          a(href="/what-is-mastodon/") (What is this?)
-  if related.length
-    hr
-    aside.related
-      h2 Related Articles
-      each listing in related
-        div: a.related__article(href="../" + listing.id + "/")
-          strong #{listing.title}
-          br
-          em #{listing.date} by #{listing.author}
   if article.comments !== false
     hr
     aside.comments#comments
@@ -131,7 +104,7 @@ block content
           name: 'email',
           type: 'email',
           autocomplete: 'off',
-          class: 'sr-onlyy'
+          class: 'sr-only'
         }
       ], "Go!")
       if parameters.err
@@ -139,3 +112,30 @@ block content
           p.failure Whoa, whoa, whoa. We said not to fill out that form field if you're a human. Try again, and this time, leave it blank.
         else if parameters.err == 400
           p.failure Please fill out all the fields.
+  if !cookies.subscribed
+    aside.subscribe
+      h2.--center Like the content?
+      p I send out a weekly digest of new posts, projects, and things I'm currently working on. If you'd like to be a part of that, subscribe below. Can't wait to see you there!
+      p.--center
+        a(href="https://digest.seewitheyesclosed.com" target="_blank" rel="noopener") Subscribe for updates!
+      p There are other ways to subscribe too!
+      ul
+        li
+          a(href="/feed/") RSS
+          |
+          |
+          a(href="/what-is-rss/") (What is this?)
+        li
+          a(href="https://fosstodon.org/@benjaminhollon" rel="me noopener" target="_blank") Mastodon
+          |
+          |
+          a(href="/what-is-mastodon/") (What is this?)
+  if related.length
+    hr
+    aside.related
+      h2 Related Articles
+      each listing in related
+        div: a.related__article(href="../" + listing.id + "/")
+          strong #{listing.title}
+          br
+          em #{listing.date} by #{listing.author}
