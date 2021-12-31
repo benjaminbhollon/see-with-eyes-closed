@@ -25,7 +25,7 @@ header .article__details {
 }
 
 .article__content {
-  border-bottom: 1px solid;
+  border-bottom: 2px solid;
 }
 
 .readMore {
@@ -33,7 +33,7 @@ header .article__details {
   text-transform: uppercase;
 }
 
-.comments > div {
+.comments > .list {
   border-bottom: 1px solid;
 }
 

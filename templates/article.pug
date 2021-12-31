@@ -74,7 +74,7 @@ block content
           span.bethefirst Be the first!
       else if article.comments.length
         h2(style="text-align:left") #{article.comments.length} comments
-        div
+        .list
           each comment in article.comments
             .comment
               p
@@ -82,36 +82,39 @@ block content
                 span #{comment.time}
               div #{comment.message}
         h3 Post a Comment
-      +form("POST", `./comment`, [
-        {
-          label: "Your Name",
-          name: 'name',
-          placeholder: "John Doe",
-          value: parameters.name, 
-          maxlength: 128,
-          required: true
-        },
-        {
-          label: "Your Comment",
-          type: 'textarea',
-          name: 'comment',
-          value: parameters.comment,
-          placeholder: 'What did you think?'
-        },
-        {
-          label: "If you're not a robot, leave this blank",
-          placeholder: "Don't enter anything here.",
-          name: 'email',
-          type: 'email',
-          autocomplete: 'off',
-          class: 'sr-only'
-        }
-      ], "Go!")
+      .--center
+        div(style="display:inline-block;max-width:500px;width:100%;")
+          +form("POST", `./comment`, [
+            {
+              label: "Your Name",
+              name: 'name',
+              placeholder: "John Doe",
+              value: parameters.name, 
+              maxlength: 128,
+              required: true
+            },
+            {
+              label: "Your Comment",
+              type: 'textarea',
+              name: 'comment',
+              value: parameters.comment,
+              placeholder: 'What did you think?'
+            },
+            {
+              label: "If you're not a robot, leave this blank",
+              placeholder: "Don't enter anything here.",
+              name: 'email',
+              type: 'email',
+              autocomplete: 'off',
+              class: 'sr-only'
+            }
+          ], "Go!")
       if parameters.err
         if parameters.err === 'honeytrap'
           p.failure Whoa, whoa, whoa. We said not to fill out that form field if you're a human. Try again, and this time, leave it blank.
         else if parameters.err == 400
           p.failure Please fill out all the fields.
+  hr
   if !cookies.subscribed
     aside.subscribe
       h2.--center Like the content?
@@ -132,10 +135,12 @@ block content
           a(href="/what-is-mastodon/") (What is this?)
   if related.length
     hr
-    aside.related
+    aside.related.--center
       h2 Related Articles
       each listing in related
-        div: a.related__article(href="../" + listing.id + "/")
+        p
           strong #{listing.title}
           br
           em #{listing.date} by #{listing.author}
+          br
+          a(href=("/articles/" + listing.id)) Read
