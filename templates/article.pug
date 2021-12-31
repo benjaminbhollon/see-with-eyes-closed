@@ -64,7 +64,6 @@ block content
     include ./mixins/reactions.pug
     +reactions(article.reactions, true)
   if article.comments !== false
-    hr
     aside.comments#comments
       if article.comments.length === 0
         p.--center There aren't any comments yet.
@@ -72,7 +71,7 @@ block content
           |
           span.bethefirst Be the first!
       else if article.comments.length
-        h2(style="text-align:left") #{article.comments.length} comments
+        h2(style="text-align:left") #{article.comments.length} comment#{article.comments.length === 1 ? '' : 's'}
         .list
           each comment in article.comments
             .comment
