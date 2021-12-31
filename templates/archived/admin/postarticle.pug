@@ -1,35 +1,39 @@
-extends layout.pug
+extends admin.pug
 
 block variables
-  - title = `Edit "${article.title}"`
+  - title = "New Post"
 
 block content
-  .--center
-    +form("POST", "./edit", [
+  article
+    h1 New Post
+    +form("POST", "", [
       {
         label: "Title",
         name: "title",
-        value: article.title,
         placeholder: "Plain-text", 
+        required: true
+      },
+      {
+        label: "Article ID",
+        name: "id",
+        placeholder: "hyphenated-plain-text (unique)",
         required: true
       },
       {
         label: "Author",
         name: "author",
-        value: article.author,
+        value: config.mainAuthor,
         placeholder: "First Last",
         required: true
       },
       {
         label: "Banner Image",
         type: "url",
-        value: article.image,
         placeholder: "http://example.com/banner.png (optional)",
         name: "image"
       },
       {
         label: "Release Date (leave blank to publish today)",
-        value: article.date,
         name: "date",
         placeholder: "Maytember 3, 1812",
       },
@@ -37,7 +41,6 @@ block content
         label: "Summary",
         type: "textarea",
         name: "summary",
-        value: article.summary,
         placeholder: "Markdown, HTML, or a mix",
         required: true
       },
@@ -45,14 +48,12 @@ block content
         label: "Main Content",
         type: "textarea",
         name: "content",
-        value: article.content,
         placeholder: "Markdown, HTML, or a mix",
         required: true
       },
       {
         label: "Tags",
         name: "tags",
-        value: article.tags.join(", "),
         placeholder: "comma, separated, values",
         required: true
       },
@@ -60,8 +61,6 @@ block content
         label: "Enable Comments",
         type: "checkbox",
         name: "comments",
-        checked: article.comments !== false
+        checked: true
       }
-    ], "Apply Changes")
-    p: a(style="color:red" href="./delete") Delete Article
-    p WARNING! This action is irreversible. DO NOT take it lightly.
+    ])

@@ -1,0 +1,67 @@
+extends admin.pug
+
+block variables
+  - title = `Edit "${article.title}"`
+
+block content
+  h1 #{title}
+  +form("POST", "./edit", [
+    {
+      label: "Title",
+      name: "title",
+      value: article.title,
+      placeholder: "Plain-text", 
+      required: true
+    },
+    {
+      label: "Author",
+      name: "author",
+      value: article.author,
+      placeholder: "First Last",
+      required: true
+    },
+    {
+      label: "Banner Image",
+      type: "url",
+      value: article.image,
+      placeholder: "http://example.com/banner.png (optional)",
+      name: "image"
+    },
+    {
+      label: "Release Date (leave blank to publish today)",
+      value: article.date,
+      name: "date",
+      placeholder: "Maytember 3, 1812",
+    },
+    {
+      label: "Summary",
+      type: "textarea",
+      name: "summary",
+      value: article.summary,
+      placeholder: "Markdown, HTML, or a mix",
+      required: true
+    },
+    {
+      label: "Main Content",
+      type: "textarea",
+      name: "content",
+      value: article.content,
+      placeholder: "Markdown, HTML, or a mix",
+      required: true
+    },
+    {
+      label: "Tags",
+      name: "tags",
+      value: article.tags.join(", "),
+      placeholder: "comma, separated, values",
+      required: true
+    },
+    {
+      label: "Enable Comments",
+      type: "checkbox",
+      name: "comments",
+      checked: article.comments !== false
+    }
+  ])
+  p: a(style="color:red" href="./delete") 🗑 Delete Article
+  p WARNING! This action is irreversible. DO NOT take it lightly.

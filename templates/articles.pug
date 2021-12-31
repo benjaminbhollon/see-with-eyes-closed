@@ -1,0 +1,26 @@
+extends layout.pug
+
+//- Define variables
+block variables
+  - title = "Articles"
+  - metaDescription = "Here are all the articles I've written as part of this blog. This year's articles are about digital citizenship and the responsible use of technology in our digital age."
+  
+block append resources
+  link(rel="stylesheet" href="/assets/css/article.css")
+  script(src="/assets/js/article.js" async)
+
+block append mixins
+  include ./mixins/reactions.pug
+    
+block content
+  if recent.length
+    each post in recent
+      .article
+        h2: a(href="./" + post.id + "/")= post.title
+        p.article__details <time datetime="#{new Date(post.date).toISOString().split('T')[0]}">#{post.date}</time> by #{post.author}
+        != md.render(post.summary)
+        if (post.reactions.filter(r => r.count).length)
+          +reactions(post.reactions, false, post.comments.length)
+        p.readMore: a(href="./" + post.id + "/") Read the full article
+  else
+    p.--center No articles have been published yet. Check back later!

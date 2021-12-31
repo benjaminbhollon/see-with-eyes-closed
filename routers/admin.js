@@ -1,24 +1,24 @@
 // Require modules
-const vocado = require('vocado');
+const express = require('express');
 
 // Local modules
 const config = require('../config.json');
 const crud = require('@bibliobone/mongodb-crud').bind(config.mongodbURI, 'swec-core');
 
-const router = vocado.Router();
+const router = express.Router();
 
 // Routes
-router.get('/manage/articles/', async (request, response) => {
+router.get('/articles/', async (request, response) => {
   let articles = [];
   await crud.findMultipleDocuments('articles', {}).then((result) => {
     if (result !== null) articles = result;
   });
   articles.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  response.render('admin/managearticles.pug', { articles, cookies: request.cookies });
+  response.render('admin/articles.pug', { articles, cookies: request.cookies });
 });
 
-router.get('/manage/articles/:articleId/', async (request, response) => {
+router.get('/articles/:articleId/edit', async (request, response) => {
   let article = {};
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
     article = result;
@@ -28,7 +28,7 @@ router.get('/manage/articles/:articleId/', async (request, response) => {
   response.render('admin/editarticle.pug', { article, cookies: request.cookies });
 });
 
-router.post('/manage/articles/:articleId/edit', async (request, response) => {
+router.post('/articles/:articleId/edit', async (request, response) => {
   const article = {
     title: request.body.title,
     author: request.body.author,
@@ -46,13 +46,13 @@ router.post('/manage/articles/:articleId/edit', async (request, response) => {
 
   await crud.updateDocument('articles', { id: request.params.articleId }, article);
 
-  response.redirect(302, '/admin/manage/articles/');
+  response.redirect(302, '/admin/articles/');
 });
 
-router.get('/manage/articles/:articleId/delete', async (request, response) => {
+router.get('/articles/:articleId/delete', async (request, response) => {
   await crud.deleteDocument('articles', { id: request.params.articleId });
 
-  response.redirect(302, '/admin/manage/articles');
+  response.redirect(302, '/admin/articles');
 });
 
 router.get('/manage/comments/', async (request, response) => {
@@ -119,7 +119,7 @@ router.get('/manage/comments/:articleId/:index/delete', async (request, response
   response.redirect(302, '/admin/manage/comments/');
 });
 
-router.post('/post/article/', async (request, response) => {
+router.post('/articles/new', async (request, response) => {
   const today = new Date();
   const months = [
     'January',
@@ -152,11 +152,11 @@ router.post('/post/article/', async (request, response) => {
         count: 0,
       },
       {
-        name: 'funny',
+        name: 'surprising',
         count: 0,
       },
       {
-        name: 'hooray',
+        name: 'confusing',
         count: 0,
       },
       {

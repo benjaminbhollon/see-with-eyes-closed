@@ -1,8 +1,6 @@
 # see-with-eyes-closed
 The code for the [See With Eyes Closed website and blog](https://seewitheyesclosed.com).
 
-_NOTE: Almost all development is currently on the redesign/2022 branch. Also, these install instructions are a bit out of date._
-
 ## Installation
 First, make sure you have MongoDB installed:
 

@@ -1,0 +1,60 @@
+doctype html
+html(lang='en' data-theme=cookies.theme)
+  head
+    block head
+      - metaImage = "https://seewitheyesclosed.com/assets/images/homepage/2.jpg"
+      block variables
+      block resources
+        link(rel="stylesheet" href="/assets/css/global.css")
+        script(src="/assets/js/global.js" async)
+      block meta
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        meta(name="description" content=metaDescription)
+        meta(property="og:title" content=title + " | See With Eyes Closed")
+        meta(property="og:type" content="website")
+        meta(property="og:description" content=metaDescription)
+        meta(property="og:image" content=metaImage)
+      block title
+        title #{title} | See With Eyes Closed
+      link(rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.ico")
+      noscript
+        style.
+          #colorThemeToggle {
+            display: none;
+          }
+  body
+    a.sr-only(href="main") Skip to Content
+    block mixins
+      include mixins/form.pug
+      include mixins/verse.pug
+    block navbar
+      nav.main-nav
+        a.main-nav__title(href="/") See With Eyes Closed
+        label.main-nav__collapse(for="nav-collapse") &#9776;
+        input#nav-collapse(type="checkbox")
+        .main-nav__collapsible
+          a(href="/") Home
+          a(href="/blog/") Blog
+          a(href="/projects/") Projects
+          a(href="/writing/") Writing
+          label(id="colorThemeToggle" aria-hidden="true")
+            input(type="checkbox" onclick="toggleTheme()" checked=(cookies.theme === 'dark') aria-hidden="true")
+            span
+    main
+      block content
+        if (content)
+          != md.render(content)
+    block footer
+      footer
+        +verse
+        p
+          a(href="/contact/") Contact Me
+          |  | 
+          a(href="/policies/privacy/") Privacy Policy
+          |  | 
+          a(href="/policies/cookies/") Cookie Policy
+          |  | 
+          a(href="/policies/terms/") Terms of Use
+        div#wcb.carbonbadge.wcb-d
+      script(src="https://unpkg.com/website-carbon-badges@1.1.1/b.min.js" async)

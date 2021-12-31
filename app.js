@@ -1,37 +1,53 @@
 // Import modules
-const vocado = require('vocado');
+const express = require('express');
 const sendmail = require('sendmail')();
 const bcrypt = require('bcryptjs');
-// const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const compression = require('compression');
+const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
-const Request = require('request');
-// const SitemapGenerator = require('sitemap-generator');
 const MarkdownIt = require('markdown-it');
+const {encode} = require('html-entities');
+const marked = require('marked').parse;
+const frontMatter = require('front-matter');
+const fs = require('fs');
 
 const md = new MarkdownIt({ html: true, typographer: true, linkify: true });
 
-const weekDaysShort = ['Sun',
-  'Mon',
-  'Tue',
-  'Wed',
-  'Thu',
-  'Fri',
-  'Sat'];
-const monthsShort = ['Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec'];
+md.use(require('markdown-it-container'), 'aside', {
 
-// Import emails, messages, and policies
-const policies = require('./src/policies.json');
+  validate: function(params) {
+    return params.trim().match(/^aside\s+(.*)$/);
+  },
+
+  render: function (tokens, idx) {
+    var m = tokens[idx].info.trim().match(/^aside\s+(.*)$/);
+
+    if (tokens[idx].nesting === 1) {
+      // opening tag
+      return '<aside>' + md.utils.escapeHtml(m[1]) + '\n';
+
+    } else {
+      // closing tag
+      return '</aside>\n';
+    }
+  }
+});
+
+// Dummy policies
+const policies = {
+  privacy: false,
+  cookies: false,
+  terms: false
+};
+
+// Dummy things
+const things = {};
+
+for (const thing of fs.readdirSync('./src/things/')
+  .map(t => t.split('.').slice(0, -1).join('.'))) {
+  things[thing] = false;
+}
 
 // Import config
 const config = require('./config.json');
@@ -39,28 +55,17 @@ const directory = require('./directory.json');
 
 const crud = require('@bibliobone/mongodb-crud').bind(config.mongodbURI, 'swec-core');
 
-const app = vocado();
-
-// Crawl site once per day
-/* const generator = SitemapGenerator('https://seewitheyesclosed.com', {
-  stripQuerystring: true,
-  filepath: './static/sitemap.xml',
-  userAgent: 'verbGuac 1.0',
-  priorityMap: [1.0,
-    0.9,
-    0.8],
-});
-generator.on('done', () => {
-  console.log('Sitemap for seewitheyesclosed.com created.');
-});
-setInterval(generator.start, 1000 * 60 * 60 * 24); */
+const app = express();
 
 // Set up middleware
-// app.use(cookieParser());
-// app.use(compression());
+app.use(cookieParser());
+app.use(compression());
 app.use('/admin/', basicAuth({ users: config.admins, challenge: true }));
-app.static('./static/');
-// app.use(session({ secret: config.sessionSecret, resave: false, saveUninitialized: false }));
+app.use(express.static('static'));
+app.use('/assets/', express.static('assets'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(bodyParser.json());
 app.use((request, response, next) => {
   if (directory[request.path] !== undefined && request.method.toUpperCase() === 'GET') {
     return response.render(directory[request.path], {
@@ -73,7 +78,8 @@ app.use((request, response, next) => {
 
   return next();
 });
-app.templates('pug', './templates/');
+app.set('view engine', 'pug');
+app.set('views', './templates');
 let bcryptSalt;
 bcrypt.genSalt(3, (err, salt) => {
   bcryptSalt = salt;
@@ -84,8 +90,24 @@ const adminRouter = require('./routers/admin');
 
 app.use('/admin/', adminRouter);
 
+/* BLOG */
 // Blog homepage
-app.get('/blog/', async (request, response) => {
+app.get('/', async (request, response) => {
+  let articles = [];
+  await crud.findMultipleDocuments('articles', {}).then((result) => {
+    articles = result;
+  });
+
+  articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  return response.render('homepage.pug', {
+    article: articles[0],
+    cookies: request.cookies,
+  });
+});
+
+// Articles
+app.get('/articles/', async (request, response) => {
   let articles = [];
   await crud.findMultipleDocuments('articles', {}).then((result) => {
     articles = result;
@@ -99,7 +121,7 @@ app.get('/blog/', async (request, response) => {
 
   const popularHTML = JSON.parse(JSON.stringify(articles.slice(0, 5)));
 
-  return response.render('blogmain.pug', {
+  return response.render('articles.pug', {
     recent: recentHTML,
     popular: popularHTML,
     parameters: request.query,
@@ -110,7 +132,7 @@ app.get('/blog/', async (request, response) => {
 });
 
 // Blog article
-app.get('/blog/article/:articleId/', async (request, response) => {
+app.get('/articles/:articleId/', async (request, response) => {
   let article = {};
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
     article = result;
@@ -209,7 +231,7 @@ app.get('/blog/article/:articleId/', async (request, response) => {
       return newComment;
     });
   }
-  return response.render('blogarticle.pug', {
+  return response.render('article.pug', {
     article,
     related,
     siteKey: config.reCAPTCHApublic,
@@ -221,43 +243,31 @@ app.get('/blog/article/:articleId/', async (request, response) => {
 });
 
 // Add comment
-app.post('/blog/article/:articleId/comment', async (request, response) => {
-  if (!request.body.name || !request.body.comment || (request.body.comment && request.body.comment.length > 512) || (request.body.name && request.body.name.length > 128)) return response.redirect(302, `/blog/article/${request.params.articleId}/?err=${400}&name=${encodeURIComponent(request.body.name)}&comment=${encodeURIComponent(request.body.comment)}#comments`);
-  let reCAPTCHAvalid = false;
+app.post('/articles/:articleId/comment', async (request, response) => {
+  if (!request.body.name || !request.body.comment || (request.body.comment && request.body.comment.length > 512) || (request.body.name && request.body.name.length > 128)) return response.redirect(302, `/articles/${request.params.articleId}/?err=${400}&name=${encodeURIComponent(request.body.name)}&comment=${encodeURIComponent(request.body.comment)}#comments`);
 
-  await Request(`https://www.google.com/recaptcha/api/siteverify?secret=${config.reCAPTCHAprivate}&response=${request.body['g-recaptcha-response']}`, async (error, result, body) => {
-    reCAPTCHAvalid = JSON.parse(body).success;
+  // Honeytrap
+  if (request.body.email.length) return response.redirect(302, `/articles/${request.params.articleId}/?err=honeytrap&name=${encodeURIComponent(request.body.name)}&comment=${encodeURIComponent(request.body.comment)}#comments`);
 
-    if (!reCAPTCHAvalid) {
-      const url = `/blog/article/${request.params.articleId}/?err=${401}&name=${encodeURIComponent(request.body.name)}&comment=${encodeURIComponent(request.body.comment)}#comments`;
-      return response.redirect(302, url);
-    }
-
-    let article;
-    await crud.findDocument('articles', { id: request.params.articleId }).then((result2) => {
-      article = result2;
-    });
-
-    if (article === null) return response.render('errors/404.pug', { cookies: request.cookies });
-
-    if (request.session.identifier === undefined) {
-      request.session.identifier = Math.floor(Math.random() * 8999999) + 1000000;
-    }
-
-    article.comments.push({
-      identifier: await bcrypt.hash(request.session.identifier.toString(), bcryptSalt),
-      author: request.body.name,
-      message: request.body.comment,
-      time: Math.floor(Date.now() / 1000),
-    });
-    crud.updateDocument('articles', { id: request.params.articleId.toString() }, { comments: article.comments });
-
-    return response.redirect(302, `/blog/article/${request.params.articleId}/#comments`);
+  let article;
+  await crud.findDocument('articles', { id: request.params.articleId }).then((result2) => {
+    article = result2;
   });
+
+  if (article === null) return response.render('errors/404.pug', { cookies: request.cookies });
+
+  article.comments.push({
+    author: request.body.name,
+    message: request.body.comment,
+    time: Math.floor(Date.now() / 1000),
+  });
+  crud.updateDocument('articles', { id: request.params.articleId.toString() }, { comments: article.comments });
+
+  return response.redirect(302, `/articles/${request.params.articleId}/#comments`);
 });
 
-// Add reaction
-app.post('/blog/article/:articleId/react/:reaction/:action', async (request, response) => {
+// Add/remove reaction
+app.post('/articles/:articleId/reactions/:reaction/:action', async (request, response) => {
   // TECH DEBT: Integrate special updates into mongdb-crud
   let article = null;
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
@@ -272,7 +282,7 @@ app.post('/blog/article/:articleId/react/:reaction/:action', async (request, res
 });
 
 // Sign article
-app.post('/blog/article/:articleId/sign', async (request, response) => {
+app.post('/articles/:articleId/sign', async (request, response) => {
   let article = null;
   await crud.findDocument('articles', { id: request.params.articleId }).then((result) => {
     article = result;
@@ -298,16 +308,20 @@ app.post('/subscribe/nope', async (request, response) => {
 });
 
 // Projects homepage
-app.get('/projects/', async (request, response) => {
+/*app.get('/projects/', async (request, response) => {
   let projects = [];
   await crud.findMultipleDocuments('projects', {}).then((result) => {
     projects = result;
   });
-  response.render('projectsmain.pug', { projects, md, cookies: request.cookies });
+  response.render('projects.pug', {
+    projects,
+    md,
+    cookies: request.cookies
+  });
 });
-
+*/
 // Writing homepage
-app.get('/writing/', async (request, response) => {
+/*app.get('/writing/', async (request, response) => {
   let writing = [];
   await crud.findMultipleDocuments('writing', {}).then((result) => {
     writing = result;
@@ -320,11 +334,11 @@ app.get('/writing/', async (request, response) => {
     return -1;
   });
 
-  return response.render('writingmain.pug', { writing, md, cookies: request.cookies });
+  return response.render('writing.pug', { writing, md, cookies: request.cookies });
 });
-
+*/
 // Literary work display page
-app.get('/writing/:workId/', async (request, response) => {
+/*app.get('/writing/:workId/', async (request, response) => {
   let work = {};
   await crud.findDocument('writing', { id: request.params.workId }).then((result) => {
     work = result;
@@ -342,83 +356,63 @@ app.get('/writing/:workId/', async (request, response) => {
     md,
   });
 });
-
+*/
 // Contact me
-app.post('/contact/send/', async (request, response) => {
+app.post('/contact/', async (request, response) => {
   const message = {
     from: 'benjamin@seewitheyesclosed.com',
     to: config.email,
     subject: request.body.subject.toString(),
     text: `Message from ${request.body.email.toString()}:${request.body.message.toString()}`,
   };
-  let reCAPTCHAvalid = false;
 
-  await Request(`https://www.google.com/recaptcha/api/siteverify?secret=${config.reCAPTCHAprivate}&response=${request.body['g-recaptcha-response']}`, async (error, result, body) => {
-    reCAPTCHAvalid = JSON.parse(body).success;
+  await sendmail(message);
 
-    if (!reCAPTCHAvalid) {
-      const url = `/contact/?err=${401}&subject=${encodeURIComponent(request.body.subject)}&email=${encodeURIComponent(request.body.email)}&message=${encodeURIComponent(request.body.message)}`;
-      return response.redirect(302, url);
-    }
-
-    await sendmail(message);
-
-    return response.redirect(302, '/contact/?success=true');
-  });
+  return response.redirect(302, '/contact/?success=true');
 });
 
 // Policies
-app.get('/policies/:policy/', async (request, response) => {
-  const policyPages = {
-    privacy: {
-      title: policies.privacy.title,
-      description: policies.privacy.description,
-      markdown: policies.privacy.markdown.join('\n'),
-      related: [
-        {
-          name: 'Cookie Policy',
-          link: '/policies/cookies/',
-        },
-        {
-          name: 'Terms of Use',
-          link: '/policies/terms/',
-        },
-      ],
-    },
-    cookies: {
-      title: policies.cookies.title,
-      description: policies.cookies.description,
-      markdown: policies.cookies.markdown.join('\n'),
-      related: [
-        {
-          name: 'Privacy Policy',
-          link: '/policies/privacy/',
-        },
-        {
-          name: 'Terms of Use',
-          link: '/policies/terms/',
-        },
-      ],
-    },
-    terms: {
-      title: policies.terms.title,
-      description: policies.terms.description,
-      markdown: policies.terms.markdown.join('\n'),
-      related: [
-        {
-          name: 'Privacy Policy',
-          link: '/policies/privacy/',
-        },
-        {
-          name: 'Cookie Policy',
-          link: '/policies/cookies/',
-        },
-      ],
-    },
-  };
+app.get('/policies/:policy/', async (request, response, next) => {
+  if (policies[request.params.policy] === undefined) return next();
+  if (policies[request.params.policy] === false) {
+    const raw = fs.readFileSync(
+      './src/policies/' + request.params.policy + '.md',
+      'utf8'
+    );
+    policies[request.params.policy] = {
+      metadata: frontMatter(raw).attributes,
+      body: marked.parse(frontMatter(raw).body)
+    }
+  }
 
-  if (policyPages[request.params.policy] === undefined) return response.status(204).end();
-  return response.render('policy.pug', { policy: policyPages[request.params.policy], md, cookies: request.cookies });
+  return response.render('policy.pug', {
+    metadata: policies[request.params.policy].metadata,
+    body: policies[request.params.policy].body,
+    md,
+    cookies: request.cookies
+  });
+});
+
+// What is...
+app.get('/what-is-:thing/', async (request, response, next) => {
+  if (things[request.params.thing] === undefined) return next();
+  if (things[request.params.thing] === false) {
+    const raw = fs.readFileSync(
+      './src/things/' + request.params.thing + '.md',
+      'utf8'
+    );
+    things[request.params.thing] = {
+      metadata: frontMatter(raw).attributes,
+      body: marked.parse(frontMatter(raw).body).replace(/<a\ /g, "<a target='_blank' rel='noopener' ").replace(/<img/g, "<img loading='lazy'").replace("<iframe", "<iframe loading='lazy'")
+    }
+  }
+
+  return response.render('what-is.pug', {
+    metadata: things[request.params.thing].metadata,
+    body: things[request.params.thing].body,
+    md,
+    cookies: request.cookies
+  });
 });
 
 // Gamified Reading Reading Bingo
@@ -450,18 +444,64 @@ app.post('/projects/gamified-reading/finriq/reading-bingo/', async (request, res
   response.status(500).end();
 });
 
+
 // Redirects
 app.get('/projects/learnclef/*', async (request, response) => response.redirect(301, '/projects/learn-clef/'));
+app.get('/projects/:id/*', async (request, response) => {
+  return response.redirect(301, 'https://benjaminhollon.com/projects/' + request.params.id + '/');
+});
+app.get('/writing/:id/', async (request, response) => {
+  return response.redirect(301, 'https://benjaminhollon.com/writing/' + request.params.id + '/');
+});
+app.get('/writing/', async (request, response) => {
+  return response.redirect(301, 'https://benjaminhollon.com/writing/');
+});
+app.get('/projects/', async (request, response) => {
+  return response.redirect(301, 'https://benjaminhollon.com/projects/');
+});
+app.get('/blog/', async (request, response) => {
+  return response.redirect(301, `/articles/`);
+});
+app.get('/blog/article/:articleId/', async (request, response) => {
+  return response.redirect(301, `/articles/${request.params.articleId}/`);
+});
 
 // Change color theme
-app.post('/theme/set/:theme', async (request, response) => {
-  response.cookie('theme', request.params.theme.toString());
+const supportedThemes = ['dark', 'light'];
+app.get('/settings/theme/:theme', async (request, response) => {
+  if (supportedThemes.indexOf(request.params.theme) === -1) return response.status(404).end();
 
-  return response.status(204).end();
+  response.cookie('theme', request.params.theme);
+  if (request.query.refresh === 'false') return response.status(204).end();
+  else return response.redirect(302, request.headers['referer']);
+});
+
+// Change font family
+const supportedFontFamilies = ['serif', 'sans', 'monospace'];
+app.get('/settings/font/:fontFamily', async (request, response) => {
+  if (supportedFontFamilies.indexOf(request.params.fontFamily) === -1) return response.status(404).end();
+
+  response.cookie('fontFamily', request.params.fontFamily);
+  if (request.query.refresh === 'false') return response.status(204).end();
+  else return response.redirect(302, request.headers['referer']);
+});
+
+// Change size
+app.get('/settings/size/:size', async (request, response) => {
+  const size = parseInt(request.params.size);
+  if (size < 1 || size > 5) return response.status(404).end();
+
+  response.cookie('size', size);
+  if (request.query.refresh === 'false') return response.status(204).end();
+  else return response.redirect(302, request.headers['referer']);
 });
 
 // RSS Feed
 app.get('/feed/', async (request, response) => {
+  const appendComplete = `\n\n---\n\nThis article was first published on [the See With Eyes Closed website](https://${request.hostname}/), but the full article was generously provided to you via RSS. Please consider [visiting the article on the site](https://${request.hostname}/articles/[[ID]]/) to leave feedback or view similar See With Eyes Closed articles.`;
+
+  const appendSummary = `\n\n---\n\nThis article has elements in it that cannot be sent through RSS. You can [view the full article](https://${request.hostname}/articles/[[ID]]/) on [the See With Eyes Closed website](https://${request.hostname}/).`;
+
   let articles = [];
 
   await crud.findMultipleDocuments('articles', {}).then((result) => {
@@ -470,18 +510,32 @@ app.get('/feed/', async (request, response) => {
 
   articles.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  const feed = articles.slice(0, 15).map((article) => {
-    const date = new Date(article.date);
-    return date > new Date() ? 'JJJ' : `<item>
-      <title>${article.title}</title>
-      <link>https://${request.hostname}/blog/article/${article.id}/</link>
-      <guid ispermalink="false">${article._id.toString()}</guid>
-      <pubDate>${(new Date(date)).toUTCString()}</pubDate>
-      <description>${article.summary.replace('&nbsp;', ' ').replace(/(<([^>]+)>)/ig, '')}</description>
-    </item>`;
-  });
+  const feed = articles
+    .slice(0, 15)
+    .filter(article => new Date(article.date) <= Date.now())
+    .map((article) => {
+      const date = new Date(article.date);
+      if (article.content.indexOf('<script') === -1 && article.content.indexOf('<style') === -1) {
+        return `<item>
+          <title>${article.title}</title>
+          <link>https://${request.hostname}/articles/${article.id}/</link>
+          <guid ispermalink="false">${article._id.toString()}</guid>
+          <pubDate>${date.toUTCString()}</pubDate>
+          <description>${encode(md.render(article.content + appendComplete.replace('[[ID]]', article.id)), {mode: 'nonAsciiPrintable', level: 'xml'})}</description>
+        </item>`;
+      }
 
-  response.setHeader('Content-type', 'application/rss+xml');
+      console.log(article.id);
+      return `<item>
+        <title>${article.title}</title>
+        <link>https://${request.hostname}/articles/${article.id}/</link>
+        <guid ispermalink="false">${article._id.toString()}</guid>
+        <pubDate>${date.toUTCString()}</pubDate>
+        <description>${encode(md.render(article.summary + appendSummary.replace('[[ID]]', article.id)), {mode: 'nonAsciiPrintable', level: 'xml'})}</description>
+      </item>`;
+    });
+
+  response.setHeader('Content-type', 'application/xml+rss');
   response.send(
     `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
@@ -508,6 +562,3 @@ app.use((request, response) => {
 app.listen(config.port, () => {
   console.log(`Server running on port ${config.port}`);
 });
-
-// Generate sitemap
-// if (process.env.NODE_ENV === 'production') setTimeout(() => generator.start(), 0);

@@ -1,30 +1,26 @@
 extends ../layout.pug
 
 block variables
-  - title = "404 Error: We Can't Find Russel's Teapot"
+  - hardTitle = "404 Error: We Can't Find Russel's Teapot"
   - metaDescription = "An oopsie happened. That page isn't where it was supposed to be. Want to look for it with us?"
 
-block append head
-  style.
-    #content {
-      position: relative;
-    }
-    .vcenter {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      display: inline-block;
-      max-width: 350px;
-      transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-    }
-    
-    h1 {
-      font-size: clamp(2em, 25vmin, 7em);
-      margin: 0;
-    }
+block header
+  h1 404 Error
+  p We can't find Russel's Teapot.
 
 block content
   .vcenter
-    h1 404
-    p An oopsie happened. That page isn't where it was supposed to be. #[a(href="http://seewitheyesclosed.com/") Look for it!]
+    p An oopsie happened. That page isn't where it was supposed to be. Here's what you can do to try and find it:
+    ul
+      li
+        strong Double check your spelling
+        |  — We all make tpyos sometimes.
+      li
+        strong Check <a href="/articles/" target="_blank" rel="noopener">the articles page</a>
+        |  — If you were looking for an article, you should be able to find it <a href="/articles/" target="_blank" rel="noopener">here</a>.
+      li
+        strong Search between Earth and Mars
+        |  — <a href="https://en.wikipedia.org/wiki/Russell%27s_teapot" target="_blank" rel="noopener">Make sure you know where the burden of proof lies.</a>
+      li
+        strong <a href="/contact/" target="_blank" rel="nofollow">Contact me</a>
+        |  — If all else fails, I can try and help you find what you're looking for.

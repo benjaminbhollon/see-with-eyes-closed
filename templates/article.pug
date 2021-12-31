@@ -1,0 +1,144 @@
+extends layout.pug
+
+block variables
+  - metaDescription = md.render(article.summary).replace( /(<([^>]+)>)/ig, '')
+  - title = article.title
+  - signable = false
+  if article.image
+    - metaImage = article.image
+  if article.content.slice(-14) === '[[signatures]]'
+    - article.content = article.content.slice(0, -14)
+    - signable = true
+    if typeof article.signedBy === 'undefined'
+      - article.signedBy = []
+      
+  - metaType = 'article'
+
+block append meta
+  meta(property="og:article:author" content=article.author)
+  link(rel="canonical" href="https://seewitheyesclosed.com/articles/" + article.id + "/")
+
+block append resources
+  link(rel="stylesheet" href="/assets/css/article.css")
+  script(src="/assets/js/article.js" async)
+
+block append head
+  noscript
+    style.
+      .reactions.clickable .reactions__button {
+        cursor: default;
+      }
+      .nope, #comments h3, #comments form, .bethefirst {
+        display: none;
+      }
+      
+block header
+  h1.article__title #{article.title}
+  p.article__details
+    | <time datetime="#{new Date(article.date).toISOString().split('T')[0]}">#{article.date}</time> by #{article.author}
+    br
+    em #{Math.ceil(article.content.split(" ").length / 250)} minute read
+  
+block content
+  #articleId.hidden #{article.id}
+  article.article
+    if parameters.err && parameters.err == 'a401'
+      p.failure The name you chose is too long.
+    .article__content!= md.render(article.content).replace(/<a\ /g, "<a target='_blank' rel='noopener' ").replace(/<img/g, "<img loading='lazy'").replace("<iframe", "<iframe loading='lazy'")
+    if signable
+      .article__sign
+        p The people who have signed their names below hereby resolve to adhere to the guidelines above to their utmost ability.
+        p Signed,
+        each signatory in article.signedBy
+          p(style='text-indent:0.25in') #{signatory}
+        .article__sign__form
+          +form('POST', `./sign`, [
+            {
+              label: 'Add your name',
+              name: 'name',
+              placeholder: 'Joe Cool'
+            }
+          ], 'Sign')
+  aside.article__reactions
+    h2.--center What did you think?
+    include ./mixins/reactions.pug
+    +reactions(article.reactions, true)
+  if article.comments !== false
+    aside.comments#comments
+      if article.comments.length === 0
+        p.--center There aren't any comments yet.
+          |
+          |
+          span.bethefirst Be the first!
+      else if article.comments.length
+        h2(style="text-align:left") #{article.comments.length} comment#{article.comments.length === 1 ? '' : 's'}
+        .list
+          each comment in article.comments
+            .comment
+              p
+                strong #{comment.author}&nbsp;&nbsp;
+                span #{comment.time}
+              div #{comment.message}
+        h3 Post a Comment
+      .--center
+        div(style="display:inline-block;max-width:500px;width:100%;")
+          +form("POST", `./comment`, [
+            {
+              label: "Your Name",
+              name: 'name',
+              placeholder: "John Doe",
+              value: parameters.name, 
+              maxlength: 128,
+              required: true
+            },
+            {
+              label: "Your Comment",
+              type: 'textarea',
+              name: 'comment',
+              value: parameters.comment,
+              placeholder: 'What did you think?'
+            },
+            {
+              label: "If you're not a robot, leave this blank",
+              placeholder: "Don't enter anything here.",
+              name: 'email',
+              type: 'email',
+              autocomplete: 'off',
+              class: 'sr-only'
+            }
+          ], "Go!")
+      if parameters.err
+        if parameters.err === 'honeytrap'
+          p.failure Whoa, whoa, whoa. We said not to fill out that form field if you're a human. Try again, and this time, leave it blank.
+        else if parameters.err == 400
+          p.failure Please fill out all the fields.
+  hr
+  if !cookies.subscribed
+    aside.subscribe
+      h2.--center Like the content?
+      p I send out a weekly digest of new posts, projects, and things I'm currently working on. If you'd like to be a part of that, subscribe below. Can't wait to see you there!
+      p.--center
+        a(href="https://digest.seewitheyesclosed.com" target="_blank" rel="noopener") Subscribe for updates!
+      p There are other ways to subscribe too!
+      ul
+        li
+          a(href="/feed/") RSS
+          |
+          |
+          a(href="/what-is-rss/") (What is this?)
+        li
+          a(href="https://fosstodon.org/@benjaminhollon" rel="me noopener" target="_blank") Mastodon
+          |
+          |
+          a(href="/what-is-mastodon/") (What is this?)
+  if related.length
+    hr
+    aside.related.--center
+      h2 Related Articles
+      each listing in related
+        p
+          strong #{listing.title}
+          br
+          em #{listing.date} by #{listing.author}
+          br
+          a(href=("/articles/" + listing.id)) Read

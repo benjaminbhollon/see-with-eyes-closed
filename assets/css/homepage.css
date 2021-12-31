@@ -1,0 +1,4 @@
+header h1:nth-child(1) {
+  font-size: 2em;
+  font-size: clamp(2em, 11.7vw, 4.9em);
+}

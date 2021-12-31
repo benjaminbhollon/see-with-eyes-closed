@@ -1,11 +1,10 @@
-extends admin.pug
+extends layout.pug
 
 block variables
   - title = "New Post"
 
 block content
-  article
-    h1 New Post
+  .--center
     +form("POST", "", [
       {
         label: "Title",
@@ -22,7 +21,7 @@ block content
       {
         label: "Author",
         name: "author",
-        value: config.mainAuthor,
+        value: config.defaultAuthor,
         placeholder: "First Last",
         required: true
       },
@@ -63,4 +62,4 @@ block content
         name: "comments",
         checked: true
       }
-    ])
+    ], "Post Article")

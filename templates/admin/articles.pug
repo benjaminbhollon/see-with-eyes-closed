@@ -1,0 +1,13 @@
+extends layout.pug
+
+block variables
+  - title = "Manage Articles"
+
+block content
+  .--center
+    each article in articles
+      .article
+        h2 #{article.title}
+        p by #{article.author} on #{article.date}
+        p
+          a(href=(`./${article.id}/edit`)) Edit

@@ -1,0 +1,12 @@
+extends layout.pug
+
+block variables
+  - title = "Admin Dashboard"
+
+block content 
+  p Greetings, admin! You can do the following:
+  ul
+    li: a(href="/admin/articles/new") Post a new article
+    li: a(href="/admin/articles/") Manage articles
+    li: a(href="/") Exit dashboard
+  p We hope you enjoy your stay here at the Admin Dashboard hotel.

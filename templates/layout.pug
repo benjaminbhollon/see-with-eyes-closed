@@ -1,64 +1,79 @@
 doctype html
-html(lang='en' data-theme=cookies.theme)
+html(lang='en-us' data-size=(cookies.size || 3) data-theme=(cookies.theme || 'light') data-font-family=(cookies.fontFamily || 'serif'))
   head
     block head
-      - metaImage = "https://seewitheyesclosed.com/assets/images/homepage/2.jpg"
+      //- metaImage = "https://seewitheyesclosed.com/assets/images/homepage/2.jpg"
       block variables
-      block resources
-        link(rel="stylesheet" href="/assets/css/global.css")
-        script(src="/assets/js/global.js" async)
       block meta
         meta(charset="UTF-8")
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
         meta(name="description" content=metaDescription)
-        meta(property="og:title" content=title + " | See With Eyes Closed")
-        meta(property="og:type" content="website")
+        meta(property="og:title" content=(hardTitle || title))
+        meta(property="og:type" content=(metaType || 'website'))
         meta(property="og:description" content=metaDescription)
-        meta(property="og:image" content=metaImage)
+        //-meta(property="og:image" content=metaImage)
+      block resources
+        link(rel="preload" href="/assets/fonts/Chomsky.woff2" as="font" type="font/woff2")
+        link(rel="stylesheet" href="/assets/css/global.css")
+        script(src="/assets/js/global.js" async)
       block title
-        title #{title} | See With Eyes Closed
+        title= hardTitle || (title + " | See With Eyes Closed")
       link(rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.ico")
       noscript
         style.
-          #colorThemeToggle {
+          .--hide-noscript {
             display: none;
           }
   body
-    a.sr-only(href="#content") Skip to Content
     block mixins
       include mixins/form.pug
       include mixins/verse.pug
-    block navbar
-      nav.main-nav
-        a.main-nav__title(href="/") See With Eyes Closed
-        label.main-nav__collapse(for="nav-collapse") &#9776;
-        input#nav-collapse(type="checkbox")
-        .main-nav__collapsible
-          a(href="/") Home
-          a(href="/blog/") Blog
-          a(href="/projects/") Projects
-          a(href="/writing/") Writing
-          label(id="colorThemeToggle" aria-hidden="true")
-            input(type="checkbox" onclick="toggleTheme()" checked=(cookies.theme === 'dark') aria-hidden="true")
-            span
-    #content
-      block content
-        if (content)
-          != md.render(content)
-    block footer
-      footer
-        p
-          a(rel="me noopener" href="https://fosstodon.org/@benjaminhollon" target="_blank") Mastodon
-          |  | 
-          a(href="https://github.com/benjaminbhollon/" target="_blank" rel="noopener") GitHub
-          |  | 
-          a(href="https://goodreads.com/bibliobone/" target="_blank" rel="noopener") Goodreads
-        +verse
-        p
-          a(href="/contact/") Contact Me
-          |  | 
-          a(href="/policies/privacy/") Privacy Policy
-          |  | 
-          a(href="/policies/cookies/") Cookie Policy
-          |  | 
-          a(href="/policies/terms/") Terms of Use
+      include mixins/settings.pug
+    #column
+      header
+        block header
+          h1= title || hardTitle
+      block navbar
+      nav#main-nav
+        span: a.tab-only(href="#content") Skip Navigation
+        |
+        |
+        block navbar-links
+          span: a(href="/") Home
+          |
+          |
+          span: a(href="/articles/") Articles
+          |
+          |
+          span: a(href="/subscribe/") Subscribe
+          |
+          |
+          span: a(href="https://benjaminhollon.com" target="_blank" rel="noopener") More
+      main#content(tabindex="-1")
+        block content
+          if (content)
+            != md.render(content)
+          else
+            p This page does not seem to have any content. Check back later!
+      +displaySettings
+      block footer
+        footer
+          p
+            a(href="/social/") Social
+            |  | 
+            a(href="/feed/") RSS
+            |  | 
+            a(href="https://digest.seewitheyesclosed.com" target="_blank" rel="noopener") Digest
+            |  | 
+            a(href="https://github.com/benjaminbhollon/see-with-eyes-closed" target="_blank" rel="noopener") Code
+            
+          +verse
+          
+          p
+            a(href="/contact/") Contact Me
+            |  | 
+            a(href="/policies/privacy/") Privacy Policy
+            |  | 
+            a(href="/policies/cookies/") Cookie Policy
+            |  | 
+            a(href="/policies/terms/") Terms of Use
