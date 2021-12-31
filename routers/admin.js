@@ -152,11 +152,11 @@ router.post('/articles/new', async (request, response) => {
         count: 0,
       },
       {
-        name: 'funny',
+        name: 'surprising',
         count: 0,
       },
       {
-        name: 'hooray',
+        name: 'confusing',
         count: 0,
       },
       {
