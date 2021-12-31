@@ -2,3 +2,44 @@ extends layout.pug
 
 block variables
   - title = "Contact Me"
+  - metaDescription = "Need my input on something? Drop me a quick message and I'll be back to you ASAP."
+  
+block append resources
+  link(rel="stylesheet" href="/assets/css/article.css")
+block content
+  p Sorry, but my contact form is currently broken. A fixed version should be coming very soon, but until then you can contact me via email at br3zls68l@mozmail.com.
+  //-
+    p Need my input on something? Drop me a quick message and I'll be back to you ASAP. Please allow a day or two; I don't always go through me email immediately.
+    if parameters.success === "true"
+      .success Your message is on its way! I'll get back to you ASAP.
+    else if parameters.err === "400"
+      .failure Looks like you didn't fill that out right. Try again.
+    .--center
+      div(style="display:inline-block;width:100%")
+        +form("POST", "/contact/", [
+          {
+            label: "Subject",
+            name: "subject",
+            placeholder: "What's it all about?",
+            maxlength: 256,
+            required: true,
+            autofocus: true,
+            value: parameters.subject
+          },
+          {
+            label: "Your Email",
+            type: "email",
+            name: "email",
+            placeholder: "you@somewhere.com",
+            required: true,
+            value: parameters.email
+          },
+          {
+            label: "Message",
+            type: "textarea",
+            name: "message",
+            placeholder: "Tell me all about it.",
+            required: true,
+            value: parameters.message
+          }
+        ], "Send")

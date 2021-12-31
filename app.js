@@ -358,27 +358,17 @@ app.post('/subscribe/nope', async (request, response) => {
 });
 */
 // Contact me
-app.post('/contact/send/', async (request, response) => {
+app.post('/contact/', async (request, response) => {
   const message = {
     from: 'benjamin@seewitheyesclosed.com',
     to: config.email,
     subject: request.body.subject.toString(),
     text: `Message from ${request.body.email.toString()}:${request.body.message.toString()}`,
   };
-  let reCAPTCHAvalid = false;
 
-  await Request(`https://www.google.com/recaptcha/api/siteverify?secret=${config.reCAPTCHAprivate}&response=${request.body['g-recaptcha-response']}`, async (error, result, body) => {
-    reCAPTCHAvalid = JSON.parse(body).success;
+  await sendmail(message);
 
-    if (!reCAPTCHAvalid) {
-      const url = `/contact/?err=${401}&subject=${encodeURIComponent(request.body.subject)}&email=${encodeURIComponent(request.body.email)}&message=${encodeURIComponent(request.body.message)}`;
-      return response.redirect(302, url);
-    }
-
-    await sendmail(message);
-
-    return response.redirect(302, '/contact/?success=true');
-  });
+  return response.redirect(302, '/contact/?success=true');
 });
 
 // Policies

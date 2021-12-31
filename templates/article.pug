@@ -17,11 +17,10 @@ block variables
 block append meta
   meta(property="og:article:author" content=article.author)
   link(rel="canonical" href="https://seewitheyesclosed.com/articles/" + article.id + "/")
-  
+
 block append resources
   link(rel="stylesheet" href="/assets/css/article.css")
   script(src="/assets/js/article.js" async)
-  script(src="https://www.google.com/recaptcha/api.js" defer async)
 
 block append head
   noscript
