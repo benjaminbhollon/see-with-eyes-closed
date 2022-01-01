@@ -32,7 +32,7 @@ html[data-theme="light"] {
 }
 html[data-theme="dark"] {
   color-scheme: dark;
-  --background-color: #333;
+  --background-color: #1e232b;
   --color: #fff;
   --light-color: #ddd;
 }
