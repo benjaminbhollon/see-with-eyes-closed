@@ -140,7 +140,6 @@ const seriesIndex = {
   }
 };
 app.get('/articles/series/:series/', async (request, response, next) => {
-  console.log('hello');
   if (!seriesIndex[request.params.series]) return next();
 
   let articles = [];
@@ -174,7 +173,7 @@ app.get('/articles/:articleId/', async (request, response) => {
   }
 
   const series = Object.values(seriesIndex).find(s => article.tags.find(t => t === s.tag));
-  console.log(series);
+
 
 
   // Similar Articles
@@ -561,7 +560,6 @@ app.get('/feed/', async (request, response) => {
         </item>`;
       }
 
-      console.log(article.id);
       return `<item>
         <title>${article.title}</title>
         <link>https://${request.hostname}/articles/${article.id}/</link>
@@ -596,5 +594,5 @@ app.use((request, response) => {
 
 // Listen on port from config.json
 app.listen(config.port, () => {
-  console.log(`Server running on port ${config.port}`);
+  console.info(`Server running on port ${config.port}`);
 });
