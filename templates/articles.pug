@@ -13,14 +13,29 @@ block append mixins
   include ./mixins/reactions.pug
     
 block content
-  if recent.length
-    each post in recent
-      .article
-        h2: a(href="./" + post.id + "/")= post.title
-        p.article__details <time datetime="#{new Date(post.date).toISOString().split('T')[0]}">#{post.date}</time> by #{post.author}
-        != md.render(post.summary)
-        if (post.reactions.filter(r => r.count).length)
-          +reactions(post.reactions, false, post.comments.length)
-        p.readMore: a(href="./" + post.id + "/") Read the full article
+  if !series
+    p A series is currently running, which should probably be <a href="/articles/series/digital-citizenship/">read in order</a>. Articles on this page are shown in order of publication date, with the most recent articles first.
+    if recent.length
+      each post in recent
+        .article
+          h2: a(href="/articles/" + post.id + "/")= post.title
+          p.article__details <time datetime="#{new Date(post.date).toISOString().split('T')[0]}">#{post.date}</time> by #{post.author}
+          != md.render(post.summary)
+          if (post.reactions.filter(r => r.count).length)
+            +reactions(post.reactions, false, post.comments.length)
+          p.readMore: a(href="/articles/" + post.id + "/") Read the full article
+    else
+      p.--center No articles have been published yet. Check back later!
   else
-    p.--center No articles have been published yet. Check back later!
+    p You are viewing articles in the series on #{series.topic}, in order from beginning to end. You can also view <a href="/articles/">all articles</a>.
+    if articles.length
+      each post in articles
+        .article
+          h2: a(href="/articles/" + post.id + "/")= post.title
+          p.article__details <time datetime="#{new Date(post.date).toISOString().split('T')[0]}">#{post.date}</time> by #{post.author}
+          != md.render(post.summary)
+          if (post.reactions.filter(r => r.count).length)
+            +reactions(post.reactions, false, post.comments.length)
+          p.readMore: a(href="/articles/" + post.id + "/") Read the full article
+      else
+        p.--center No articles have been published yet. Check back later!

@@ -131,6 +131,37 @@ app.get('/articles/', async (request, response) => {
   });
 });
 
+const seriesIndex = {
+  "digital-citizenship": {
+    id: "digital-citizenship",
+    topic: "digital citizenship, the way we live in a technology-saturated world",
+    firstArticle: "what-is-trust",
+    tag: "2022-series"
+  }
+};
+app.get('/articles/series/:series/', async (request, response, next) => {
+  console.log('hello');
+  if (!seriesIndex[request.params.series]) return next();
+
+  let articles = [];
+  await crud.findMultipleDocuments('articles', {}).then((result) => {
+    articles = result.filter(p => p.tags.indexOf(seriesIndex[request.params.series].tag) !== -1);
+  });
+
+  articles.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  const articlesHTML = JSON.parse(JSON.stringify(articles));
+
+  return response.render('articles.pug', {
+    articles: articlesHTML,
+    series: seriesIndex[request.params.series],
+    parameters: request.query,
+    md,
+    cookies: request.cookies,
+    subscribed: request.cookies.subscribed,
+  });
+});
+
 // Blog article
 app.get('/articles/:articleId/', async (request, response) => {
   let article = {};
@@ -141,6 +172,10 @@ app.get('/articles/:articleId/', async (request, response) => {
     response.status(404);
     return response.render('errors/404.pug', { cookies: request.cookies });
   }
+
+  const series = Object.values(seriesIndex).find(s => article.tags.find(t => t === s.tag));
+  console.log(series);
+
 
   // Similar Articles
   let related = [];
@@ -234,6 +269,7 @@ app.get('/articles/:articleId/', async (request, response) => {
   return response.render('article.pug', {
     article,
     related,
+    series,
     siteKey: config.reCAPTCHApublic,
     parameters: request.query,
     md,

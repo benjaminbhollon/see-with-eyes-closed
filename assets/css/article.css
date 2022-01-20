@@ -106,3 +106,13 @@ figcaption {
 .failure {
   border-color: red;
 }
+
+.small-hr {
+  text-align: center;
+}
+
+.small-hr hr {
+  display: inline-block;
+  width: 10em;
+  max-width: 100%;
+}

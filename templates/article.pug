@@ -45,20 +45,23 @@ block content
     if parameters.err && parameters.err == 'a401'
       p.failure The name you chose is too long.
     .article__content!= md.render(article.content).replace(/<a\ /g, "<a target='_blank' rel='noopener' ").replace(/<img/g, "<img loading='lazy'").replace("<iframe", "<iframe loading='lazy'")
-    if signable
-      .article__sign
-        p The people who have signed their names below hereby resolve to adhere to the guidelines above to their utmost ability.
-        p Signed,
-        each signatory in article.signedBy
-          p(style='text-indent:0.25in') #{signatory}
-        .article__sign__form
-          +form('POST', `./sign`, [
-            {
-              label: 'Add your name',
-              name: 'name',
-              placeholder: 'Joe Cool'
-            }
-          ], 'Sign')
+      if signable
+        .article__sign
+          p The people who have signed their names below hereby resolve to adhere to the guidelines above to their utmost ability.
+          p Signed,
+          each signatory in article.signedBy
+            p(style='text-indent:0.25in') #{signatory}
+          .article__sign__form
+            +form('POST', `./sign`, [
+              {
+                label: 'Add your name',
+                name: 'name',
+                placeholder: 'Joe Cool'
+              }
+            ], 'Sign')
+      if (series)
+        .small-hr: hr
+        p This article is part of a series on #{series.topic}, which you might enjoy reading <a href="/articles/series/#{series.id}/">in order from the beginning</a>.
   aside.article__reactions
     h2.--center What did you think?
     include ./mixins/reactions.pug
