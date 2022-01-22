@@ -98,13 +98,17 @@ figcaption {
 .article__content aside, .failure {
   border: 2px solid;
   border-radius: 1rem;
-  padding: 1rem;
   margin-left: 1em;
   margin-right: 1em;
 }
 
 .failure {
+  padding: 1rem;
   border-color: red;
+}
+
+.article__content aside {
+  padding: 0 1em;
 }
 
 .small-hr {

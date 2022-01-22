@@ -25,7 +25,7 @@ md.use(require('markdown-it-container'), 'aside', {
 
     if (tokens[idx].nesting === 1) {
       // opening tag
-      return '<aside>' + md.utils.escapeHtml(m[1]) + '\n';
+      return '<aside>' + marked(m[1]) + '\n';
 
     } else {
       // closing tag
