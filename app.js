@@ -554,7 +554,7 @@ app.get('/feed/', async (request, response) => {
         return `<item>
           <title>${article.title}</title>
           <link>https://${request.hostname}/articles/${article.id}/</link>
-          <guid ispermalink="false">${article._id.toString()}</guid>
+          <guid isPermaLink="false">${article._id.toString()}</guid>
           <pubDate>${date.toUTCString()}</pubDate>
           <description>${encode(md.render(article.content + appendComplete.replace('[[ID]]', article.id)), {mode: 'nonAsciiPrintable', level: 'xml'})}</description>
         </item>`;
