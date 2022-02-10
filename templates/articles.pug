@@ -20,6 +20,8 @@ block content
         .article
           h2: a(href="/articles/" + post.id + "/")= post.title
           p.article__details <time datetime="#{new Date(post.date).toISOString().split('T')[0]}">#{post.date}</time> by #{post.author}
+            br
+            em #{Math.ceil(post.content.split(" ").length / 250)} minute read
           != md.render(post.summary)
           if (post.reactions.filter(r => r.count).length)
             +reactions(post.reactions, false, post.comments.length)
@@ -33,6 +35,8 @@ block content
         .article
           h2: a(href="/articles/" + post.id + "/")= post.title
           p.article__details <time datetime="#{new Date(post.date).toISOString().split('T')[0]}">#{post.date}</time> by #{post.author}
+            br
+            em #{Math.ceil(post.content.split(" ").length / 250)} minute read
           != md.render(post.summary)
           if (post.reactions.filter(r => r.count).length)
             +reactions(post.reactions, false, post.comments.length)

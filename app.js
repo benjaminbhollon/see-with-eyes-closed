@@ -577,7 +577,7 @@ app.get('/feed/', async (request, response) => {
   <title>See With Eyes Closed</title>
   <description>A blog by Benjamin Hollon.</description>
   <language>en-us</language>
-  <copyright>© Benjamin Hollon ${(new Date()).getFullYear()}. Content licensed under CC BY-NC 4.0.</copyright>
+  <copyright>© Benjamin Hollon ${(new Date()).getFullYear()}. Content licensed under CC BY-SA 4.0.</copyright>
   <link>https://${request.hostname}/</link>${
   feed.join('')
 }

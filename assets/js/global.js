@@ -13,38 +13,6 @@ async function simplePost(url, callback) {
   request.send();
 }
 
-// Color theme
-/*
-const getCSSCustomProp = (propKey, element = document.documentElement, castAs = 'string') => {
-  let response = getComputedStyle(element).getPropertyValue(propKey);
-
-  // Tidy up the string if there's something to work with
-  if (response.length) {
-    response = response.replace(/'|"/g, '').trim();
-  }
-
-  // Convert the response into a whatever type we wanted
-  switch (castAs) {
-    case 'number':
-    case 'int':
-      return parseInt(response, 10);
-    case 'float':
-      return parseFloat(response, 10);
-    case 'boolean':
-    case 'bool':
-      return response === 'true' || response === '1';
-    default:
-      return response;
-  }
-};
-function toggleTheme() {
-  const newTheme = (document.querySelector('#colorThemeToggle input').checked ? 'dark' : 'light');
-  document.documentElement.dataset.theme = newTheme;
-  simplePost(`/theme/set/${newTheme}`);
-}
-if (getCSSCustomProp('--background-color') === '#333') document.querySelector('#colorThemeToggle input').checked = true;
-*/
-
 // Console Message
 console.log('                                                  \n                                                  \n                                                  \n                 &@@@@@@@@@@@@@@@#                \n            @@@@@@@@@@@@@@@@@@@@@@@@@@@           \n         @@@@@@@@@@@@@@&, ,&@@@@@@@@@@@@@@        \n      &@@@@@@@@                     @@@@@@@@/     \n    @@@@@@@.            *@@@@@@        (@@@@@@,   \n   @@@@@@                @@@@@@@@         @@@@@@  \n (@@@@@@        &        @@@@@@@@@(        @@@@@@.\n&@@@@@@         @@@@@@@@@@@@@@@@@@@         @@@@@@\n  @@@@@@        &@@@@@@@@@@@@@@@@@*        @@@@@@ \n   @@@@@@        .@@@@@@@@@@@@@@@         @@@@@(  \n     ,@@@@@*        @@@@@@@@@@@        &@@@@@     \n        @@@@@@@                     @@@@@@&       \n            @@@@@@@@@@@@@@@@@@@@@@@@@@@           \n                   #@@@@@@@@@@@(                  \n                                                  \n                                                  \n                                                  \n');
 console.log('%cSee With Eyes Closed', 'font-size:30px');
