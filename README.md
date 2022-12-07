@@ -1,4 +1,9 @@
 # see-with-eyes-closed
+
+Moved to [Codeberg](https://codeberg.org/benjaminhollon/see-with-eyes-closed)
+
+---
+
 The code for the [See With Eyes Closed website and blog](https://seewitheyesclosed.com).
 
 ## Installation
